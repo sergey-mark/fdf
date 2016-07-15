@@ -1,8 +1,9 @@
 
 
 NAME=fdf
-SRC=	main.c \
-		fdf.c
+SRC=	get_next_line/get_next_line.c \
+		fdf.c \
+		main.c
 OBJ=${SRC:.c=.o}
 LIB= -L libft -lft
 LIB2= -L minilibx -lmlx
