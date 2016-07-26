@@ -16,7 +16,7 @@ all: $(NAME)
 $(NAME):	$(SRC)
 	make -C libft
 	make -C minilibx
-	gcc $(FLAG) -o $(NAME) $(SRC) $(LIB) $(LIB2) $(LIB3)
+	gcc $(FLAG) -o $(NAME) $(SRC) -lm  $(LIB) $(LIB2) $(LIB3)
 
 clean:
 	rm -rf $(OBJ)
