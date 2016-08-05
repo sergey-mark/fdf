@@ -1,9 +1,16 @@
 
 
 NAME=fdf
-SRC=	get_next_line/get_next_line.c \
+SRC=	main.c \
 		fdf.c \
-		main.c
+		create_new_window.c \
+		create_new_img.c \
+		browsefile.c \
+		get_next_line/get_next_line.c \
+		rotation_point.c \
+		fill_3d_map.c \
+		draw_line.c \
+		key_function.c
 OBJ=${SRC:.c=.o}
 LIB= -L libft -lft
 LIB2= -L minilibx -lmlx

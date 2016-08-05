@@ -13,8 +13,8 @@ typedef struct		s_point
 typedef struct		s_browsefile
 {
 	int				**tab_int;
-	int				nbr_of_line;
-	int				nbr_elem_line;
+	int				nbr_of_line; //nbr of line
+	int				nbr_elem_line; //nbr elem on line
 }					t_browsefile;
 
 typedef struct		s_img
