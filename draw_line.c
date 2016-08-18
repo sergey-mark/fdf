@@ -37,40 +37,38 @@ static int			get_diff(int first, int second)
 	return (i);
 }
 
-int			draw_line(int xdest, int ydest, int zdest, t_img **i, t_wind *w)
-{ 
-	float	x;
-	float	y;
-	int		sign_x;
-	int		sign_y;
-	float		bigdiff;
-	float		diff_x;
-	float		diff_y;
-	t_point		destp;
-
+int			draw_line(t_wind *w, t_point point, t_point pointd)
+{
+	t_line	v;
+	/*
+	ft_putnbr(w->img.point.x);
+	ft_putchar('\n');
+	ft_putnbr(w->img.point.y);
+	ft_putchar('\n');
+	ft_putnbr(w->img.point.z);
+	ft_putchar('\n');
+	*/
+	// NORMAL:
+	/*
+	x = w->img.point.x;
+	y = w->img.point.y - w->img.point.z;
+	xdest = w->img.pointd.x;
+	ydest = w->img.pointd.y - w->img.pointd.z;
+	*/
+	// AVEC ROTATION:
 	// On applique la rotation si on appui sur la flèche de haut ou bas
-	(*i)->r_point = rotation_point((*i)->point, w->p.rot_x);
-	x = (*i)->r_point.x;
-	y = (*i)->r_point.y - (*i)->point.z;
-	//y = (*i)->r_point.y;
+	w->img.r_point = rotation_point(point, w->p.rot, w->p.r_rot);
+	v.x = w->img.r_point.x;
+	v.y = w->img.r_point.y - w->img.r_point.z;
 
-	ft_putnbr(zdest);
-	destp.x = xdest;
-	destp.y = ydest;
-	destp.z = 0;
-	destp = rotation_point(destp, w->p.rot_x);
-	xdest = destp.x;
-	//ydest = destp.y - (destp.z*w->p.accentuation);
-	ydest = destp.y;
+	w->img.r_pointd = rotation_point(pointd, w->p.rot, w->p.r_rot);
+	v.xdest = w->img.r_pointd.x;
+	v.ydest = w->img.r_pointd.y - w->img.r_pointd.z;
 
-	
-	//*((*i)->pxl_ptr+(int)((rint(y))*((*i)->size_line)+ (rint(x))*((*i)->octet_per_pixel))) = (int)"0x00FFFFFF";
-	//*((*i)->pxl_ptr+(int)((rint(ydest))*((*i)->size_line)+ (rint(xdest))*((*i)->octet_per_pixel))) = (int)"0x00FFFFFF";
-
-	sign_x = get_sign(x, xdest);
-	sign_y = get_sign(y, ydest);
-	diff_x = get_diff(x, xdest);
-	diff_y = get_diff(y, ydest);
+	v.sign_x = get_sign(v.x, v.xdest);
+	v.sign_y = get_sign(v.y, v.ydest);
+	v.diff_x = get_diff(v.x, v.xdest);
+	v.diff_y = get_diff(v.y, v.ydest);
 	/*
 	ft_putstr("x : ");
 	ft_putnbr(x);
@@ -97,38 +95,33 @@ int			draw_line(int xdest, int ydest, int zdest, t_img **i, t_wind *w)
 	ft_putnbr(sign_y);
 	ft_putchar('\n');
 	*/
-	if (diff_x > diff_y)
-		bigdiff = diff_x;
-	else if (diff_y > diff_x)
-		bigdiff = diff_y;
+	if (v.diff_x > v.diff_y)
+		v.bigdiff = v.diff_x;
+	else if (v.diff_y > v.diff_x)
+		v.bigdiff = v.diff_y;
 	else
-		bigdiff = diff_y;
-	/*
-	ft_putstr("bigdiff : ");
-	ft_putnbr(bigdiff);*/
-	while (rint(x) != xdest || rint(y) != ydest)
+		v.bigdiff = v.diff_y;
+	if (w->p.graphic_mode == 1) // Si mode point
+		*(w->img.pxl_ptr+(int)((rint(v.y))*(w->img.size_line)+ (rint(v.x))*(w->img.octet_per_pixel))) = (int)"0x00FFFFFF";
+	else // Si mode filaire
 	{
-		if (x != xdest)
+		while (rint(v.x) != v.xdest || rint(v.y) != v.ydest)
 		{
-			x = x + (sign_x * (diff_x/bigdiff));
-			//printf("%.2f ", x);
-		}
-		if (y != ydest)
-		{
-			y = y + (sign_y * (diff_y/bigdiff));
-			//printf("%.2f ", y);
-		}
-	/*ft_putchar(':');
-	ft_putnbr(rint(x));
-	ft_putchar(':');
-	ft_putnbr(rint(y));
-	ft_putchar(':');
-	*/
-		//mlx_pixel_put((*w)->mlx, (*w)->win, rint(x), rint(y), (*w)->point.color);
-		//ft_putstr("tata");
-		*((*i)->pxl_ptr+(int)((rint(y))*((*i)->size_line)+ (rint(x))*((*i)->octet_per_pixel))) = (int)"0x00FFFFFF";
+			if (v.x != v.xdest)
+				v.x = v.x + (v.sign_x * (v.diff_x/v.bigdiff));
+			if (v.y != v.ydest)
+				v.y = v.y + (v.sign_y * (v.diff_y/v.bigdiff));
+		/*
+		ft_putstr("x : ");
+		ft_putnbr(rint(x));
+		ft_putchar('\n');
+		ft_putstr("y : ");
+		ft_putnbr(rint(y));
+		ft_putchar('\n');
+		*/
+			*(w->img.pxl_ptr+(int)((rint(v.y))*(w->img.size_line)+ (rint(v.x))*(4))) = (int)"0x00FFFFFF";
 
-		//*((*i)->pxl_ptr+(int)((rint(y)*(w->p.size_square-(z)))*(((*i)->size_line)) + (rint(x))*((*i)->octet_per_pixel))) = (int)"#00FFFFFF";
+		}
 	}
 	return (0);
 }

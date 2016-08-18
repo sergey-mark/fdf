@@ -2,6 +2,26 @@
 # ifndef STRUCT_H
 # define STRUCT_H
 
+typedef struct		s_line
+{
+	float			x;
+	float			y;
+	int				xdest;
+	int				ydest;
+	int				sign_x;
+	int				sign_y;
+	float			bigdiff;
+	float			diff_x;
+	float			diff_y;
+}					t_line;
+
+typedef struct		s_dpoint
+{
+	double			x;
+	double			y;
+	double			z;
+}					t_dpoint;
+
 typedef struct		s_point
 {
 	int				x;
@@ -20,8 +40,10 @@ typedef struct		s_browsefile
 typedef struct		s_img
 {
 	void			*ptr_img;
-	int				x;
+	int				x; //position of img
 	int				y;
+	int				start_x; //depart print ds img
+	int				start_y;
 	int				width;
 	int				height;
 	int				x_centerpoint;
@@ -31,8 +53,10 @@ typedef struct		s_img
 	int				size_line;
 	int				octet_per_pixel;
 	int				endian_type;
-	t_point			point; //avant calcul rotation
-	t_point			r_point; //apres caclul rotation
+	t_point			point;//point
+	t_point			pointd;//point destination
+	t_point			r_point; //apres rotation
+	t_point			r_pointd; //apres rotation
 }					t_img;
 
 typedef struct		s_params
@@ -40,10 +64,10 @@ typedef struct		s_params
 	int				accentuation; //hauteur relief
 	int				angle_projpara; //zoom y
 	int				size_square; //zoom x
-	int				graphic_mode; // Mode
-	int				rot_x;
-	int				rot_y;
-	int				rot_z;
+	t_point			rot; //angle de rotation
+	t_dpoint		r_rot; //angle de rotation radian
+	int				graphic_mode; //Mode dot/wireframe/fill
+	int				view_mode; //Mode para/iso
 }					t_params;
 
 typedef struct		s_wind
