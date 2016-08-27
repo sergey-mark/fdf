@@ -37,6 +37,13 @@ static int			get_diff(int first, int second)
 	return (i);
 }
 
+static int			dot_in_window(t_wind *w, int x, int y)
+{
+	if ((x > 0 && x < w->width) && (y > 0 && y < w->height))
+		return (1);
+	return (0);
+}
+
 int			draw_line(t_wind *w, t_point point, t_point pointd)
 {
 	t_line	v;
@@ -119,8 +126,9 @@ int			draw_line(t_wind *w, t_point point, t_point pointd)
 		ft_putnbr(rint(y));
 		ft_putchar('\n');
 		*/
-			*(w->img.pxl_ptr+(int)((rint(v.y))*(w->img.size_line)+ (rint(v.x))*(4))) = (int)"0x00FFFFFF";
-
+			// check if dot is in window to reduce crash:
+			if (dot_in_window(w, rint(v.x), rint(v.y)))
+				*(w->img.pxl_ptr+(int)((rint(v.y))*(w->img.size_line)+ (rint(v.x))*(4))) = (int)"0x00FFFFFF";
 		}
 	}
 	return (0);

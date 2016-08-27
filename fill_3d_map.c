@@ -114,7 +114,7 @@ static int			triangulate_para(int x, int y, t_wind *w)
 		w->img.pointd.z = (w->b.tab_int[y+1][x+1])*(w->p.accentuation);
 		w->img.pointd.x = w->img.point.x; // les sizesquare s'annule.
 		w->img.pointd.y = w->img.point.y + w->p.angle_projpara;// Pour afficher remplir toutes les lignes en dessous 
-		// TRIANGULATION
+		// TRIANGULATE
 		draw_line(w, w->img.point, w->img.pointd);
 	}
 	return (0);

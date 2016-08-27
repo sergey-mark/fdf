@@ -2,6 +2,9 @@
 
 static int		set_parameters(t_wind *w)
 {
+	w->img.width = 1024;
+	w->img.height = 900;
+
 	w->img.x_centerpoint = 500;
 	w->img.y_centerpoint = 370;
 	// Parameters:
@@ -24,12 +27,14 @@ int				fdf(char *filename)
 {
 	t_wind		w;
 
-	w = create_new_window("42 minilibx", 1024, 900);
+	w.width = 1024;
+	w.height = 900;
+	w = create_new_window("42 minilibx", w.width, w.height);
 	set_parameters(&w);
 	w.b.nbr_of_line = 0;
 	w.b.nbr_elem_line = 0;
 	w.b.tab_int = browsefile(filename, &w.b.nbr_of_line, &w.b.nbr_elem_line);
-	create_new_img(&w, 1024, 900);
+	create_new_img(&w, w.img.width, w.img.height);
 	mlx_put_image_to_window(w.mlx, w.win, w.img.ptr_img, w.img.x, w.img.y);
 	mlx_key_hook(w.win, key_function, &w);
 	mlx_expose_hook(w.win, expose_hook, &w);
