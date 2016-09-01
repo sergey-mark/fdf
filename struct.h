@@ -46,8 +46,11 @@ typedef struct		s_img
 	int				start_y;
 	int				width;
 	int				height;
+	int				padh;
+	int				padv;
 	int				x_centerpoint;
 	int				y_centerpoint;
+	int				z_centerpoint;
 	char			*pxl_ptr;
 	int				bits_per_pixel;
 	int				size_line;
@@ -68,7 +71,19 @@ typedef struct		s_params
 	t_dpoint		r_rot; //angle de rotation radian
 	int				graphic_mode; //Mode dot/wireframe/fill
 	int				view_mode; //Mode para/iso
+	int				dot; //point centre carre
+	int				insert;
 }					t_params;
+
+typedef struct		s_rotaxle
+{
+	t_point			p_x;
+	t_point			pd_x;
+	t_point			p_y;
+	t_point			pd_y;
+	t_point			p_z;
+	t_point			pd_z;
+}					t_rotaxle;
 
 typedef struct		s_wind
 {
@@ -81,6 +96,7 @@ typedef struct		s_wind
 	t_img			img;
 	t_browsefile	b;
 	t_params		p;
+	t_rotaxle		r;
 }					t_wind;
 
 #endif

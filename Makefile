@@ -7,6 +7,7 @@ SRC=	main.c \
 		create_new_img.c \
 		browsefile.c \
 		get_next_line/get_next_line.c \
+		matrice_rotation.c \
 		rotation_point.c \
 		pythagor.c \
 		fill_3d_map.c \

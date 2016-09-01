@@ -11,11 +11,17 @@ static t_point		get_iso_point(int x, int y, t_wind *w)
 
 static int			checkpoint_allside_iso(int x, int y, t_wind *w)
 {
+	t_point			pointl;
+	t_point			pointb;
+	t_point			pointdiag;
+	//t_point			pointinc;
+	//t_point			pointincd;
+
 	if(x>0)//Si point à gauche
 	{
 		//ft_putendl("gauche");
-		w->img.pointd = get_iso_point(x-1, y, w);
-		draw_line(w, w->img.point, w->img.pointd);
+		pointl = get_iso_point(x-1, y, w);
+		draw_line(w, w->img.point, pointl, 1);
 	}/*
 	if(x<(w->b.nbr_elem_line-1))//Si point à droite
 	{
@@ -34,16 +40,55 @@ static int			checkpoint_allside_iso(int x, int y, t_wind *w)
 	if(y<(w->b.nbr_of_line-1))//Si point en dessous
 	{
 		//ft_putendl("bas");
-		w->img.pointd = get_iso_point(x, (y+1), w);
-		draw_line(w, w->img.point, w->img.pointd);
+		pointb = get_iso_point(x, (y+1), w);
+		draw_line(w, w->img.point, pointb, 1);
 	}
+	if(x<(w->b.nbr_elem_line-1) && y<(w->b.nbr_of_line-1))//Si point en diagonale
+		pointdiag = get_iso_point(x+1, y+1, w);
 	if (w->p.graphic_mode == 3)
 	{
-		if(x<(w->b.nbr_elem_line-1) && y<(w->b.nbr_of_line-1))//Si point en diagonale
+		draw_line(w, w->img.point, pointdiag, 1);
+	}
+	if (w->p.graphic_mode == 4)
+	{
+		//ft_putstr("fill_3d_map_iso");
+		/*
+		pointinc.x = w->img.point.x;
+		pointinc.y = w->img.point.y;
+		pointinc.z = w->img.point.z;
+		*/
+
+		ft_putstr("point.y:");
+		ft_putnbr(w->img.point.y);
+		ft_putchar('\n');
+		ft_putstr("pointl.y:");
+		ft_putnbr(pointl.y);
+		ft_putchar('\n');
+		/*
+		ft_putstr("pointdiag.y:");
+		ft_putnbr(pointdiag.y);
+		ft_putchar('\n');
+		draw_line(w, pointinc, pointl, 1);
+		*/
+		pointl = get_iso_point(x-1, y, w);
+		draw_line(w, w->img.point, pointl, 1);
+		/*
+		while(w->img.point.y < pointdiag.y)
 		{
-			w->img.pointd = get_iso_point(x+1, y+1, w);
-			draw_line(w, w->img.point, w->img.pointd);
-		}
+			
+			ft_putstr("pointinc:");
+			ft_putnbr(pointinc.y);
+			ft_putchar('\n');
+			ft_putstr("pointincd:");
+			ft_putnbr(pointincd.y);*/
+			//ft_putchar('\n');
+			//draw_line(w, w->img.point, w->img.pointd, 0);
+			//ft_putendl("done");
+			//w->img.point.y++;
+			//w->img.pointd.y++;
+			//pointincd.y++;
+		//}
+		//fill_para_iso(x, y, w);
 	}
 	return (0);
 }
@@ -68,7 +113,7 @@ static int			checkpoint_allside(int x, int y, t_wind *w)
 		w->img.pointd.y = w->img.point.y;
 		//ft_putchar('\n');
 		//ft_putstr("test");
-		draw_line(w, w->img.point, w->img.pointd);
+		draw_line(w, w->img.point, w->img.pointd, 1);
 		//ft_putstr("test2");
 	}/*
 	if(x<(b.nbr_elem_line-1))//Si point à droite
@@ -100,7 +145,7 @@ static int			checkpoint_allside(int x, int y, t_wind *w)
 		w->img.pointd.y = w->img.point.y + w->p.angle_projpara;
 		//w->img.pointd = get_par_point(x, y+1, w);
 		//ft_putstr("test");
-		draw_line(w, w->img.point, w->img.pointd);
+		draw_line(w, w->img.point, w->img.pointd, 1);
 		//ft_putstr("testb");
 		//draw_line(i->point.x - w->p.size_square, (i->point.y + w->p.angle_projpara - (z_down*w->p.accentuation)), &i, w);
 	}
@@ -115,7 +160,7 @@ static int			triangulate_para(int x, int y, t_wind *w)
 		w->img.pointd.x = w->img.point.x; // les sizesquare s'annule.
 		w->img.pointd.y = w->img.point.y + w->p.angle_projpara;// Pour afficher remplir toutes les lignes en dessous 
 		// TRIANGULATE
-		draw_line(w, w->img.point, w->img.pointd);
+		draw_line(w, w->img.point, w->img.pointd, 1);
 	}
 	return (0);
 }
@@ -157,7 +202,7 @@ static int			fill_para(int x, int y, t_wind *w)
 				pointright.y++;
 				pointright.x--;
 			}
-			draw_line(w, point, pointright);
+			draw_line(w, point, pointright, 1);
 		}
 	}
 	return (0);
@@ -167,11 +212,11 @@ int			fill_3d_map_iso(t_wind *w)
 {
 	int		y;
 	int		x;
-	int		color;
+	//int		color;
 
 	w->img.octet_per_pixel = w->img.bits_per_pixel/8;
-	w->img.start_x = 500; //pour centrer l'iso au milieu
-	w->img.start_y = 50; //pour centrer l'iso au milieu
+	w->img.start_x = 340 + w->img.padh; //pour centrer l'iso au milieu
+	w->img.start_y = 90 + w->img.padv; //pour centrer l'iso au milieu
 	w->img.point.x = 0;
 	w->img.point.y = 0;
 	y = 0;
@@ -181,14 +226,17 @@ int			fill_3d_map_iso(t_wind *w)
 		while (x < w->b.nbr_elem_line)
 		{
 			w->img.point = get_iso_point(x, y, w);
-			if (w->p.graphic_mode == 1)//Mode point
+			/*if (w->p.graphic_mode == 1)//Mode point
 			{
-				color = (int)"0x00FFFFFF";
+				color = (int)"0x00FFFFFF";*/
 				//color = (x*255)/w->b.nbr_elem_line+(((w->b.nbr_elem_line-x)*255/w->b.nbr_elem_line)<<16)+(((y*255)/w->b.nbr_of_line)<<8);
 				//*((w->img.pxl_ptr)+((w->img.point.y - w->img.point.z)*(int)(w->img.size_line))+((w->img.point.x)*(w->img.octet_per_pixel))+x) = (unsigned char *)(&color)[3-x];
-				*((w->img.pxl_ptr)+((w->img.point.y - w->img.point.z)*(int)(w->img.size_line))+((w->img.point.x)*(w->img.octet_per_pixel))+x) = (int)color;
+				/*
+				w->img.r_point = matrice_rotation(w->img.point, w->p.rot, w->p.r_rot);
+				if (dot_in_window(w, w->img.r_point.x, w->img.r_point.y - w->img.r_point.z))
+					*((w->img.pxl_ptr)+((w->img.r_point.y - w->img.r_point.z)*(int)(w->img.size_line))+((w->img.r_point.x)*(w->img.octet_per_pixel))+x) = (int)color;
 			}
-			else
+			else*/
 				checkpoint_allside_iso(x, y, w);
 			x++;
 		}
@@ -203,55 +251,45 @@ int			fill_3d_map(t_wind *w)
 	int		x;
 	int		z;
 	double	start_x;
-	//double	diag;
 
 	ft_putendl("ok");
-	w->img.octet_per_pixel = w->img.bits_per_pixel/8;
-	ft_putstr("octet par pixel");
-	ft_putnbr(w->img.octet_per_pixel);
-	ft_putchar('\n');
-
-	//ft_putnbr(mode);
-	//while (x < 250)
-		// *(i->pxl_ptr+(x++)*(i->bits_per_pixel)) = (size_t)"0x00FFFFFF";
 	w->img.point.x = 0;
-	//diag = pythagor((double)w->p.size_square, (double)w->p.angle_projpara);
-	//printf("%.2f", diag);
-	//start_x = w->b.nbr_elem_line*diag;
-	start_x = (w->b.nbr_elem_line-5)*(w->p.size_square); //Centrage de la piece peut etre mieux calculé (car en digonale)
-	//start_x = 0;
-	w->img.point.y = 0;
+	w->img.point.y = w->img.padv + 120; //On centre la figure au milieu de l'axe de rotation.
+	start_x = (w->b.nbr_elem_line-8)*(w->p.size_square); //Centrage de la piece peut etre mieux calculé (car en digonale)
 	y = 0;
 	while (y < w->b.nbr_of_line)
 	{
 		x = 0;
-		w->img.point.y += w->p.angle_projpara; // On ecarte de 25 pixels les chiffres et les lignes pour mieux voir les points ;)
-		// Puis on décrémente pour partir du bas à gauche de l'écran pour commencer à afficher les points. (en little endian)
+		w->img.point.y += w->p.angle_projpara;
 		start_x -= w->p.size_square;
-		w->img.point.x = start_x; //Pour créer le décalage à chaque début de ligne on met x à 25 de plus au lieu de faire partir à zéro.
+		w->img.point.x = start_x + (w->img.padh-20);
 		while (x < w->b.nbr_elem_line)
 		{
 			z = w->b.tab_int[y][x];
 			w->img.point.z = (w->b.tab_int[y][x])*(w->p.accentuation);
-			//i->point.z = b.tab_int[y][x] * w->p.accentuation;
 			ft_putnbr(z);
 			ft_putchar('-');
 			//color_point(z, &i->point.color);//Je colore mon point si different de zero
 			// *(i->pxl_ptr+((y*w->p.size_square-(z))*(i->size_line)) + (i->point.x)*(i->bits_per_pixel)) = (int)"0x00FFFFFF";
 			if (x == w->b.nbr_elem_line/2 && y == w->b.nbr_of_line/2)
 			{
-				w->img.x_centerpoint = w->img.point.x;
-				w->img.y_centerpoint = w->img.point.y;
+				w->img.r_point = matrice_rotation(w->img.point, w->p.rot, w->p.r_rot);
+				w->img.x_centerpoint = w->img.r_point.x;
+				w->img.y_centerpoint = (w->img.r_point.y - w->img.r_point.z);
+				w->img.z_centerpoint = w->img.point.y - w->img.point.z;
 				ft_putstr("center point:");
-				ft_putnbr(w->img.point.x);
+				ft_putnbr(w->img.x_centerpoint);
 				ft_putstr(":");
-				ft_putnbr(w->img.point.y);
+				ft_putnbr(w->img.y_centerpoint);
+				ft_putstr(":");
+				ft_putnbr(w->img.z_centerpoint);
 				ft_putchar('\n');
 			}
 			//i->point.y = i->point.y - i->point.z;
+			/*
 			if (w->p.graphic_mode == 1) // Mode point
 			{
-				w->img.r_point = rotation_point(w->img.point, w->p.rot, w->p.r_rot);
+				w->img.r_point = matrice_rotation(w->img.point, w->p.rot, w->p.r_rot);*/
 				/*
 				ft_putstr("rotx:");
 				ft_putnbr(w->img.r_point.x);
@@ -261,19 +299,20 @@ int			fill_3d_map(t_wind *w)
 				ft_putnbr(w->img.r_point.z);
 				ft_putchar('\n');
 				*/
-	// On applique la rotation si on appui sur la flèche de haut ou bas
-				*((w->img.pxl_ptr)+((w->img.r_point.y - w->img.r_point.z)*(int)(w->img.size_line))+((w->img.r_point.x)*(w->img.octet_per_pixel))) = (int)"0x00FFFFFF";
+				// On affiche le point si il est dans la fenetre
+				/*if (dot_in_window(w, w->img.r_point.x, w->img.r_point.y - w->img.r_point.z))
+					*((w->img.pxl_ptr)+((w->img.r_point.y - w->img.r_point.z)*(int)(w->img.size_line))+((w->img.r_point.x)*(w->img.octet_per_pixel))) = (int)"0x00FFFFFF";*/
 				//*((w->img.pxl_ptr)+((w->img.r_point.y - w->img.r_point.z)*(int)(w->img.size_line))+((w->img.r_point.x)*(w->img.octet_per_pixel))) = (int)"0x00FFFFFF";
-			}
-			else // Mode filaire && Triangulate && fill
-			{
+			//}
+			//else // Mode filaire && Triangulate && fill
+			//{
 				//if (w->p.graphic_mode == 2)
 				checkpoint_allside(x, y, w);
 				if (w->p.graphic_mode == 3)
 					triangulate_para(x, y, w);
 				if (w->p.graphic_mode == 4)
 					fill_para(x, y, w);
-			}
+			//}
 			w->img.point.x += w->p.size_square;
 			x++;
 		}

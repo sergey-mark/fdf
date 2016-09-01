@@ -15,45 +15,83 @@ int		key_function(int keycode, t_wind *w)
 	if (keycode == 65307)
 		exit(0);
 	// ROTATION:
-	if (keycode == 65361 && w->img.x >= 0) // fleche gauche
+	if (keycode == 65361) // fleche gauche
 	{
-		w->p.rot.y -= 5;
-		ft_putstr("roty:");
-		ft_putnbr(w->p.rot.y);
-		ft_putchar('\n');
+		if (w->p.insert)
+		{
+			w->r.p_y.x -= 10;
+			w->r.pd_y.x -= 10;
+		}
+		else
+		{
+			w->p.rot.z -= 5;
+			ft_putstr("roty:");
+			ft_putnbr(w->p.rot.y);
+			ft_putchar('\n');
+		}
 	}
-	else if (keycode == 65363 && w->img.x < w->width) // fleche droite
+	else if (keycode == 65363) // fleche droite
 	{
-		w->p.rot.y += 5;
-		ft_putstr("roty:");
-		ft_putnbr(w->p.rot.y);
-		ft_putchar('\n');
+		if (w->p.insert)
+		{
+			w->r.p_y.x += 10;
+			w->r.pd_y.x += 10;
+		}
+		else
+		{
+			w->p.rot.z += 5;
+			ft_putstr("roty:");
+			ft_putnbr(w->p.rot.y);
+			ft_putchar('\n');
+		}
 	}
-	else if (keycode == 65362 && w->img.y >= 0) // fleche haut
+	else if (keycode == 65362) // fleche haut
 	{
-		w->p.rot.x += 5;
-		ft_putstr("rotx:");
-		ft_putnbr(w->p.rot.x);
-		ft_putchar('\n');
-		//w->img.y += 5;
+		if (w->p.insert)
+		{
+			w->r.p_x.y -= 10;
+			w->r.pd_x.y -= 10;
+		}
+		else
+		{
+			w->p.rot.x += 5;
+			ft_putstr("rotx:");
+			ft_putnbr(w->p.rot.x);
+			ft_putchar('\n');
+		}
 	}
-	else if (keycode == 65364 && w->img.y < w->height) // fleche bas
+	else if (keycode == 65364) // fleche bas
 	{
-		w->p.rot.x -= 5;
-		ft_putstr("rotx:");
-		ft_putnbr(w->p.rot.x);
-		ft_putchar('\n');
-		//w->img.y -= 5;
+		if (w->p.insert)
+		{
+			w->r.p_x.y += 10;
+			w->r.pd_x.y += 10;
+		}
+		else
+		{
+			w->p.rot.x -= 5;
+			ft_putstr("rotx:");
+			ft_putnbr(w->p.rot.x);
+			ft_putchar('\n');
+		}
+	}
+	// MODIFICATION POINT DE ROTATION
+	if (keycode == 65379) // Touche Insert
+	{
+		if (w->p.insert)
+			w->p.insert = 0;
+		else
+			w->p.insert = 1;
 	}
 	// DEPLACEMENT LATERAL (pan) (Pavé numérique)
 	if (keycode == 65431)//haut (pav num)
-		w->img.y -= 10;
+		w->img.padv -= 10;
 	else if (keycode == 65433)//bas (pav num)
-		w->img.y += 10;
+		w->img.padv += 10;
 	else if (keycode == 65432)//droite (pav num)
-		w->img.x += 10;
+		w->img.padh += 10;
 	else if (keycode == 65430)//gauche (pav num)
-		w->img.x -= 10;
+		w->img.padh -= 10;
 	// ZOOM:
 	if (keycode == 65451)//plus (pav num)
 	{
@@ -97,6 +135,14 @@ int		key_function(int keycode, t_wind *w)
 		ft_putendl("mode fill");
 		w->p.graphic_mode = 4;
 	}
+	else if (keycode == 105)// i pour afficher point
+	{
+		ft_putendl("point");
+		if (w->p.dot == 1)
+			w->p.dot = 0;
+		else
+			w->p.dot = 1;
+	}
 	// VUE
 	if (keycode == 65471)//F2 Vue Isometrique
 		w->p.view_mode = 2; // Mode iso par défault (touche F2/F3 pour changer)
@@ -104,7 +150,7 @@ int		key_function(int keycode, t_wind *w)
 		w->p.view_mode = 3; // Mode iso par défault (touche F2/F3 pour changer)
 	// COULEURS
 	mlx_destroy_image(w->mlx, w->img.ptr_img);
-	create_new_img(w, w->img.width, w->img.height);
+	create_new_img(w);
 	mlx_put_image_to_window(w->mlx, w->win, w->img.ptr_img, w->img.x, w->img.y);
 	return (0);
 }
