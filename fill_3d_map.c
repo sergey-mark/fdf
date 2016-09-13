@@ -57,37 +57,39 @@ static int			checkpoint_allside_iso(int x, int y, t_wind *w)
 		pointinc.y = w->img.point.y;
 		pointinc.z = w->img.point.z;
 		*/
-
+		/*
 		ft_putstr("point.y:");
 		ft_putnbr(w->img.point.y);
 		ft_putchar('\n');
 		ft_putstr("pointl.y:");
 		ft_putnbr(pointl.y);
 		ft_putchar('\n');
+		*/
 		/*
 		ft_putstr("pointdiag.y:");
 		ft_putnbr(pointdiag.y);
 		ft_putchar('\n');
 		draw_line(w, pointinc, pointl, 1);
 		*/
-		pointl = get_iso_point(x-1, y, w);
-		draw_line(w, w->img.point, pointl, 1);
-		/*
+		//pointl = get_iso_point(x-1, y, w);
+		//draw_line(w, w->img.point, pointl, 1);
+		
+		pointdiag = get_iso_point(x+1, y+1, w);
 		while(w->img.point.y < pointdiag.y)
 		{
-			
+			/*
 			ft_putstr("pointinc:");
 			ft_putnbr(pointinc.y);
 			ft_putchar('\n');
 			ft_putstr("pointincd:");
 			ft_putnbr(pointincd.y);*/
 			//ft_putchar('\n');
-			//draw_line(w, w->img.point, w->img.pointd, 0);
+			draw_line(w, w->img.point, w->img.pointd, 1);
 			//ft_putendl("done");
-			//w->img.point.y++;
-			//w->img.pointd.y++;
+			w->img.point.y++;
+			w->img.pointd.y++;
 			//pointincd.y++;
-		//}
+		}
 		//fill_para_iso(x, y, w);
 	}
 	return (0);
@@ -193,15 +195,13 @@ static int			fill_para(int x, int y, t_wind *w)
 		while (((point.y-point.z) < (pointdown.y-pointdown.z)) || ((pointright.y-pointright.z) < (pointddiag.y-pointddiag.z)))
 		{
 			if ((point.y-point.z) < (pointdown.y-pointdown.z))
-			{
-				point.x--;
 				point.y++;
-			}
+			if (point.x > pointdown.x)
+				point.x--;
 			if ((pointright.y-pointright.z) < (pointddiag.y-pointddiag.z))
-			{
 				pointright.y++;
+			if ((pointright.x) > (pointddiag.x))
 				pointright.x--;
-			}
 			draw_line(w, point, pointright, 1);
 		}
 	}
