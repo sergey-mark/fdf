@@ -46,16 +46,30 @@ int			dot_in_window(t_wind *w, int x, int y)
 
 t_point		move_to(t_wind *w, t_point p, int param)
 {
+	int		pyx;
+	int		pxy;
+	
+	/*
+	if (w->p.insert) //Si on est en mode insert on prend la position du point de rotation d'avant
+	{
+		pyx = w->r.oldp_y.x;
+		pxy = w->r.oldp_x.y;
+	}
+	else
+	{*/
+		pyx = w->r.p_y.x;
+		pxy = w->r.p_x.y;/*
+	}*/
 	if (param == 0)
 	{
-		p.x = p.x - w->width/2;
-		p.y = p.y - w->height/2;
+		p.x = p.x - pyx;
+		p.y = p.y - pxy;
 		p.z = p.z;
 	}
 	else
 	{
-		p.x = p.x + w->width/2;
-		p.y = p.y + w->height/2;
+		p.x = p.x + pyx;
+		p.y = p.y + pxy;
 		p.z = p.z;
 	}
 	return (p);
@@ -65,9 +79,8 @@ int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 {
 	t_line	v;
 
-	if (booleanrot == 0)
+	if (booleanrot == 0) //No rotation for cursor rotation center draw
 	{
-		ft_putstr("no rotation");
 		// NORMAL:
 		v.x = point.x;
 		v.y = point.y - point.z;
@@ -78,9 +91,12 @@ int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 	{
 		// To do rotation of the object in center
 		// We center object in center of rotate_axle
-		// Move figure to 0, 0 coordonate:
+		// Move figure(axle) to 0, 0 coordonate:
 		point = move_to(w, point, 0);
 		pointd = move_to(w, pointd, 0);
+
+		// Rotate axle if in para mode (so 30degree inclination)
+		//point = matrice_rotation(point, 30, );
 
 		// AVEC ROTATION:
 		// On applique la rotation si on appui sur la flèche de haut ou bas
@@ -88,7 +104,7 @@ int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 		w->img.r_pointd = matrice_rotation(pointd, w->p.rot, w->p.r_rot);
 
 		// To do rotation of the object in center
-		// Move back figure to center:
+		// Move back figure(axle) to center:
 		w->img.r_point = move_to(w, w->img.r_point, 1);
 		w->img.r_pointd = move_to(w, w->img.r_pointd, 1);
 

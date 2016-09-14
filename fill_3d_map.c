@@ -167,43 +167,65 @@ static int			triangulate_para(int x, int y, t_wind *w)
 	return (0);
 }
 
+static int			defpath_fillrect(t_point dep, t_point arr)
+{
+	while (((point.y-point.z) < (pointdown.y-pointdown.z)) || ((pointright.y-pointright.z) < (pointddiag.y-pointddiag.z)))
+	{
+		if ((point.y-point.z) < (pointdown.y-pointdown.z))
+			point.y++;
+		if (point.x > pointdown.x)
+			point.x--;
+		if ((pointright.y-pointright.z) < (pointddiag.y-pointddiag.z))
+			pointright.y++;
+		if ((pointright.x) > (pointddiag.x))
+			pointright.x--;
+	}
+	return (0);
+}
+
+static int			fill_rect(t_wind *w, t_fillsquare *f)
+{
+	list_structpoint	p_left;
+	list_structpoint	p_right;
+
+	p_left = defpath_fillrect(point, pointd);
+	p_right = defpath_fillrect(pointr, pointdd);
+
+	while (p_left.p.y < p_right.p.y || ((pointright.y-pointright.z) < (pointddiag.y-pointddiag.z)))
+	{
+		if ((point.y-point.z) < (pointdown.y-pointdown.z))
+			point.y++;
+		if (point.x > pointdown.x)
+			point.x--;
+		if ((pointright.y-pointright.z) < (pointddiag.y-pointddiag.z))
+			pointright.y++;
+		if ((pointright.x) > (pointddiag.x))
+			pointright.x--;
+		draw_line(w, p_left.p, p_right.p, 1);
+	}
+	return (0);
+}
+
 static int			fill_para(int x, int y, t_wind *w)
 {
-	t_point			point;
-	t_point			pointright;
-	t_point			pointdown;
-	t_point			pointddiag;
-	
+	t_fillsquare	*f;
+
 	if ((x<(w->b.nbr_elem_line-1)) && (y<(w->b.nbr_of_line-1)) && (x<(w->b.nbr_elem_line-1) && (y<(w->b.nbr_of_line-1)))) //Si point à droit et en dessous et en diagonale à droite
 	{
-		point = w->img.point;
-
+		f->point = w->img.point;
 		// Point à droite:
-		pointright.z = (w->b.tab_int[y][x+1])*(w->p.accentuation);
-		pointright.x = w->img.point.x + w->p.size_square;
-		pointright.y = w->img.point.y;
-
+		f.pointr.z = (w->b.tab_int[y][x+1])*(w->p.accentuation);
+		f.pointr.x = w->img.point.x + w->p.size_square;
+		f.pointr.y = w->img.point.y;
 		// Point en dessous:
-		pointdown.z = (w->b.tab_int[y+1][x])*(w->p.accentuation);
-		pointdown.x = w->img.point.x - w->p.size_square;
-		pointdown.y = w->img.point.y + w->p.angle_projpara;
-		
+		f.pointd.z = (w->b.tab_int[y+1][x])*(w->p.accentuation);
+		fpointd.x = w->img.point.x - w->p.size_square;
+		f.pointd.y = w->img.point.y + w->p.angle_projpara;
 		// Point en diagonale:
-		pointddiag.z = (w->b.tab_int[y+1][x+1])*(w->p.accentuation);
-		pointddiag.x = w->img.point.x;
-		pointddiag.y = w->img.point.y + w->p.angle_projpara;// Pour afficher remplir toutes les lignes en dessous
-		while (((point.y-point.z) < (pointdown.y-pointdown.z)) || ((pointright.y-pointright.z) < (pointddiag.y-pointddiag.z)))
-		{
-			if ((point.y-point.z) < (pointdown.y-pointdown.z))
-				point.y++;
-			if (point.x > pointdown.x)
-				point.x--;
-			if ((pointright.y-pointright.z) < (pointddiag.y-pointddiag.z))
-				pointright.y++;
-			if ((pointright.x) > (pointddiag.x))
-				pointright.x--;
-			draw_line(w, point, pointright, 1);
-		}
+		f.pointdd.z = (w->b.tab_int[y+1][x+1])*(w->p.accentuation);
+		f.pointdd.x = w->img.point.x;
+		f.pointdd.y = w->img.point.y + w->p.angle_projpara;
+		fill_rect(w, f);
 	}
 	return (0);
 }

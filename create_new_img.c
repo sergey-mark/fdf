@@ -7,12 +7,19 @@ int		create_new_img(t_wind *w)
 	printf("bits_per_pixel: %d\nsize_line: %d\nendian_type: %d\n", w->img.bits_per_pixel, w->img.size_line, w->img.endian_type);
 	w->img.octet_per_pixel = w->img.bits_per_pixel/8;
 
-	ft_putstr("milieu:");
+	ft_putstr("p_x.y:");
 	ft_putnbr(w->r.p_x.y);
+	ft_putchar('\n');
+	ft_putstr("p_y.x:");
+	ft_putnbr(w->r.p_y.x);
+	ft_putchar('\n');
 
 	// Creation of rotation axle
 	draw_line(w, w->r.p_x, w->r.pd_x, 0);
 	draw_line(w, w->r.p_y, w->r.pd_y, 0);
+	// Creation of help
+	if (w->p.help == 1)
+		ft_putendl("help on");
 
 	if (w->p.view_mode == 2)
 	{

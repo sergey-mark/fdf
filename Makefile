@@ -3,6 +3,7 @@
 NAME=fdf
 SRC=	main.c \
 		fdf.c \
+		help.c \
 		create_new_window.c \
 		create_new_img.c \
 		browsefile.c \

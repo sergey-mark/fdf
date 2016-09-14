@@ -2,6 +2,14 @@
 # ifndef STRUCT_H
 # define STRUCT_H
 
+typedef struct		s_fillsquare
+{
+	t_point			point;
+	t_point			pointr;
+	t_point			pointd;
+	t_point			pointdd;
+}					t_fillsquare;
+
 typedef struct		s_line
 {
 	float			x;
@@ -73,6 +81,7 @@ typedef struct		s_params
 	int				view_mode; //Mode para/iso
 	int				dot; //point centre carre
 	int				insert;
+	int				help;
 }					t_params;
 
 typedef struct		s_rotaxle
@@ -81,8 +90,8 @@ typedef struct		s_rotaxle
 	t_point			pd_x;
 	t_point			p_y;
 	t_point			pd_y;
-	t_point			p_z;
-	t_point			pd_z;
+	t_point			oldp_x;
+	t_point			oldp_y;
 }					t_rotaxle;
 
 typedef struct		s_wind

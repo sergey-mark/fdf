@@ -3,6 +3,7 @@
 int		expose_hook(t_wind *w)
 {
 	mlx_put_image_to_window(w->mlx, w->win, w->img.ptr_img, w->img.x, w->img.y);
+	help(w);
 	return (0);
 }
 
@@ -21,6 +22,8 @@ int		key_function(int keycode, t_wind *w)
 		{
 			w->r.p_y.x -= 10;
 			w->r.pd_y.x -= 10;
+			w->r.p_x.x -= 10;
+			w->r.pd_x.x -= 10;
 		}
 		else
 		{
@@ -36,6 +39,8 @@ int		key_function(int keycode, t_wind *w)
 		{
 			w->r.p_y.x += 10;
 			w->r.pd_y.x += 10;
+			w->r.p_x.x += 10;
+			w->r.pd_x.x += 10;
 		}
 		else
 		{
@@ -49,6 +54,8 @@ int		key_function(int keycode, t_wind *w)
 	{
 		if (w->p.insert)
 		{
+			w->r.p_y.y -= 10;
+			w->r.pd_y.y -= 10;
 			w->r.p_x.y -= 10;
 			w->r.pd_x.y -= 10;
 		}
@@ -66,6 +73,8 @@ int		key_function(int keycode, t_wind *w)
 		{
 			w->r.p_x.y += 10;
 			w->r.pd_x.y += 10;
+			w->r.p_y.y += 10;
+			w->r.pd_y.y += 10;
 		}
 		else
 		{
@@ -81,7 +90,12 @@ int		key_function(int keycode, t_wind *w)
 		if (w->p.insert)
 			w->p.insert = 0;
 		else
+		{
 			w->p.insert = 1;
+			//Memorise previous RotationCenter while press insert (to move RoationCenter)
+			w->r.oldp_y.x = w->r.p_y.x;
+			w->r.oldp_x.y = w->r.p_x.y;
+		}
 	}
 	// DEPLACEMENT LATERAL (pan) (Pavé numérique)
 	if (keycode == 65431)//haut (pav num)
@@ -144,7 +158,14 @@ int		key_function(int keycode, t_wind *w)
 			w->p.dot = 1;
 	}
 	// VUE
-	if (keycode == 65471)//F2 Vue Isometrique
+	if (keycode == 65470)//F1 HELP
+	{
+		if (w->p.help == 1)
+			w->p.help = 0;
+		else
+			w->p.help = 1;
+	}
+	else if (keycode == 65471)//F2 Vue Isometrique
 		w->p.view_mode = 2; // Mode iso par défault (touche F2/F3 pour changer)
 	else if (keycode == 65472)//F3 Vue Parallèle
 		w->p.view_mode = 3; // Mode iso par défault (touche F2/F3 pour changer)
@@ -152,6 +173,7 @@ int		key_function(int keycode, t_wind *w)
 	mlx_destroy_image(w->mlx, w->img.ptr_img);
 	create_new_img(w);
 	mlx_put_image_to_window(w->mlx, w->win, w->img.ptr_img, w->img.x, w->img.y);
+	help(w);
 	return (0);
 }
 

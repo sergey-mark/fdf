@@ -55,7 +55,6 @@ t_point		matrice_rotation(t_point p, t_point angle, t_dpoint r_angle)
 	// http://jeux.developpez.com/faq/math/?page=transformations#Q36
 	p_r.x = p.x *(mat[0]) + p.y*(mat[1]) + p.z*(mat[2]);
 	p_r.y = p.x *(mat[4]) + p.y*(mat[5]) + p.z*(mat[6]);
-	//p_r.y = p.x *(mat[4]) + (p.y-(450-w->img.y_centerpoint))*(mat[5]) + p.z*(mat[6]);
 	p_r.z = p.x *(mat[8]) + p.y*(mat[9]) + p.z*(mat[10]);
 	return (p_r);
 }

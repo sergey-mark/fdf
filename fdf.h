@@ -18,6 +18,7 @@ t_wind		create_new_window(char *title, int width, int height);
 int			**browsefile(char *filename, int *y, int *x);
 int			create_new_img(t_wind *w);
 int			dot_in_window(t_wind *w, int x, int y);
+void		help(t_wind *w);
 int			fill_3d_map_iso(t_wind *w);
 int			fill_3d_map(t_wind *w);
 int			draw_line(t_wind *w, t_point point, t_point pointd, int boolean);
