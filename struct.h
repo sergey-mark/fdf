@@ -2,14 +2,6 @@
 # ifndef STRUCT_H
 # define STRUCT_H
 
-typedef struct		s_fillsquare
-{
-	t_point			point;
-	t_point			pointr;
-	t_point			pointd;
-	t_point			pointdd;
-}					t_fillsquare;
-
 typedef struct		s_line
 {
 	float			x;
@@ -37,6 +29,14 @@ typedef struct		s_point
 	int				z;
 	size_t			color;
 }					t_point;
+
+typedef struct		s_fillsquare
+{
+	t_point			point;
+	t_point			pointr;
+	t_point			pointd;
+	t_point			pointdd;
+}					t_fillsquare;
 
 typedef struct		s_browsefile
 {
