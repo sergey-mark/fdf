@@ -1,0 +1,6 @@
+[submodule "libft"]
+	path = libft
+	url = https://github.com/pbillett/libft
+[submodule "get_next_line"]
+	path = get_next_line
+	url = https://github.com/pbillett/get_next_line
