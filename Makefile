@@ -10,7 +10,6 @@ SRC=	main.c \
 		get_next_line/get_next_line.c \
 		matrice_rotation.c \
 		rotation_point.c \
-		pythagor.c \
 		fill_3d_map.c \
 		draw_line.c \
 		key_function.c

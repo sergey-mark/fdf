@@ -78,7 +78,9 @@ t_point		move_to(t_wind *w, t_point p, int param)
 int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 {
 	t_line	v;
+	int		*p;
 
+	p = (int *)w->img.pxl_ptr; // Cast du pointer char * de ladresse du pixel en int *. (pour pouvoir y acceder et affecter plus facilement apres!)
 	if (booleanrot == 0) //No rotation for cursor rotation center draw
 	{
 		// NORMAL:
@@ -153,7 +155,7 @@ int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 	if (w->p.graphic_mode == 1) // Si mode point
 	{
 		if (dot_in_window(w, rint(v.x), rint(v.y)))
-			*(w->img.pxl_ptr+(int)((rint(v.y))*(w->img.size_line)+ (rint(v.x))*(w->img.octet_per_pixel))) = (int)"0xFF0000";
+			*(p + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel)) = 0x0000FF;
 	}
 	else // Si mode filaire
 	{
@@ -173,7 +175,7 @@ int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 		*/
 			// check if dot is in window to reduce crash:
 			if (dot_in_window(w, rint(v.x), rint(v.y)))
-				*(w->img.pxl_ptr+(int)((rint(v.y))*(w->img.size_line)+ (rint(v.x))*(4))) = (int)"0x00FFFFFF";
+				*(p + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel)) = 0x0000FF;
 		}
 	}
 	return (0);
