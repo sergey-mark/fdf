@@ -155,7 +155,7 @@ int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 	if (w->p.graphic_mode == 1) // Si mode point
 	{
 		if (dot_in_window(w, rint(v.x), rint(v.y)))
-			*(p + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel)) = 0x0000FF;
+			*(p + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.bits_per_pixel)) = 0x0000FF;
 	}
 	else // Si mode filaire
 	{
@@ -175,7 +175,12 @@ int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 		*/
 			// check if dot is in window to reduce crash:
 			if (dot_in_window(w, rint(v.x), rint(v.y)))
-				*(p + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel)) = 0x0000FF;
+			{
+				*(w->img.pxl_ptr + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel)) = 255; //R (ou en exa: 0xFF)
+				*(w->img.pxl_ptr + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel) + 1) = 255; //G
+				*(w->img.pxl_ptr + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel) + 2) = 255; //B
+				//*(p + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel)) = 0xFFFFFF;
+			}
 		}
 	}
 	return (0);
