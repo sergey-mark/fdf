@@ -2,6 +2,13 @@
 # ifndef STRUCT_H
 # define STRUCT_H
 
+typedef struct		s_rgbcolor
+{
+	int				r;
+	int				g;
+	int				b;
+}					t_rgbcolor;
+
 typedef struct		s_line
 {
 	float			x;

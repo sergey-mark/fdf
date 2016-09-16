@@ -11,6 +11,7 @@ SRC=	main.c \
 		matrice_rotation.c \
 		rotation_point.c \
 		fill_3d_map.c \
+		draw_point.c \
 		draw_line.c \
 		key_function.c
 OBJ=${SRC:.c=.o}

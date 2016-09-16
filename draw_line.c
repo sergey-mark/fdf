@@ -78,9 +78,7 @@ t_point		move_to(t_wind *w, t_point p, int param)
 int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 {
 	t_line	v;
-	int		*p;
 
-	p = (int *)w->img.pxl_ptr; // Cast du pointer char * de ladresse du pixel en int *. (pour pouvoir y acceder et affecter plus facilement apres!)
 	if (booleanrot == 0) //No rotation for cursor rotation center draw
 	{
 		// NORMAL:
@@ -155,7 +153,7 @@ int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 	if (w->p.graphic_mode == 1) // Si mode point
 	{
 		if (dot_in_window(w, rint(v.x), rint(v.y)))
-			*(p + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.bits_per_pixel)) = 0x0000FF;
+				draw_point(w, (int)rint(v.x), (int)rint(v.y), "0x9E11BF");
 	}
 	else // Si mode filaire
 	{
@@ -176,9 +174,11 @@ int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 			// check if dot is in window to reduce crash:
 			if (dot_in_window(w, rint(v.x), rint(v.y)))
 			{
-				*(w->img.pxl_ptr + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel)) = 255; //R (ou en exa: 0xFF)
-				*(w->img.pxl_ptr + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel) + 1) = 255; //G
-				*(w->img.pxl_ptr + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel) + 2) = 255; //B
+				//*(w->img.pxl_ptr + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel)) = 0xFF; //R (ou en exa: 0xFF)
+				//*(w->img.pxl_ptr + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel) + 1) = 255; //G
+				//*(w->img.pxl_ptr + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel) + 2) = 255; //B
+				//*(w->img.pxl_ptr + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel) + 3) = 0x1A; //B
+				draw_point(w, (int)rint(v.x), (int)rint(v.y), "0x9E11BF");
 				//*(p + ((int)rint(v.y) * w->img.size_line) + ((int)rint(v.x) * w->img.octet_per_pixel)) = 0xFFFFFF;
 			}
 		}
