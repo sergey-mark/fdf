@@ -57,37 +57,64 @@ int				hextoint(char *s)
 	}
 	return (tot);
 }
-/*
-// http://stackoverflow.com/questions/3723846/convert-from-hex-color-to-rgb-struct-in-c
-t_rgbcolor		color_hexatorgb(char *hexa_color)
-{
-	t_rgbcolor	rgbcolor;
-	int			intcolor;
 
-
-	intcolor = hextoint(hexa_color);
-	//ft_putnbr(intcolor);
-	rgbcolor.r = ((intcolor >> 16) & 0xFF)/255.0;
-	rgbcolor.g = ((intcolor >> 8) & 0xFF)/255.0;
-	rgbcolor.b = ((intcolor) & 0xFF)/255.0;
-	return (rgbcolor);
-}
-*/
-void			draw_point(t_wind *w, int x, int y, char *hexcolor)
+t_rgbcolor		hexatorgb(char *hexcolor)
 {
 	t_rgbcolor	rgbcolor;
 	char		*R;
 	char		*G;
 	char		*B;
 
-	//printf("%zx\n", hexcolor);  // prints as hex
-	//SPLIT D'UN FORMAT CLASSIQUE DE HEXCOLOR ("0xFFFFFF") -> Attention en l'ordre est en little endian cependant! (donc inversé!) (car on est sur un x86))
 	B = ft_strjoin("0x", ft_strsub(hexcolor, 2, 2));
 	G = ft_strjoin("0x", ft_strsub(hexcolor, 4, 2));
 	R = ft_strjoin("0x", ft_strsub(hexcolor, 6, 2));
 	rgbcolor.r = hextoint(R);
 	rgbcolor.g = hextoint(G);
 	rgbcolor.b = hextoint(B);
+	return (rgbcolor);
+}
+
+
+char			*get_inbetweencolor(t_rgbcolor start, t_rgbcolor end, int z)
+{
+	t_rgbcolor	c;
+	char		*color;
+	int			i;
+
+	if (start.r < end.r)
+	{
+		start.r *= sign.r;
+	}
+	color = rgbtohex(c);
+	return (color);
+}
+
+char		*get_color(t_wind *w, int z)
+{
+	char	*color;
+	
+	w->p.color.bot = hexatorgb(w->p.color.hexa_bot);
+	w->p.color.mid = hexatorgb(w->p.color.hexa_mid);
+	w->p.color.top = hexatorgb(w->p.color.hexa_top);
+	if (z <= w->p.color.lowl)
+		color = w->p.color.hexa_bot;
+	else if (z > w->p.color.lowl && z < w->p.color.midl)
+		color = get_inbetweencolor(w->p.color.bot, w->p.color.mid, z);
+	else if (z == w->p.color.midl)
+		color = w->p.color.hexa_mid;
+	else if (z > w->p.color.midl && z < w->p.color.topl)
+		color = get_inbetweencolor(w->p.color.mid, w->p.color.top, z);
+	else if (z >= w->p.color.topl)
+		color = w->p.color.hexa_top;
+	return (color);
+}
+
+void			draw_point(t_wind *w, int x, int y, char *hexcolor)
+{
+	t_rgbcolor	rgbcolor;
+
+	rgbcolor = hexatorgb(hexcolor);
+	//SPLIT D'UN FORMAT CLASSIQUE DE HEXCOLOR ("0xFFFFFF") -> Attention en l'ordre est en little endian cependant! (donc inversé!) (car on est sur un x86))
 	*(w->img.pxl_ptr + (y * w->img.size_line) + (x * w->img.octet_per_pixel)) = rgbcolor.r;
 	*(w->img.pxl_ptr + (y * w->img.size_line) + (x * w->img.octet_per_pixel) + 1) = rgbcolor.g;
 	*(w->img.pxl_ptr + (y * w->img.size_line) + (x * w->img.octet_per_pixel) + 2) = rgbcolor.b;

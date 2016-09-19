@@ -20,6 +20,15 @@ static int		set_parameters(t_wind *w)
 	w->p.rot.y = 0; // Rotation y par défault
 	w->p.rot.z = 0; // Rotation z par défault
 
+	// Color Palette:
+	w->p.color.hexa_top = "0xFFFFFF"; //Blanc
+	w->p.color.hexa_mid = "0x024302"; //Vert
+	w->p.color.hexa_bot = "0x432502"; //Marron
+	// Color fit height level for affection
+	w->p.color.topl = 10;
+	w->p.color.midl = 5;
+	w->p.color.lowl = 0;
+
 	// Definition des axes de rotation:
 	w->r.p_x.x = (w->width/2)-25;
 	w->r.p_x.y = w->height/2;

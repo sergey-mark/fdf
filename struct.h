@@ -9,6 +9,20 @@ typedef struct		s_rgbcolor
 	int				b;
 }					t_rgbcolor;
 
+typedef struct		s_colorpalette
+{
+	char			*hexa_bot; //Color bottom in hexa
+	char			*hexa_mid;
+	char			*hexa_top;
+	t_rgbcolor		bot; // Color in rgb
+	t_rgbcolor		mid;
+	t_rgbcolor		top;
+	int				lowl; //Level of affection for color
+	int				midl;
+	int				topl;
+
+}					t_colorpalette;
+
 typedef struct		s_line
 {
 	float			x;
@@ -89,6 +103,7 @@ typedef struct		s_params
 	int				dot; //point centre carre
 	int				insert;
 	int				help;
+	t_colorpalette	color;
 }					t_params;
 
 typedef struct		s_rotaxle
