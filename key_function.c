@@ -176,27 +176,37 @@ int		key_function(int keycode, t_wind *w)
 	help(w);
 	return (0);
 }
-
 /*
-static int		my_mouse_function(int keycode, t_wind *w)
+int	pencil(int x, int y, t_wind *w)
 {
-»···ft_putnbr(w->point.x);
-»···ft_putendl("Keyevent");
-»···ft_putnbr(keycode);
-»···ft_putchar('\n');
-	*/
-	//if (keycode == 1 && w->point.x >= 0) // fleche gauche
-		//ft_putendl("clic gauche");//w->point.x -= 5;
-	/*
-»···else if (keycode == 65363 && w->point.x < w->width) // fleche droite
-»···»···w->point.x += 5;
-»···else if (keycode == 65362 && w->point.x >= 0) // fleche haut
-»···»···w->point.y -= 5;
-»···else if (keycode == 65364 && w->point.x < w->height) // fleche bas
-»···»···w->point.y += 5;
-»···*/
-	//ft_putnbr(w->point.y);
-	//mlx_pixel_put(w->mlx, w->win, w->point.x, w->point.y, w->point.color);
-	/*
-»···return (0);
-}*/
+	ft_putstr("test");
+	draw_point(w, x, y, "0xFFFFFF");
+	ft_putstr("test2");
+	mlx_put_image_to_window(w->mlx, w->win, w->img.ptr_img, w->img.x, w->img.y);
+	help(w);
+	return (0);
+}
+*/
+int		mouse_function(int button, int x, int y, t_wind *w)
+{
+	ft_putnbr(w->point.x);
+	ft_putchar('\n');
+	ft_putendl("button:");
+	ft_putnbr(button);
+	ft_putchar('\n');
+	ft_putnbr(x);
+	ft_putchar('\n');
+	ft_putnbr(y);
+	ft_putchar('\n');
+	
+	//mlx_destroy_image(w->mlx, w->img.ptr_img);
+	//create_new_img(w);
+	//if (button == 1)
+		//mlx_loop_hook(w->mlx, pencil(), &w);
+
+	draw_point(w, x, y, "0xFFFFFF");
+
+	mlx_put_image_to_window(w->mlx, w->win, w->img.ptr_img, w->img.x, w->img.y);
+	help(w);
+	return (0);
+}

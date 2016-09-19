@@ -72,6 +72,9 @@ int				fdf(char *filename)
 	mlx_put_image_to_window(w.mlx, w.win, w.img.ptr_img, w.img.x, w.img.y);
 	mlx_string_put(w.mlx, w.win, 5, 20, 0xFFFFFF, "Test");
 	mlx_key_hook(w.win, key_function, &w);
+	//mlx_loop_hook(w.mlx, key_function, &w);
+	mlx_mouse_hook(w.win, mouse_function, &w);
+	//mlx_loop_hook(w.mlx, mouse_function, &w);
 	mlx_expose_hook(w.win, expose_hook, &w);
 	mlx_loop(w.mlx);
 	return (0);

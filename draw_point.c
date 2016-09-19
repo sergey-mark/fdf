@@ -74,7 +74,7 @@ t_rgbcolor		hexatorgb(char *hexcolor)
 	return (rgbcolor);
 }
 
-
+/*
 char			*get_inbetweencolor(t_rgbcolor start, t_rgbcolor end, int z)
 {
 	t_rgbcolor	c;
@@ -108,6 +108,7 @@ char		*get_color(t_wind *w, int z)
 		color = w->p.color.hexa_top;
 	return (color);
 }
+*/
 
 void			draw_point(t_wind *w, int x, int y, char *hexcolor)
 {

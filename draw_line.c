@@ -151,8 +151,8 @@ int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 		v.bigdiff = v.diff_y;
 	else
 		v.bigdiff = v.diff_y;
-	//color = "0x9E11BF"; //Violet
-	color = get_color(w, w->img.r_point.z);
+	color = "0x9E11BF"; //Violet
+	//color = get_color(w, w->img.r_point.z);
 	if (w->p.graphic_mode == 1) // Si mode point
 	{
 		if (dot_in_window(w, rint(v.x), rint(v.y)))
