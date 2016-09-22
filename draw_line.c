@@ -113,11 +113,9 @@ int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 	}
 	else
 	{
-		// To do rotation of the object in center
-		// We center object in center of rotate_axle
-		// Move figure(axle) to 0, 0 coordonate:
+		// To do rotation of the object in center, We center object in center of rotate_axle
 		point = move_to(w, point, 0);
-		pointd = move_to(w, pointd, 0);
+		pointd = move_to(w, pointd, 0);// Move figure(axle) to 0, 0 coordonate:
 
 		// Rotate axle if in para mode (so 30degree inclination)
 		//point = matrice_rotation(point, 30, );
