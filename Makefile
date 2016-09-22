@@ -1,4 +1,4 @@
-
+UNAME := $(shell uname)
 
 NAME=fdf
 SRC=	main.c \
@@ -16,17 +16,23 @@ SRC=	main.c \
 		key_function.c
 OBJ=${SRC:.c=.o}
 LIB= -L libft -lft
+
+ifeq ($(UNAME), Darwin) # MAC :
+LIB2= -L./minilibx_macos/
+FLAG= -Wall -Werror -Wextra -lmlx -framework OpenGL -framework AppKit
+endif
+ifeq ($(UNAME), Lubuntu) # LINUX :
 LIB2= -L minilibx -lmlx
 LIB3= -L /usr/include/X11/ -lXext -lX11
-FLAG= -Wall -Werror -Wextra #Linux
-#FLAG=-Wall -Werror -Wextra -lmlx -framework OpenGL -framework AppKit #MAC
+FLAG= -Wall -Werror -Wextra
+endif
 
 all: $(NAME)
 
 $(NAME):	$(SRC)
 	make -C libft
 	make -C minilibx
-	gcc $(FLAG) -o $(NAME) $(SRC) -lm  $(LIB) $(LIB2) $(LIB3)
+	gcc $(FLAG) -o $(NAME) $(SRC) -lm  $(LIB) $(LIB2) #$(LIB3)
 
 clean:
 	rm -rf $(OBJ)

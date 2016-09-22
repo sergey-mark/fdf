@@ -74,47 +74,53 @@ t_rgbcolor		hexatorgb(char *hexcolor)
 	return (rgbcolor);
 }
 
-/*
-char			*get_inbetweencolor(t_rgbcolor start, t_rgbcolor end, int z)
+t_rgbcolor			get_inbetweencolor(t_rgbcolor start, t_rgbcolor end, t_wind *w, int max)
 {
-	t_rgbcolor	c;
-	char		*color;
-	int			i;
+	int			perc;
+	t_rgbcolor	col;
 
-	if (start.r < end.r)
-	{
-		start.r *= sign.r;
-	}
-	color = rgbtohex(c);
-	return (color);
+	perc = (max - w->img.r_point.z)*100/max;// Calcul du pourcentage
+	col.r = ((end.r - start.r)*perc/100) + start.r;// Calcul de la couleur
+	col.g = ((end.g - start.g)*perc/100) + start.g;
+	col.b = ((end.b - start.b)*perc/100) + start.b;
+	return (col);
 }
 
-char		*get_color(t_wind *w, int z)
+t_rgbcolor			get_color(t_wind *w)
 {
-	char	*color;
-	
+	t_rgbcolor	color;
+	int			z;
+	int			max;
+
+	z = w->img.r_point.z;
 	w->p.color.bot = hexatorgb(w->p.color.hexa_bot);
 	w->p.color.mid = hexatorgb(w->p.color.hexa_mid);
 	w->p.color.top = hexatorgb(w->p.color.hexa_top);
-	if (z <= w->p.color.lowl)
-		color = w->p.color.hexa_bot;
-	else if (z > w->p.color.lowl && z < w->p.color.midl)
-		color = get_inbetweencolor(w->p.color.bot, w->p.color.mid, z);
-	else if (z == w->p.color.midl)
-		color = w->p.color.hexa_mid;
-	else if (z > w->p.color.midl && z < w->p.color.topl)
-		color = get_inbetweencolor(w->p.color.mid, w->p.color.top, z);
-	else if (z >= w->p.color.topl)
-		color = w->p.color.hexa_top;
+	//if (z <= w->p.color.lowl)
+		//color = hexatorgb(w->p.color.hexa_bot);
+	if (z >= w->p.color.lowl && z < w->p.color.midl)
+	{
+		max = w->p.color.midl; //pr calcul du pourcentage max
+		color = get_inbetweencolor(w->p.color.bot, w->p.color.mid, w, max);
+	}
+	//else if (z == w->p.color.midl)
+		//color = w->p.color.hexa_mid;
+	else if (z >= w->p.color.midl && z <= w->p.color.topl)
+	{
+		max = w->p.color.topl; //pr calcul du pourcentage max
+		color = get_inbetweencolor(w->p.color.mid, w->p.color.top, w, max);
+	}
+	//else if (z >= w->p.color.topl)
+		//color = w->p.color.hexa_top;
 	return (color);
 }
-*/
 
 void			draw_point(t_wind *w, int x, int y, char *hexcolor)
 {
 	t_rgbcolor	rgbcolor;
 
-	rgbcolor = hexatorgb(hexcolor);
+	//rgbcolor = hexatorgb(hexcolor); //Get color from standard affectation
+	rgbcolor = get_color(w); //Get color from color palette
 	//SPLIT D'UN FORMAT CLASSIQUE DE HEXCOLOR ("0xFFFFFF") -> Attention en l'ordre est en little endian cependant! (donc inversé!) (car on est sur un x86))
 	*(w->img.pxl_ptr + (y * w->img.size_line) + (x * w->img.octet_per_pixel)) = rgbcolor.r;
 	*(w->img.pxl_ptr + (y * w->img.size_line) + (x * w->img.octet_per_pixel) + 1) = rgbcolor.g;
