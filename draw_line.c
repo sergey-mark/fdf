@@ -49,17 +49,8 @@ t_point		move_to(t_wind *w, t_point p, int param)
 	int		pyx;
 	int		pxy;
 	
-	/*
-	if (w->p.insert) //Si on est en mode insert on prend la position du point de rotation d'avant
-	{
-		pyx = w->r.oldp_y.x;
-		pxy = w->r.oldp_x.y;
-	}
-	else
-	{*/
-		pyx = w->r.p_y.x;
-		pxy = w->r.p_x.y;/*
-	}*/
+	pyx = w->r.p_y.x;
+	pxy = w->r.p_x.y;
 	if (param == 0)
 	{
 		p.x = p.x - pyx;
@@ -75,10 +66,42 @@ t_point		move_to(t_wind *w, t_point p, int param)
 	return (p);
 }
 
+void		get_pointinbetween(t_line v, t_wind *w)
+{
+	v.sign_x = get_sign(v.x, v.xdest);
+	v.sign_y = get_sign(v.y, v.ydest);
+	v.diff_x = get_diff(v.x, v.xdest);
+	v.diff_y = get_diff(v.y, v.ydest);
+	if (v.diff_x > v.diff_y)
+		v.bigdiff = v.diff_x;
+	else if (v.diff_y > v.diff_x)
+		v.bigdiff = v.diff_y;
+	else
+		v.bigdiff = v.diff_y;
+	if (w->p.graphic_mode == 1)//Si mode point
+	{
+		if (dot_in_window(w, rint(v.x), rint(v.y)))
+				draw_point(w, (int)rint(v.x), (int)rint(v.y), w->p.color.hexa_bot);
+	}
+	else // Si mode filaire ou mode fill
+	{
+		while (rint(v.x) != v.xdest || rint(v.y) != v.ydest)
+		{
+			if (v.x != v.xdest)
+				v.x = v.x + (v.sign_x * (v.diff_x/v.bigdiff));
+			if (v.y != v.ydest)
+				v.y = v.y + (v.sign_y * (v.diff_y/v.bigdiff));
+			// check if dot is in window to reduce crash:
+			if (dot_in_window(w, rint(v.x), rint(v.y)))
+				draw_point(w, (int)rint(v.x), (int)rint(v.y), w->p.color.hexa_bot);
+		}
+	}
+}
+
 int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 {
 	t_line	v;
-	char	*color;
+	//char	*color;
 
 	if (booleanrot == 0) //No rotation for cursor rotation center draw
 	{
@@ -114,72 +137,8 @@ int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 		v.xdest = w->img.r_pointd.x;
 		v.ydest = w->img.r_pointd.y - w->img.r_pointd.z;
 	}
-
-	v.sign_x = get_sign(v.x, v.xdest);
-	v.sign_y = get_sign(v.y, v.ydest);
-	v.diff_x = get_diff(v.x, v.xdest);
-	v.diff_y = get_diff(v.y, v.ydest);
-	/*
-	ft_putstr("x : ");
-	ft_putnbr(x);
-	ft_putchar('\n');
-	ft_putstr("y : ");
-	ft_putnbr(y);
-	ft_putchar('\n');
-	ft_putstr("xdest : ");
-	ft_putnbr(xdest);
-	ft_putchar('\n');
-	ft_putstr("ydest : ");
-	ft_putnbr(ydest);
-	ft_putchar('\n');
-	ft_putstr("diff_x : ");
-	ft_putnbr(diff_x);
-	ft_putchar('\n');
-	ft_putstr("diff_y : ");
-	ft_putnbr(diff_y);
-	ft_putchar('\n');
-	ft_putstr("sign_x : ");
-	ft_putnbr(sign_x);
-	ft_putchar('\n');
-	ft_putstr("sign_y : ");
-	ft_putnbr(sign_y);
-	ft_putchar('\n');
-	*/
-	if (v.diff_x > v.diff_y)
-		v.bigdiff = v.diff_x;
-	else if (v.diff_y > v.diff_x)
-		v.bigdiff = v.diff_y;
-	else
-		v.bigdiff = v.diff_y;
-	color = "0x9E11BF"; //Violet
+	get_pointinbetween(v, w);
+	//color = "0x9E11BF"; //Violet
 	//color = get_color(w, w->img.r_point.z);
-	if (w->p.graphic_mode == 1) // Si mode point
-	{
-		if (dot_in_window(w, rint(v.x), rint(v.y)))
-				draw_point(w, (int)rint(v.x), (int)rint(v.y), color);
-	}
-	else // Si mode filaire
-	{
-		while (rint(v.x) != v.xdest || rint(v.y) != v.ydest)
-		{
-			if (v.x != v.xdest)
-				v.x = v.x + (v.sign_x * (v.diff_x/v.bigdiff));
-			if (v.y != v.ydest)
-				v.y = v.y + (v.sign_y * (v.diff_y/v.bigdiff));
-		/*
-		ft_putstr("x : ");
-		ft_putnbr(rint(x));
-		ft_putchar('\n');
-		ft_putstr("y : ");
-		ft_putnbr(rint(y));
-		ft_putchar('\n');
-		*/
-			// check if dot is in window to reduce crash:
-			if (dot_in_window(w, rint(v.x), rint(v.y)))
-			{
-				draw_point(w, (int)rint(v.x), (int)rint(v.y), color);
-			}
-		}
-	}
 	return (0);
 }

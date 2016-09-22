@@ -9,6 +9,7 @@ int		expose_hook(t_wind *w)
 
 int		key_function(int keycode, t_wind *w)
 {
+	w->p.keypress = 1;
 	ft_putendl("Keyevent");
 	ft_putnbr(keycode);
 	ft_putchar('\n');
@@ -61,6 +62,7 @@ int		key_function(int keycode, t_wind *w)
 		}
 		else
 		{
+			//w->p.keycode = 65362;
 			w->p.rot.x += 5;
 			ft_putstr("rotx:");
 			ft_putnbr(w->p.rot.x);
@@ -187,6 +189,19 @@ int	pencil(int x, int y, t_wind *w)
 	return (0);
 }
 */
+int		keypress_func(t_wind *w)
+{
+	w->p.keypress = 0;
+	if (w->p.keycode == 65362)
+	{
+			w->p.rot.x += 5;
+			ft_putstr("rotx:");
+			ft_putnbr(w->p.rot.x);
+			ft_putchar('\n');
+	}
+	return (0);
+}
+
 int		mouse_function(int button, int x, int y, t_wind *w)
 {
 	ft_putnbr(w->point.x);

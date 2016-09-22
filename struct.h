@@ -53,10 +53,10 @@ typedef struct		s_point
 
 typedef struct		s_fillsquare
 {
-	t_point			point;
-	t_point			pointr;
-	t_point			pointd;
-	t_point			pointdd;
+	t_point			p;
+	t_point			pr;
+	t_point			pd;
+	t_point			pdi;
 }					t_fillsquare;
 
 typedef struct		s_browsefile
@@ -104,6 +104,8 @@ typedef struct		s_params
 	int				insert;
 	int				help;
 	t_colorpalette	color;
+	int				keycode;
+	int				keypress;
 }					t_params;
 
 typedef struct		s_rotaxle

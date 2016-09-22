@@ -25,6 +25,7 @@ void		draw_point(t_wind *w, int x, int y, char *hexcolor);
 int			draw_line(t_wind *w, t_point point, t_point pointd, int boolean);
 char		*get_color(t_wind *w, int height);
 int			key_function(int keycode, t_wind *w);
+int			keypress_func(t_wind *w);
 int			mouse_function(int button, int x, int y, t_wind *w);
 int			pencil(int x, int y, t_wind *w);
 int			expose_hook(t_wind *w);
