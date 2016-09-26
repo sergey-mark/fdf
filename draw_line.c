@@ -68,10 +68,13 @@ t_point		move_to(t_wind *w, t_point p, int param)
 
 void		get_pointinbetween(t_line v, t_wind *w)
 {
+	v.z = w->p.color.z;
 	v.sign_x = get_sign(v.x, v.xdest);
 	v.sign_y = get_sign(v.y, v.ydest);
+	v.sign_z = get_sign(v.z, w->p.color.zd);
 	v.diff_x = get_diff(v.x, v.xdest);
 	v.diff_y = get_diff(v.y, v.ydest);
+	v.diff_z = get_diff(v.z, w->p.color.zd);
 	if (v.diff_x > v.diff_y)
 		v.bigdiff = v.diff_x;
 	else if (v.diff_y > v.diff_x)
@@ -81,9 +84,9 @@ void		get_pointinbetween(t_line v, t_wind *w)
 	if (w->p.graphic_mode == 1)//Si mode point
 	{
 		if (dot_in_window(w, rint(v.x), rint(v.y)))
-				draw_point(w, (int)rint(v.x), (int)rint(v.y), w->p.color.hexa_bot);
+				draw_point(w, (int)rint(v.x), (int)rint(v.y), w->img.point.z);
 	}
-	else // Si mode filaire ou mode fill
+	else // Si mode filaire
 	{
 		while (rint(v.x) != v.xdest || rint(v.y) != v.ydest)
 		{
@@ -91,22 +94,22 @@ void		get_pointinbetween(t_line v, t_wind *w)
 				v.x = v.x + (v.sign_x * (v.diff_x/v.bigdiff));
 			if (v.y != v.ydest)
 				v.y = v.y + (v.sign_y * (v.diff_y/v.bigdiff));
-			// check if dot is in window to reduce crash:
+			if (v.z != v.zdest)//For height per color
+				v.z = v.z + (v.sign_z * (v.diff_z/v.bigdiff));
+			//check if dot in window to avoid crash
 			if (dot_in_window(w, rint(v.x), rint(v.y)))
-				draw_point(w, (int)rint(v.x), (int)rint(v.y), w->p.color.hexa_bot);
+				draw_point(w, rint(v.x), rint(v.y), rint(v.z));
 		}
 	}
 }
 
-int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
+int			draw_line(t_wind *w, t_point point, t_point pointd)
 {
 	t_line	v;
-	//char	*color;
 
-	if (booleanrot == 0) //No rotation for cursor rotation center draw
+	if (w->p.boolaxle == 1) //No rotation for cursor rotation center draw
 	{
-		// NORMAL:
-		v.x = point.x;
+		v.x = point.x; //NORMAL
 		v.y = point.y - point.z;
 		v.xdest = pointd.x;
 		v.ydest = pointd.y - pointd.z;
@@ -129,14 +132,11 @@ int			draw_line(t_wind *w, t_point point, t_point pointd, int booleanrot)
 		// Move back figure(axle) to center:
 		w->img.r_point = move_to(w, w->img.r_point, 1);
 		w->img.r_pointd = move_to(w, w->img.r_pointd, 1);
-
 		v.x = w->img.r_point.x;
 		v.y = w->img.r_point.y - w->img.r_point.z;
 		v.xdest = w->img.r_pointd.x;
 		v.ydest = w->img.r_pointd.y - w->img.r_pointd.z;
 	}
 	get_pointinbetween(v, w);
-	//color = "0x9E11BF"; //Violet
-	//color = get_color(w, w->img.r_point.z);
 	return (0);
 }

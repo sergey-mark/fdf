@@ -14,26 +14,34 @@ typedef struct		s_colorpalette
 	char			*hexa_bot; //Color bottom in hexa
 	char			*hexa_mid;
 	char			*hexa_top;
+	char			*hexa_axle;
 	t_rgbcolor		bot; // Color in rgb
 	t_rgbcolor		mid;
 	t_rgbcolor		top;
 	int				lowl; //Level of affection for color
 	int				midl;
 	int				topl;
-
+	int				z;//dot height of field
+	int				zd;//dot height of field dst
+	int				min;//Min Level for percent of color
+	int				max;//Max level
 }					t_colorpalette;
 
 typedef struct		s_line
 {
 	float			x;
 	float			y;
+	float			z;//For height per color
 	int				xdest;
 	int				ydest;
+	int				zdest;
 	int				sign_x;
 	int				sign_y;
+	int				sign_z;
 	float			bigdiff;
 	float			diff_x;
 	float			diff_y;
+	float			diff_z;
 }					t_line;
 
 typedef struct		s_dpoint
@@ -102,6 +110,7 @@ typedef struct		s_params
 	int				view_mode; //Mode para/iso
 	int				dot; //point centre carre
 	int				insert;
+	int				boolaxle;
 	int				help;
 	t_colorpalette	color;
 	int				keycode;

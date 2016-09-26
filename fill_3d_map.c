@@ -18,19 +18,22 @@ static int			checkpoint_allside_iso(int x, int y, t_wind *w)
 	if(x>0)//Si point à gauche
 	{
 		pointl = get_iso_point(x-1, y, w);
-		draw_line(w, w->img.point, pointl, 1);
+		w->p.color.zd = w->b.tab_int[y][x-1];//height
+		draw_line(w, w->img.point, pointl);
 	}
 	if(y<(w->b.nbr_of_line-1))//Si point en dessous
 	{
 		pointb = get_iso_point(x, (y+1), w);
-		draw_line(w, w->img.point, pointb, 1);
+		w->p.color.zd = w->b.tab_int[y+1][x];//height
+		draw_line(w, w->img.point, pointb);
 	}
 	if(x<(w->b.nbr_elem_line-1) && y<(w->b.nbr_of_line-1))//Si point en diagonale
 	{
 		pointdiag = get_iso_point(x+1, y+1, w);
+		w->p.color.zd = w->b.tab_int[y+1][x+1];//height
 		if (w->p.graphic_mode == 3)
 		{
-			draw_line(w, w->img.point, pointdiag, 1);
+			draw_line(w, w->img.point, pointdiag);
 		}
 	}
 	if (w->p.graphic_mode == 4)//Si mode fill
@@ -49,7 +52,8 @@ static int			checkpoint_allside(int x, int y, t_wind *w)
 		w->img.pointd.z = (w->b.tab_int[y][x-1])*(w->p.accentuation);
 		w->img.pointd.x = w->img.point.x - w->p.size_square;
 		w->img.pointd.y = w->img.point.y;
-		draw_line(w, w->img.point, w->img.pointd, 1);
+		w->p.color.zd = w->b.tab_int[y][x-1];//height
+		draw_line(w, w->img.point, w->img.pointd);
 	}
 	if(y<(w->b.nbr_of_line-1))//Si point en dessous
 	{
@@ -57,7 +61,8 @@ static int			checkpoint_allside(int x, int y, t_wind *w)
 		w->img.pointd.z = (w->b.tab_int[y+1][x])*(w->p.accentuation);
 		w->img.pointd.x = w->img.point.x - w->p.size_square;
 		w->img.pointd.y = w->img.point.y + w->p.angle_projpara;
-		draw_line(w, w->img.point, w->img.pointd, 1);
+		w->p.color.zd = w->b.tab_int[y+1][x];//height
+		draw_line(w, w->img.point, w->img.pointd);
 	}
 	return (0);
 }
@@ -69,8 +74,9 @@ static int			triangulate_para(int x, int y, t_wind *w)
 		w->img.pointd.z = (w->b.tab_int[y+1][x+1])*(w->p.accentuation);
 		w->img.pointd.x = w->img.point.x; // les sizesquare s'annule.
 		w->img.pointd.y = w->img.point.y + w->p.angle_projpara;// Pour afficher remplir toutes les lignes en dessous 
+		w->p.color.z = w->b.tab_int[y+1][x+1];//height
 		// TRIANGULATE
-		draw_line(w, w->img.point, w->img.pointd, 1);
+		draw_line(w, w->img.point, w->img.pointd);
 	}
 	return (0);
 }
@@ -104,7 +110,7 @@ static int				fill_square(t_fillsquare s, t_wind *w)
 		if ((s.pointr.x) > (s.pointdiag.x))
 			s.pointr.x--;
 		*/
-		draw_line(w, s.p, s.pr, 1);
+		draw_line(w, s.p, s.pr);
 	}
 	return (0);
 }
@@ -150,6 +156,7 @@ int			fill_3d_map_iso(t_wind *w)
 		while (x < w->b.nbr_elem_line)
 		{
 			w->img.point = get_iso_point(x, y, w);
+			w->p.color.z = w->b.tab_int[y][x];//height
 			checkpoint_allside_iso(x, y, w);
 			x++;
 		}
@@ -178,6 +185,7 @@ int			fill_3d_map(t_wind *w)
 		while (x < w->b.nbr_elem_line)
 		{
 			z = w->b.tab_int[y][x];
+			w->p.color.z = z;//height
 			w->img.point.z = (w->b.tab_int[y][x])*(w->p.accentuation);
 			ft_putnbr(z);
 			ft_putchar('-');

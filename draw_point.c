@@ -74,57 +74,87 @@ t_rgbcolor		hexatorgb(char *hexcolor)
 	return (rgbcolor);
 }
 
-t_rgbcolor			get_inbetweencolor(t_rgbcolor start, t_rgbcolor end, t_wind *w, int max)
+t_rgbcolor			get_inbetweencolor(t_rgbcolor start, t_rgbcolor end, t_wind *w, int z)
 {
-	int			perc;
+	int			percent;
+	int			min;
+	int			max;
 	t_rgbcolor	col;
-
-	perc = (max - w->img.r_point.z)*100/max;// Calcul du pourcentage
-	col.r = ((end.r - start.r)*perc/100) + start.r;// Calcul de la couleur
-	col.g = ((end.g - start.g)*perc/100) + start.g;
-	col.b = ((end.b - start.b)*perc/100) + start.b;
+	/*
+	ft_putstr("start.r:");
+	ft_putnbr(start.r);
+	ft_putstr("g:");
+	ft_putnbr(start.g);
+	ft_putstr("b:");
+	ft_putnbr(start.b);
+	ft_putstr("end.r:");
+	ft_putnbr(end.r);
+	ft_putstr("g:");
+	ft_putnbr(end.g);
+	ft_putstr("b:");
+	ft_putnbr(end.b);
+	ft_putchar('\n');
+*/
+	min = w->p.color.min;
+	max = w->p.color.max;
+	percent = 100 - ((max-min) - (z - min))*100/(max-min);// Calcul du pourcentage
+	//get_percent(w->p.color.min, w->p.color.max, z);
+	/*ft_putstr("pourcentage");
+	ft_putnbr(perc);
+	ft_putchar('\n');*/
+	col.r = ((end.r - start.r)*percent/100) + start.r;// Calcul de la couleur
+	col.g = ((end.g - start.g)*percent/100) + start.g;
+	col.b = ((end.b - start.b)*percent/100) + start.b;
+	/*ft_putstr("col.r:");
+	ft_putnbr(col.r);
+	ft_putstr("g:");
+	ft_putnbr(col.g);
+	ft_putstr("b:");
+	ft_putnbr(col.b);
+	ft_putchar('\n');*/
 	return (col);
 }
 
-t_rgbcolor			get_color(t_wind *w)
+t_rgbcolor			get_color(t_wind *w, int z)
 {
 	t_rgbcolor	color;
-	int			z;
-	int			max;
 
-	z = w->img.r_point.z;
 	w->p.color.bot = hexatorgb(w->p.color.hexa_bot);
 	w->p.color.mid = hexatorgb(w->p.color.hexa_mid);
 	w->p.color.top = hexatorgb(w->p.color.hexa_top);
 	if (z <= w->p.color.lowl)
 		color = hexatorgb(w->p.color.hexa_bot);
-	if (z >= w->p.color.lowl && z < w->p.color.midl)
+	else if (z > w->p.color.lowl && z < w->p.color.midl)
 	{
-		max = w->p.color.midl; //pr calcul du pourcentage max
-		color = get_inbetweencolor(w->p.color.bot, w->p.color.mid, w, max);
+		w->p.color.min = w->p.color.lowl; //pr calcul du pourcentage max
+		w->p.color.max = w->p.color.midl; //pr calcul du pourcentage max
+		color = get_inbetweencolor(w->p.color.bot, w->p.color.mid, w, z);
 	}
-	if (z == w->p.color.midl)
+	else if (z == w->p.color.midl)
 		color = hexatorgb(w->p.color.hexa_mid);
-	if (z >= w->p.color.midl && z <= w->p.color.topl)
+	else if (z > w->p.color.midl && z < w->p.color.topl)
 	{
-		max = w->p.color.topl; //pr calcul du pourcentage max
-		color = get_inbetweencolor(w->p.color.mid, w->p.color.top, w, max);
+		w->p.color.min = w->p.color.midl; //pr calcul du pourcentage max
+		w->p.color.max = w->p.color.topl; //pr calcul du pourcentage max
+		color = get_inbetweencolor(w->p.color.mid, w->p.color.top, w, z);
 	}
-	if (z >= w->p.color.topl)
+	else
 		color = hexatorgb(w->p.color.hexa_top);
+		//color = hexatorgb("0x9E11BF"); //Get color from standard affectation
 	return (color);
 }
 
-void			draw_point(t_wind *w, int x, int y, char *hexcolor)
+void			draw_point(t_wind *w, int x, int y, int z)
 {
 	t_rgbcolor	rgbcolor;
 
-	ft_putstr(hexcolor);
-	//rgbcolor = hexatorgb(hexcolor); //Get color from standard affectation
-	rgbcolor = get_color(w); //Get color from color palette
+	if (w->p.boolaxle == 1)
+		rgbcolor = hexatorgb(w->p.color.hexa_axle); //Get color from standard affectation
+	else
+		rgbcolor = get_color(w, z); //Get color from color palette
 	//SPLIT D'UN FORMAT CLASSIQUE DE HEXCOLOR ("0xFFFFFF") -> Attention en l'ordre est en little endian cependant! (donc inversé!) (car on est sur un x86))
-	*(w->img.pxl_ptr + (y * w->img.size_line) + (x)) = 125; //Alpha 50%. Alpha 100%=0. Alpha 0%=255.
 	*(w->img.pxl_ptr + (y * w->img.size_line) + (x * w->img.octet_per_pixel)) = rgbcolor.r;
 	*(w->img.pxl_ptr + (y * w->img.size_line) + (x * w->img.octet_per_pixel) + 1) = rgbcolor.g;
 	*(w->img.pxl_ptr + (y * w->img.size_line) + (x * w->img.octet_per_pixel) + 2) = rgbcolor.b;
+	//*(w->img.pxl_ptr + (y * w->img.size_line) + (x)) = 125; //Alpha 50%. Alpha 100%=0. Alpha 0%=255.
 }

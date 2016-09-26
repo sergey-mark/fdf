@@ -10,7 +10,7 @@ static int		set_parameters(t_wind *w)
 	w->img.z_centerpoint = 370;
 	// Parameters:
 	w->p.graphic_mode = 2; // Mode filaire par défault (touche nombre pour changer)
-	w->p.view_mode = 3; // Mode para par défault (touche F2/F3 pour changer)
+	w->p.view_mode = 2; // Mode iso par défault (touche F2/F3 pour changer)
 	w->p.accentuation = 1;// On peut mettre une accentuation à 10 pour compenser les maps avec des petits chiffres ;). Default = 1
 	w->p.angle_projpara = 30;
 	w->p.size_square = 30;
@@ -24,6 +24,7 @@ static int		set_parameters(t_wind *w)
 	w->p.color.hexa_top = "0xFFFFFF"; //Blanc
 	w->p.color.hexa_mid = "0x024302"; //Vert
 	w->p.color.hexa_bot = "0x432502"; //Marron
+	w->p.color.hexa_axle = "0x9E11BF"; //Violet
 	// Color fit height level for affection
 	w->p.color.topl = 10;
 	w->p.color.midl = 5;

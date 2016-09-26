@@ -219,7 +219,8 @@ int		mouse_function(int button, int x, int y, t_wind *w)
 	//if (button == 1)
 		//mlx_loop_hook(w->mlx, pencil(), &w);
 
-	draw_point(w, x, y, "0xFFFFFF");
+	//draw_point(w, x, y, "0xFFFFFF");
+	draw_point(w, x, y, 0);
 
 	mlx_put_image_to_window(w->mlx, w->win, w->img.ptr_img, w->img.x, w->img.y);
 	help(w);

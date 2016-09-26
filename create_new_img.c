@@ -15,8 +15,10 @@ int		create_new_img(t_wind *w)
 	ft_putchar('\n');
 
 	// Creation of rotation axle
-	draw_line(w, w->r.p_x, w->r.pd_x, 0);
-	draw_line(w, w->r.p_y, w->r.pd_y, 0);
+	w->p.boolaxle = 1;
+	draw_line(w, w->r.p_x, w->r.pd_x);
+	draw_line(w, w->r.p_y, w->r.pd_y);
+	w->p.boolaxle = 0;
 	// Creation of help
 	if (w->p.help == 1)
 		ft_putendl("help on");
