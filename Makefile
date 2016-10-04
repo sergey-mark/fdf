@@ -18,8 +18,11 @@ OBJ=${SRC:.c=.o}
 LIB= -L libft -lft
 
 ifeq ($(UNAME), Darwin) # MAC :
-LIB2= -L./minilibx_macos/
-FLAG= -Wall -Werror -Wextra -lmlx -framework OpenGL -framework AppKit
+LIB2= -L minilibx -lmlx
+LIB3= -framework OpenGL -framework AppKit
+#LIB2= -L./minilibx_macos/
+FLAG= -Wall -Werror -Wextra
+#FLAG= -Wall -Werror -Wextra -lmlx -framework OpenGL -framework AppKit
 endif
 ifeq ($(UNAME), Linux) # LINUX :
 LIB2= -L minilibx -lmlx
