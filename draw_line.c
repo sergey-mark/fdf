@@ -48,9 +48,17 @@ t_point		move_to(t_wind *w, t_point p, int param)
 {
 	int		pyx;
 	int		pxy;
-	
-	pyx = w->r.p_y.x;
-	pxy = w->r.p_x.y;
+	/*
+	if (w->p.insert) //Pour replacer le point de pivot du gizmot
+	{
+		pyx = w->r.p_y.x;
+		pxy = w->r.p_x.y;
+	}
+	else
+	{*/
+		pyx = w->r.p_y.x + w->r.t.x;
+		pxy = w->r.p_x.y + w->r.t.y;
+	//}
 	if (param == 0)
 	{
 		p.x = p.x - pyx;

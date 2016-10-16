@@ -83,8 +83,6 @@ typedef struct		s_img
 	int				start_y;
 	int				width;
 	int				height;
-	int				padh;
-	int				padv;
 	int				x_centerpoint;
 	int				y_centerpoint;
 	int				z_centerpoint;
@@ -104,6 +102,7 @@ typedef struct		s_params
 	int				accentuation; //hauteur relief
 	int				angle_projpara; //zoom y
 	int				size_square; //zoom x
+	t_point			t; //Translate
 	t_point			rot; //angle de rotation
 	t_dpoint		r_rot; //angle de rotation radian
 	int				graphic_mode; //Mode dot/wireframe/fill
@@ -113,19 +112,20 @@ typedef struct		s_params
 	int				boolaxle;
 	int				help;
 	t_colorpalette	color;
-	int				keycode;
-	int				keypress;
+	int				turntable;
 }					t_params;
 
-typedef struct		s_rotaxle
+typedef struct		s_movegizmo
 {
-	t_point			p_x;
+	int				show;
+	t_point			t;
+	t_point			p_x; //Points to draw the axles:
 	t_point			pd_x;
 	t_point			p_y;
 	t_point			pd_y;
-	t_point			oldp_x;
-	t_point			oldp_y;
-}					t_rotaxle;
+	t_point			p_z;
+	t_point			pd_z;
+}					t_movegizmo;
 
 typedef struct		s_wind
 {
@@ -138,7 +138,7 @@ typedef struct		s_wind
 	t_img			img;
 	t_browsefile	b;
 	t_params		p;
-	t_rotaxle		r;
+	t_movegizmo		r;
 }					t_wind;
 
 #endif
