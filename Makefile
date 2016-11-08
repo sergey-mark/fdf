@@ -22,6 +22,7 @@ LIB= -lm -L libft -lft
 LIB2= -L minilibx_macos -L/usr/local/lib/ -I/usr/local/include
 LIB3= -lmlx -framework OpenGL -framework AppKit
 FLAG= -Wall -Werror -Wextra
+KEY= 1
 endif
 ifeq ($(UNAME), Linux) # LINUX :
 MINILIBX= make -C minilibx
@@ -29,6 +30,7 @@ LIB= -lm -L libft -lft
 LIB2= -L minilibx -lmlx
 LIB3= -L /usr/include/X11/ -lXext -lX11
 FLAG= -Wall -Werror -Wextra
+KEY= 2
 endif
 
 all: $(NAME)
@@ -36,7 +38,8 @@ all: $(NAME)
 $(NAME):	$(SRC)
 	make -C libft
 	$(MINILIBX)
-	gcc $(FLAG) -o $(NAME) $(SRC) $(LIB) $(LIB2) $(LIB3)
+	gcc $(FLAG) -o $(NAME) $(SRC) $(LIB) $(LIB2) $(LIB3) -D MACROKEY=$(KEY)
+
 
 clean:
 	rm -rf $(OBJ)

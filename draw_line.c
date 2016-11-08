@@ -48,17 +48,8 @@ t_point		move_to(t_wind *w, t_point p, int param)
 {
 	int		pyx;
 	int		pxy;
-	/*
-	if (w->p.insert) //Pour replacer le point de pivot du gizmot
-	{
-		pyx = w->r.p_y.x;
-		pxy = w->r.p_x.y;
-	}
-	else
-	{*/
-		pyx = w->r.p_y.x + w->r.t.x;
-		pxy = w->r.p_x.y + w->r.t.y;
-	//}
+	pyx = w->r.p_y.x + w->r.t.x;
+	pxy = w->r.p_x.y + w->r.t.y;
 	if (param == 0)
 	{
 		p.x = p.x - pyx;
@@ -128,16 +119,11 @@ int			draw_line(t_wind *w, t_point point, t_point pointd)
 		point = move_to(w, point, 0);
 		pointd = move_to(w, pointd, 0);// Move figure(axle) to 0, 0 coordonate:
 
-		// Rotate axle if in para mode (so 30degree inclination)
-		//point = matrice_rotation(point, 30, );
-
-		// AVEC ROTATION:
-		// On applique la rotation si on appui sur la flèche de haut ou bas
+		// ROTATION - On applique la rotation si on appui sur la flèche de haut ou bas
 		w->img.r_point = matrice_rotation(point, w->p.rot, w->p.r_rot);
 		w->img.r_pointd = matrice_rotation(pointd, w->p.rot, w->p.r_rot);
 
-		// To do rotation of the object in center
-		// Move back figure(axle) to center:
+		// Move back figure(axle) to center: (To do rotation of the object in center)
 		w->img.r_point = move_to(w, w->img.r_point, 1);
 		w->img.r_pointd = move_to(w, w->img.r_pointd, 1);
 		v.x = w->img.r_point.x;

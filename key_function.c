@@ -28,10 +28,10 @@ int			key_function(int keycode, t_wind *w)
 	ft_putnbr(keycode);
 	ft_putchar('\n');
 	// ECHAP (to quit)
-	if (keycode == 65307)
+	if (keycode == EXIT)
 		exit(0);
 	//SHOW CONTROLLER:
-	if (keycode == 119) // key W - Move gizmo
+	if (keycode == KEY_W) // key W - Move gizmo
 	{
 		if (w->r.show)
 			w->r.show = 0;
@@ -39,7 +39,7 @@ int			key_function(int keycode, t_wind *w)
 			w->r.show = 1;
 	}
 	//TURN TABLE (Rotation of 3d model):
-	if (keycode == 116) // key T
+	if (keycode == KEY_T) // key T
 	{
 		if (w->p.turntable)
 			w->p.turntable = 0;
@@ -50,42 +50,42 @@ int			key_function(int keycode, t_wind *w)
 		}
 	}
 	// ROTATION:
-	if (keycode == 65361) // fleche gauche
+	if (keycode == L_ARROW) // fleche gauche
 	{
 		w->p.rot.z -= 5;
 		ft_putstr("rotz:");
 		ft_putnbr(w->p.rot.z);
 		ft_putchar('\n');
 	}
-	else if (keycode == 65363) // fleche droite
+	else if (keycode == R_ARROW) // fleche droite
 	{
 		w->p.rot.z += 5;
 		ft_putstr("rotz:");
 		ft_putnbr(w->p.rot.z);
 		ft_putchar('\n');
 	}
-	else if (keycode == 65362) // fleche haut
+	else if (keycode == U_ARROW) // fleche haut
 	{
 		w->p.rot.x += 5;
 		ft_putstr("rotx:");
 		ft_putnbr(w->p.rot.x);
 		ft_putchar('\n');
 	}
-	else if (keycode == 65364) // fleche bas
+	else if (keycode == D_ARROW) // fleche bas
 	{
 		w->p.rot.x -= 5;
 		ft_putstr("rotx:");
 		ft_putnbr(w->p.rot.x);
 		ft_putchar('\n');
 	}
-	else if (keycode == 33) //basckslash (rotate y)
+	else if (keycode == BACKSLASH) //basckslash (rotate y)
 	{
 		w->p.rot.y -= 5;
 		ft_putstr("roty:");
 		ft_putnbr(w->p.rot.y);
 		ft_putchar('\n');
 	}
-	else if (keycode == 58) //exclamation point (rotate y)
+	else if (keycode == EXCLAMMARK) //exclamation point (rotate y)
 	{
 		w->p.rot.y += 5;
 		ft_putstr("roty:");
@@ -93,7 +93,7 @@ int			key_function(int keycode, t_wind *w)
 		ft_putchar('\n');
 	}
 	// MODIFICATION POINT DE ROTATION
-	if (keycode == 65379) // Touche Insert
+	if (keycode == INSERT) // Touche Insert
 	{
 		if (w->p.insert)
 			w->p.insert = 0;
@@ -101,7 +101,7 @@ int			key_function(int keycode, t_wind *w)
 			w->p.insert = 1;
 	}
 	// DEPLACEMENT LATERAL (pan) (Pavé numérique)
-	if (keycode == 65431)//haut (pav num)
+	if (keycode == NUM_U)//haut (pav num)
 	{
 		if (w->p.insert)
 			w->r.t.y -= 10;
@@ -111,7 +111,7 @@ int			key_function(int keycode, t_wind *w)
 			w->r.t.y -= 10; //Move the gizmo in the same time
 		}
 	}
-	else if (keycode == 65433)//bas (pav num)
+	else if (keycode == NUM_D)//bas (pav num)
 	{
 		if (w->p.insert)
 			w->r.t.y += 10;
@@ -121,7 +121,7 @@ int			key_function(int keycode, t_wind *w)
 			w->r.t.y += 10; //Move the gizmo in the same time
 		}
 	}
-	else if (keycode == 65432)//droite (pav num)
+	else if (keycode == NUM_R)//droite (pav num)
 	{
 		if (w->p.insert)
 			w->r.t.x += 10;
@@ -131,7 +131,7 @@ int			key_function(int keycode, t_wind *w)
 			w->r.t.x += 10; //Move the gizmo in the same time
 		}
 	}
-	else if (keycode == 65430)//gauche (pav num)
+	else if (keycode == NUM_L)//gauche (pav num)
 	{
 		if (w->p.insert)
 			w->r.t.x -= 10;
@@ -141,7 +141,7 @@ int			key_function(int keycode, t_wind *w)
 			w->r.t.x -= 10; //Move the gizmo in the same time
 		}
 	}
-	else if (keycode == 65436)//touche 1 (pav num)
+	else if (keycode == NUM_1)//touche 1 (pav num)
 	{
 		if (w->p.insert)
 			w->r.t.z -= 10;
@@ -151,7 +151,7 @@ int			key_function(int keycode, t_wind *w)
 			w->r.t.z -= 10; //Move the gizmo in the same time
 		}
 	}
-	else if (keycode == 65435)//touche 3 (pav num)
+	else if (keycode == NUM_3)//touche 3 (pav num)
 	{
 		if (w->p.insert)
 			w->r.t.z += 10;
@@ -162,49 +162,49 @@ int			key_function(int keycode, t_wind *w)
 		}
 	}
 	// ZOOM:
-	if (keycode == 65451)//plus (pav num)
+	if (keycode == ZOOM_P)//plus (pav num)
 	{
 		w->p.size_square++;
 		w->p.angle_projpara++;
 	}
-	if (keycode == 65453)//moins (pav num)
+	if (keycode == ZOOM_M)//moins (pav num)
 	{
 		w->p.size_square--;
 		w->p.angle_projpara--;
 	}
 	// ACCENTUATION (Hauteur du terrain)
-	if (keycode == 65365)//page up
+	if (keycode == PAGE_U)//page up
 	{
 		w->p.accentuation++;
 		//ft_putnbr(w->p.accentuation);
 	}
-	if (keycode == 65366)//page down
+	if (keycode == PAGE_D)//page down
 	{
 		w->p.accentuation--;
 		//ft_putnbr(w->p.accentuation);
 	}
 	// GRAPHIC MODES: (touche 1 à zéro)
-	if (keycode == 38)//1 poitille
+	if (keycode == KEY_1)//1 poitille
 	{
 		ft_putendl("mode point");
 		w->p.graphic_mode = 1;
 	}
-	else if (keycode == 233)//2 filaire (par default)
+	else if (keycode == KEY_2)//2 filaire (par default)
 	{
 		ft_putendl("mode filaire");
 		w->p.graphic_mode = 2;
 	}
-	else if (keycode == 34)//3 triangulate
+	else if (keycode == KEY_3)//3 triangulate
 	{
 		ft_putendl("mode triangulate");
 		w->p.graphic_mode = 3;
 	}
-	else if (keycode == 39)//4 rempli
+	else if (keycode == KEY_4)//4 rempli
 	{
 		ft_putendl("mode fill");
 		w->p.graphic_mode = 4;
 	}
-	else if (keycode == 105)// i pour afficher point
+	else if (keycode == KEY_I)// i pour afficher point
 	{
 		ft_putendl("point");
 		if (w->p.dot == 1)
@@ -213,16 +213,16 @@ int			key_function(int keycode, t_wind *w)
 			w->p.dot = 1;
 	}
 	// VUE
-	if (keycode == 65470)//F1 HELP
+	if (keycode == F1)//F1 HELP
 	{
 		if (w->p.help == 1)
 			w->p.help = 0;
 		else
 			w->p.help = 1;
 	}
-	else if (keycode == 65471)//F2 Vue Isometrique
+	else if (keycode == F2)//F2 Vue Isometrique
 		w->p.view_mode = 2; // Mode iso par défault (touche F2/F3 pour changer)
-	else if (keycode == 65472)//F3 Vue Parallèle
+	else if (keycode == F3)//F3 Vue Parallèle
 		w->p.view_mode = 3; // Mode iso par défault (touche F2/F3 pour changer)
 	// COULEURS
 	mlx_destroy_image(w->mlx, w->img.ptr_img);
