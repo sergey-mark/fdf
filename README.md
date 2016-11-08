@@ -2,8 +2,7 @@
 This project consist to create graphically the schematic representation of a ground in relief.
 
 # Compilation on Mac
-gcc -o $(NAME) $(SRC) -lmlx -framework OpenGL -framework AppKit</br></br>
-
+gcc -o $(NAME) $(SRC) -lm -L libft -lft -L minilibx_macos -L/usr/local/lib/ -I/usr/local/include -lmlx -framework OpenGL -framework AppKit</br></br>
 
 # Compilation on Linux with X11 and Xext dependencies.
 Minilibx have two dependencies: X11 and Xext:</br></br>
