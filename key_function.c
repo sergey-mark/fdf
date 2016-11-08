@@ -1,90 +1,96 @@
 #include "fdf.h"
 
-int		expose_hook(t_wind *w)
+int			expose_hook(t_wind *w)
 {
 	mlx_put_image_to_window(w->mlx, w->win, w->img.ptr_img, w->img.x, w->img.y);
 	help(w);
 	return (0);
 }
 
-int		key_function(int keycode, t_wind *w)
+int			turntable(t_wind *w)
 {
-	w->p.keypress = 1;
+	if (w->p.turntable)
+	{
+		if (w->p.rot.z >= 360)
+			w->p.rot.z %= 360;
+		w->p.rot.z += 5;
+		mlx_destroy_image(w->mlx, w->img.ptr_img);
+		create_new_img(w);
+		mlx_put_image_to_window(w->mlx, w->win, w->img.ptr_img, w->img.x, w->img.y);
+		help(w);
+	}
+	return (0);
+}
+
+int			key_function(int keycode, t_wind *w)
+{
 	ft_putendl("Keyevent");
 	ft_putnbr(keycode);
 	ft_putchar('\n');
 	// ECHAP (to quit)
 	if (keycode == 65307)
 		exit(0);
+	//SHOW CONTROLLER:
+	if (keycode == 119) // key W - Move gizmo
+	{
+		if (w->r.show)
+			w->r.show = 0;
+		else
+			w->r.show = 1;
+	}
+	//TURN TABLE (Rotation of 3d model):
+	if (keycode == 116) // key T
+	{
+		if (w->p.turntable)
+			w->p.turntable = 0;
+		else
+		{
+			ft_putendl("turntable on");
+			w->p.turntable = 1;
+		}
+	}
 	// ROTATION:
 	if (keycode == 65361) // fleche gauche
 	{
-		if (w->p.insert)
-		{
-			w->r.p_y.x -= 10;
-			w->r.pd_y.x -= 10;
-			w->r.p_x.x -= 10;
-			w->r.pd_x.x -= 10;
-		}
-		else
-		{
-			w->p.rot.z -= 5;
-			ft_putstr("roty:");
-			ft_putnbr(w->p.rot.y);
-			ft_putchar('\n');
-		}
+		w->p.rot.z -= 5;
+		ft_putstr("rotz:");
+		ft_putnbr(w->p.rot.z);
+		ft_putchar('\n');
 	}
 	else if (keycode == 65363) // fleche droite
 	{
-		if (w->p.insert)
-		{
-			w->r.p_y.x += 10;
-			w->r.pd_y.x += 10;
-			w->r.p_x.x += 10;
-			w->r.pd_x.x += 10;
-		}
-		else
-		{
-			w->p.rot.z += 5;
-			ft_putstr("roty:");
-			ft_putnbr(w->p.rot.y);
-			ft_putchar('\n');
-		}
+		w->p.rot.z += 5;
+		ft_putstr("rotz:");
+		ft_putnbr(w->p.rot.z);
+		ft_putchar('\n');
 	}
 	else if (keycode == 65362) // fleche haut
 	{
-		if (w->p.insert)
-		{
-			w->r.p_y.y -= 10;
-			w->r.pd_y.y -= 10;
-			w->r.p_x.y -= 10;
-			w->r.pd_x.y -= 10;
-		}
-		else
-		{
-			//w->p.keycode = 65362;
-			w->p.rot.x += 5;
-			ft_putstr("rotx:");
-			ft_putnbr(w->p.rot.x);
-			ft_putchar('\n');
-		}
+		w->p.rot.x += 5;
+		ft_putstr("rotx:");
+		ft_putnbr(w->p.rot.x);
+		ft_putchar('\n');
 	}
 	else if (keycode == 65364) // fleche bas
 	{
-		if (w->p.insert)
-		{
-			w->r.p_x.y += 10;
-			w->r.pd_x.y += 10;
-			w->r.p_y.y += 10;
-			w->r.pd_y.y += 10;
-		}
-		else
-		{
-			w->p.rot.x -= 5;
-			ft_putstr("rotx:");
-			ft_putnbr(w->p.rot.x);
-			ft_putchar('\n');
-		}
+		w->p.rot.x -= 5;
+		ft_putstr("rotx:");
+		ft_putnbr(w->p.rot.x);
+		ft_putchar('\n');
+	}
+	else if (keycode == 33) //basckslash (rotate y)
+	{
+		w->p.rot.y -= 5;
+		ft_putstr("roty:");
+		ft_putnbr(w->p.rot.y);
+		ft_putchar('\n');
+	}
+	else if (keycode == 58) //exclamation point (rotate y)
+	{
+		w->p.rot.y += 5;
+		ft_putstr("roty:");
+		ft_putnbr(w->p.rot.y);
+		ft_putchar('\n');
 	}
 	// MODIFICATION POINT DE ROTATION
 	if (keycode == 65379) // Touche Insert
@@ -92,22 +98,69 @@ int		key_function(int keycode, t_wind *w)
 		if (w->p.insert)
 			w->p.insert = 0;
 		else
-		{
 			w->p.insert = 1;
-			//Memorise previous RotationCenter while press insert (to move RoationCenter)
-			w->r.oldp_y.x = w->r.p_y.x;
-			w->r.oldp_x.y = w->r.p_x.y;
-		}
 	}
 	// DEPLACEMENT LATERAL (pan) (Pavé numérique)
 	if (keycode == 65431)//haut (pav num)
-		w->img.padv -= 10;
+	{
+		if (w->p.insert)
+			w->r.t.y -= 10;
+		else
+		{
+			w->p.t.y -= 10;
+			w->r.t.y -= 10; //Move the gizmo in the same time
+		}
+	}
 	else if (keycode == 65433)//bas (pav num)
-		w->img.padv += 10;
+	{
+		if (w->p.insert)
+			w->r.t.y += 10;
+		else
+		{
+			w->p.t.y += 10;
+			w->r.t.y += 10; //Move the gizmo in the same time
+		}
+	}
 	else if (keycode == 65432)//droite (pav num)
-		w->img.padh += 10;
+	{
+		if (w->p.insert)
+			w->r.t.x += 10;
+		else
+		{
+			w->p.t.x += 10;
+			w->r.t.x += 10; //Move the gizmo in the same time
+		}
+	}
 	else if (keycode == 65430)//gauche (pav num)
-		w->img.padh -= 10;
+	{
+		if (w->p.insert)
+			w->r.t.x -= 10;
+		else
+		{
+			w->p.t.x -= 10;
+			w->r.t.x -= 10; //Move the gizmo in the same time
+		}
+	}
+	else if (keycode == 65436)//touche 1 (pav num)
+	{
+		if (w->p.insert)
+			w->r.t.z -= 10;
+		else
+		{
+			w->p.t.z -= 10;
+			w->r.t.z -= 10; //Move the gizmo in the same time
+		}
+	}
+	else if (keycode == 65435)//touche 3 (pav num)
+	{
+		if (w->p.insert)
+			w->r.t.z += 10;
+		else
+		{
+			w->p.t.z += 10;
+			w->r.t.z += 10; //Move the gizmo in the same time
+		}
+	}
 	// ZOOM:
 	if (keycode == 65451)//plus (pav num)
 	{
@@ -189,18 +242,37 @@ int	pencil(int x, int y, t_wind *w)
 	return (0);
 }
 */
-int		keypress_func(t_wind *w)
+
+int		keypress_function(int keycode, t_wind *w)
 {
-	w->p.keypress = 0;
-	if (w->p.keycode == 65362)
+	//ft_putendl("keypress!!!");
+	if (keycode != 0)
 	{
-			w->p.rot.x += 5;
-			ft_putstr("rotx:");
-			ft_putnbr(w->p.rot.x);
-			ft_putchar('\n');
+		ft_putnbr(keycode);
+		ft_putchar('\n');
+		ft_putnbr(w->p.help);
+		ft_putchar('\n');
 	}
 	return (0);
 }
+/*
+int		mousepress_function(int button, int x, int y, t_wind *w)
+{
+	ft_putendl("mousepress!!!");
+	if (button != 0)
+	{
+		ft_putendl("button:");
+		ft_putnbr(button);
+		ft_putchar('\n');
+		ft_putnbr(x);
+		ft_putchar('\n');
+		ft_putnbr(y);
+		ft_putchar('\n');
+		ft_putnbr(w->p.help);
+		ft_putchar('\n');
+	}
+	return (0);
+}*/
 
 int		mouse_function(int button, int x, int y, t_wind *w)
 {

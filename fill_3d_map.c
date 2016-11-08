@@ -3,9 +3,9 @@
 static t_point		get_iso_point(int x, int y, t_wind *w)
 {
 	t_point p;
-	p.x = (x - y) * (w->p.size_square/2) + w->img.start_x;
-	p.y = (x + y) * (w->p.angle_projpara/2) + w->img.start_y;
-	p.z = w->b.tab_int[y][x] * (w->p.accentuation);
+	p.x = ((x - y) * (w->p.size_square/2) + w->img.start_x) + w->p.t.x;
+	p.y = ((x + y) * (w->p.angle_projpara/2) + w->img.start_y) + w->p.t.y;
+	p.z = (w->b.tab_int[y][x] * (w->p.accentuation)) + w->p.t.z;
 	return (p);
 }
 
@@ -49,7 +49,7 @@ static int			checkpoint_allside(int x, int y, t_wind *w)
 	if(x>0)//Si point à gauche
 	{
 		//ft_putendl("point à gauche");
-		w->img.pointd.z = (w->b.tab_int[y][x-1])*(w->p.accentuation);
+		w->img.pointd.z = (w->b.tab_int[y][x-1] + w->p.t.z)*(w->p.accentuation);
 		w->img.pointd.x = w->img.point.x - w->p.size_square;
 		w->img.pointd.y = w->img.point.y;
 		w->p.color.zd = w->b.tab_int[y][x-1];//height
@@ -58,8 +58,8 @@ static int			checkpoint_allside(int x, int y, t_wind *w)
 	if(y<(w->b.nbr_of_line-1))//Si point en dessous
 	{
 		//ft_putendl("point au dessous");
-		w->img.pointd.z = (w->b.tab_int[y+1][x])*(w->p.accentuation);
-		w->img.pointd.x = w->img.point.x - w->p.size_square;
+		w->img.pointd.z = (w->b.tab_int[y+1][x] + w->p.t.z)*(w->p.accentuation);
+		w->img.pointd.x = w->img.point.x;
 		w->img.pointd.y = w->img.point.y + w->p.angle_projpara;
 		w->p.color.zd = w->b.tab_int[y+1][x];//height
 		draw_line(w, w->img.point, w->img.pointd);
@@ -145,8 +145,8 @@ int			fill_3d_map_iso(t_wind *w)
 	int		x;
 
 	w->img.octet_per_pixel = w->img.bits_per_pixel/8;
-	w->img.start_x = 340 + w->img.padh; //pour centrer l'iso au milieu
-	w->img.start_y = 90 + w->img.padv; //pour centrer l'iso au milieu
+	w->img.start_x = 340 + w->p.t.x; //pour centrer l'iso au milieu
+	w->img.start_y = 90 + w->p.t.y; //pour centrer l'iso au milieu
 	w->img.point.x = 0;
 	w->img.point.y = 0;
 	y = 0;
@@ -173,20 +173,19 @@ int			fill_3d_map(t_wind *w)
 	double	start_x;
 
 	w->img.point.x = 0;
-	w->img.point.y = w->img.padv + 120; //On centre la figure au milieu de l'axe de rotation.
+	w->img.point.y = w->p.t.y + 120; //On centre la figure au milieu de l'axe de rotation.
 	start_x = (w->b.nbr_elem_line-8)*(w->p.size_square); //Centrage de la piece peut etre mieux calculé (car en digonale)
 	y = 0;
 	while (y < w->b.nbr_of_line)
 	{
 		x = 0;
 		w->img.point.y += w->p.angle_projpara;
-		start_x -= w->p.size_square;
-		w->img.point.x = start_x + (w->img.padh-20);
+		w->img.point.x = start_x + (w->p.t.x-20);
 		while (x < w->b.nbr_elem_line)
 		{
 			z = w->b.tab_int[y][x];
 			w->p.color.z = z;//height
-			w->img.point.z = (w->b.tab_int[y][x])*(w->p.accentuation);
+			w->img.point.z = (w->b.tab_int[y][x]+ w->p.t.z)*(w->p.accentuation);
 			ft_putnbr(z);
 			ft_putchar('-');
 			if (x == w->b.nbr_elem_line/2 && y == w->b.nbr_of_line/2)
