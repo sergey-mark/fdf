@@ -18,6 +18,7 @@
 #define EXIT 53
 #define KEY_W 13
 #define KEY_T 17
+#define KEY_P 17
 #define L_ARROW 123
 #define R_ARROW 124
 #define U_ARROW 126
@@ -49,6 +50,7 @@
 #define EXIT 65307
 #define KEY_W 119
 #define KEY_T 116
+#define KEY_P 112
 #define L_ARROW 65361
 #define R_ARROW 65363
 #define U_ARROW 65362
@@ -57,9 +59,9 @@
 #define EXCLAMMARK 58
 #define INSERT 65379
 #define NUM_U 65431
-#define NUM_D 65431
-#define NUM_R 65431
-#define NUM_L 65431
+#define NUM_D 65433
+#define NUM_R 65432
+#define NUM_L 65430
 #define NUM_1 65436
 #define NUM_3 65435
 #define ZOOM_P 65451

@@ -15,9 +15,9 @@ typedef struct		s_colorpalette
 	char			*hexa_mid;
 	char			*hexa_top;
 	char			*hexa_axle;
-	t_rgbcolor		bot; // Color in rgb
-	t_rgbcolor		mid;
-	t_rgbcolor		top;
+	//t_rgbcolor		bot; // Color in rgb
+	//t_rgbcolor		mid;
+	//t_rgbcolor		top;
 	int				lowl; //Level of affection for color
 	int				midl;
 	int				topl;
@@ -26,6 +26,16 @@ typedef struct		s_colorpalette
 	int				min;//Min Level for percent of color
 	int				max;//Max level
 }					t_colorpalette;
+
+typedef struct		s_mouse
+{
+	int				button1;// (1 pour press, 0 pour onRelease)
+	int				button2;
+	int				button3;
+	int				memm_x; //Save mouse pos at start of the clic
+	int				memm_y;
+	int				mem_rotz;
+}					t_mouse;
 
 typedef struct		s_line
 {
@@ -113,6 +123,8 @@ typedef struct		s_params
 	int				help;
 	t_colorpalette	color;
 	int				turntable;
+	t_mouse			m;
+	int				paint;
 }					t_params;
 
 typedef struct		s_movegizmo

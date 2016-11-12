@@ -2,10 +2,8 @@
 
 // Find all Events and Masks for mlx_hook()
 // (for keyboard and mouse) in /usr/include/X11/X.h
-#define KeyPress			2
-#define KeyPressMask		(1L<<0)
-#define ButtonPress			4
-#define ButtonPressMask		(1L<<2)
+#include "/usr/include/X11/X.h"
+
 
 static int		set_parameters(t_wind *w)
 {
@@ -22,6 +20,8 @@ static int		set_parameters(t_wind *w)
 	w->p.angle_projpara = 30;
 	w->p.size_square = 30;
 	w->p.help = 1;
+	w->p.turntable = 0;
+	w->p.paint = 0;
 
 	w->p.t.x = 0; // Position x par défault
 	w->p.t.y = 0; // Position y par défault
@@ -80,6 +80,9 @@ int				fdf(char *filename)
 {
 	t_wind		w;
 
+	//inttohex(127);
+	//inttohex(68);
+	//return (0);
 	w.width = 800;
 	w.height = 600;
 	w = create_new_window("42 minilibx", w.width, w.height);
@@ -91,10 +94,11 @@ int				fdf(char *filename)
 	mlx_put_image_to_window(w.mlx, w.win, w.img.ptr_img, w.img.x, w.img.y);
 	mlx_string_put(w.mlx, w.win, 5, 20, 0xFFFFFF, "Test");
 	mlx_key_hook(w.win, key_function, &w);
-	mlx_mouse_hook(w.win, mouse_function, &w);
+	mlx_mouse_hook(w.win, mousepress_function, &w);
+	mlx_hook(w.win, ButtonRelease, ButtonReleaseMask, mouseRelease_function, &w);//repetition mouse1 clic
+	mlx_hook(w.win, MotionNotify, ButtonMotionMask, mouseMotion_function, &w);//repetition mouse1 clic
 	mlx_hook(w.win, KeyPress, KeyPressMask, keypress_function, &w);// repetition touche
 	mlx_loop_hook(w.mlx, turntable, &w); //Quand aucun evenement
-	//mlx_hook(w.win, ButtonPress, ButtonPressMask, mousepress_function, &w);
 	mlx_expose_hook(w.win, expose_hook, &w);
 	mlx_loop(w.mlx);
 	return (0);

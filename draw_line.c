@@ -83,7 +83,7 @@ void		get_pointinbetween(t_line v, t_wind *w)
 	if (w->p.graphic_mode == 1)//Si mode point
 	{
 		if (dot_in_window(w, rint(v.x), rint(v.y)))
-				draw_point(w, (int)rint(v.x), (int)rint(v.y), w->img.point.z);
+				draw_point(w, (int)rint(v.x), (int)rint(v.y), get_color(w, w->img.point.z));
 	}
 	else // Si mode filaire
 	{
@@ -97,7 +97,7 @@ void		get_pointinbetween(t_line v, t_wind *w)
 				v.z = v.z + (v.sign_z * (v.diff_z/v.bigdiff));
 			//check if dot in window to avoid crash
 			if (dot_in_window(w, rint(v.x), rint(v.y)))
-				draw_point(w, rint(v.x), rint(v.y), rint(v.z));
+				draw_point(w, rint(v.x), rint(v.y), get_color(w, rint(v.z)));
 		}
 	}
 }
@@ -106,7 +106,7 @@ int			draw_line(t_wind *w, t_point point, t_point pointd)
 {
 	t_line	v;
 
-	if (w->p.boolaxle == 1) //No rotation for cursor rotation center draw
+	/*if (w->p.boolaxle == 1) //No rotation for cursor rotation center draw
 	{
 		v.x = point.x; //NORMAL
 		v.y = point.y - point.z;
@@ -114,7 +114,7 @@ int			draw_line(t_wind *w, t_point point, t_point pointd)
 		v.ydest = pointd.y - pointd.z;
 	}
 	else
-	{
+	{*/
 		// To do rotation of the object in center, We center object in center of rotate_axle
 		point = move_to(w, point, 0);
 		pointd = move_to(w, pointd, 0);// Move figure(axle) to 0, 0 coordonate:
@@ -130,7 +130,7 @@ int			draw_line(t_wind *w, t_point point, t_point pointd)
 		v.y = w->img.r_point.y - w->img.r_point.z;
 		v.xdest = w->img.r_pointd.x;
 		v.ydest = w->img.r_pointd.y - w->img.r_pointd.z;
-	}
+	//}
 	get_pointinbetween(v, w);
 	return (0);
 }

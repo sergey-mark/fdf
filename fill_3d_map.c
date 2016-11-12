@@ -186,21 +186,21 @@ int			fill_3d_map(t_wind *w)
 			z = w->b.tab_int[y][x];
 			w->p.color.z = z;//height
 			w->img.point.z = (w->b.tab_int[y][x]+ w->p.t.z)*(w->p.accentuation);
-			ft_putnbr(z);
-			ft_putchar('-');
+			//ft_putnbr(z);
+			//ft_putchar('-');
 			if (x == w->b.nbr_elem_line/2 && y == w->b.nbr_of_line/2)
 			{
 				w->img.r_point = matrice_rotation(w->img.point, w->p.rot, w->p.r_rot);
 				w->img.x_centerpoint = w->img.r_point.x;
 				w->img.y_centerpoint = (w->img.r_point.y - w->img.r_point.z);
 				w->img.z_centerpoint = w->img.point.y - w->img.point.z;
-				ft_putstr("center point:");
+				/*ft_putstr("center point:");
 				ft_putnbr(w->img.x_centerpoint);
 				ft_putstr(":");
 				ft_putnbr(w->img.y_centerpoint);
 				ft_putstr(":");
 				ft_putnbr(w->img.z_centerpoint);
-				ft_putchar('\n');
+				ft_putchar('\n');*/
 			}
 			checkpoint_allside(x, y, w);
 			if (w->p.graphic_mode == 3)
@@ -210,7 +210,7 @@ int			fill_3d_map(t_wind *w)
 			w->img.point.x += w->p.size_square;
 			x++;
 		}
-		ft_putendl("|");
+		//ft_putendl("|");
 		y++;
 	}
 	return (0);

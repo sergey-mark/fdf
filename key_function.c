@@ -49,6 +49,14 @@ int			key_function(int keycode, t_wind *w)
 			w->p.turntable = 1;
 		}
 	}
+	//PAINT
+	if (keycode == KEY_P) // key P
+	{
+		if (w->p.paint)
+			w->p.paint = 0;
+		else
+			w->p.paint = 1;
+	}
 	// ROTATION:
 	if (keycode == L_ARROW) // fleche gauche
 	{
@@ -231,17 +239,28 @@ int			key_function(int keycode, t_wind *w)
 	help(w);
 	return (0);
 }
-/*
-int	pencil(int x, int y, t_wind *w)
+
+int		pencil(t_wind *w, int x, int y)
 {
-	ft_putstr("test");
-	draw_point(w, x, y, "0xFFFFFF");
-	ft_putstr("test2");
-	mlx_put_image_to_window(w->mlx, w->win, w->img.ptr_img, w->img.x, w->img.y);
-	help(w);
+	int	i;
+	int	j;
+	int	brushsize;
+
+	brushsize = 3;
+	i = x - brushsize;
+	while (i != (x+brushsize))
+	{
+		j = y - brushsize;
+		while (j != (y+brushsize))
+		{
+			if (dot_in_window(w, i, j))
+				draw_point(w, i, j, "0xFFFFFF");
+			j++;
+		}
+		i++;
+	}
 	return (0);
 }
-*/
 
 int		keypress_function(int keycode, t_wind *w)
 {
@@ -255,46 +274,71 @@ int		keypress_function(int keycode, t_wind *w)
 	}
 	return (0);
 }
-/*
+
 int		mousepress_function(int button, int x, int y, t_wind *w)
 {
-	ft_putendl("mousepress!!!");
-	if (button != 0)
-	{
-		ft_putendl("button:");
-		ft_putnbr(button);
-		ft_putchar('\n');
-		ft_putnbr(x);
-		ft_putchar('\n');
-		ft_putnbr(y);
-		ft_putchar('\n');
-		ft_putnbr(w->p.help);
-		ft_putchar('\n');
-	}
-	return (0);
-}*/
-
-int		mouse_function(int button, int x, int y, t_wind *w)
-{
-	ft_putnbr(w->point.x);
-	ft_putchar('\n');
-	ft_putendl("button:");
-	ft_putnbr(button);
-	ft_putchar('\n');
-	ft_putnbr(x);
-	ft_putchar('\n');
 	ft_putnbr(y);
 	ft_putchar('\n');
-	
+	if (button == 1)
+	{
+		//on set le button en clic (1) (au lieu du onRelease en 0).
+		w->p.m.button1 = 1;
+		//J'enregistre le point x,y de part du clic, et la rotation de départ:
+		w->p.m.memm_x = x;
+		w->p.m.memm_y = y;
+		w->p.m.mem_rotz = w->p.rot.z;
+	}
+	else if (button == 2)
+		w->p.m.button2 = 1;
+	else if (button == 3)
+		w->p.m.button3 = 1;
 	//mlx_destroy_image(w->mlx, w->img.ptr_img);
 	//create_new_img(w);
 	//if (button == 1)
 		//mlx_loop_hook(w->mlx, pencil(), &w);
 
 	//draw_point(w, x, y, "0xFFFFFF");
-	draw_point(w, x, y, 0);
-
+	//draw_point(w, x, y, 0);
 	mlx_put_image_to_window(w->mlx, w->win, w->img.ptr_img, w->img.x, w->img.y);
 	help(w);
 	return (0);
 }
+
+int		mouseRelease_function(int button, int x, int y, t_wind *w)
+{
+	ft_putnbr(x);
+	ft_putchar('\n');
+	ft_putnbr(y);
+	ft_putchar('\n');
+	if (button == 1)
+		w->p.m.button1 = 0;
+	else if (button == 2)
+		w->p.m.button2 = 0;
+	else if (button == 3)
+		w->p.m.button3 = 0;
+	return (0);
+}
+
+int		mouseMotion_function(int x, int y, t_wind *w)
+{
+	if (w->p.m.button1 == 1 && w->p.paint == 1)
+		pencil(w, x, y);
+	else
+	{
+		if (w->p.m.button1 == 1)
+			w->p.rot.z = w->p.m.mem_rotz - (int)(((float)(x - w->p.m.memm_x)/(float)w->img.width) * (float)360); //J'actualise la rotation de l'objet:
+		if (w->p.m.button2 == 1)
+		{
+			w->p.size_square++;
+			w->p.angle_projpara++;
+			ft_putnbr(y);
+		}
+		mlx_destroy_image(w->mlx, w->img.ptr_img);
+		create_new_img(w);
+	}
+	mlx_put_image_to_window(w->mlx, w->win, w->img.ptr_img, w->img.x, w->img.y);
+	help(w);
+	return (0);
+}
+
+

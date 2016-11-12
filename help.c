@@ -4,7 +4,7 @@ void		help(t_wind *w)
 {
 	if (w->p.help)
 	{
-		ft_putendl("help on");
+		//ft_putendl("help on");
 		mlx_string_put(w->mlx, w->win, 10, 20, 0xFFFFFF, "F1 HELP");
 		mlx_string_put(w->mlx, w->win, 10, 40, 0xFFFFFF, "F2 ISO");
 		mlx_string_put(w->mlx, w->win, 10, 60, 0xFFFFFF, "F3 PARA");
