@@ -17,9 +17,11 @@ static void		update_gizmo(t_wind *w, t_point b, t_point bd)
 
 static void		move_gizmo(t_wind *w)
 {
+	w->p.color.hexa_bool = 1; // We set custom color set for draw line
 	update_gizmo(w, w->r.p_x, w->r.pd_x);
 	update_gizmo(w, w->r.p_y, w->r.pd_y);
 	update_gizmo(w, w->r.p_z, w->r.pd_z);
+	w->p.color.hexa_bool = 0; // We unset custom color set for draw line
 }
 
 int				create_new_img(t_wind *w)

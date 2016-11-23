@@ -34,7 +34,9 @@ static int		set_parameters(t_wind *w)
 	w->p.color.hexa_top = "0xFFFFFF"; //Blanc
 	w->p.color.hexa_mid = "0x024302"; //Vert
 	w->p.color.hexa_bot = "0x432502"; //Marron
-	w->p.color.hexa_axle = "0x9E11BF"; //Violet
+	w->p.color.hexa_bool = 0; //Color set or no
+	w->p.color.hexa_default = "0x9E11BF"; //Violet
+
 	// Color fit height level for affection
 	w->p.color.topl = 10;
 	w->p.color.midl = 5;

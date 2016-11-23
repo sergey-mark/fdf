@@ -83,7 +83,12 @@ void		get_pointinbetween(t_line v, t_wind *w)
 	if (w->p.graphic_mode == 1)//Si mode point
 	{
 		if (dot_in_window(w, rint(v.x), rint(v.y)))
+		{
+			if (w->p.color.hexa_bool)
+				draw_point(w, (int)rint(v.x), (int)rint(v.y), w->p.color.hexa_default);
+			else
 				draw_point(w, (int)rint(v.x), (int)rint(v.y), get_color(w, w->img.point.z));
+		}
 	}
 	else // Si mode filaire
 	{
@@ -97,7 +102,12 @@ void		get_pointinbetween(t_line v, t_wind *w)
 				v.z = v.z + (v.sign_z * (v.diff_z/v.bigdiff));
 			//check if dot in window to avoid crash
 			if (dot_in_window(w, rint(v.x), rint(v.y)))
-				draw_point(w, rint(v.x), rint(v.y), get_color(w, rint(v.z)));
+			{
+				if (w->p.color.hexa_bool)
+					draw_point(w, rint(v.x), rint(v.y), w->p.color.hexa_default);
+				else
+					draw_point(w, rint(v.x), rint(v.y), get_color(w, rint(v.z)));
+			}
 		}
 	}
 }
@@ -106,31 +116,21 @@ int			draw_line(t_wind *w, t_point point, t_point pointd)
 {
 	t_line	v;
 
-	/*if (w->p.boolaxle == 1) //No rotation for cursor rotation center draw
-	{
-		v.x = point.x; //NORMAL
-		v.y = point.y - point.z;
-		v.xdest = pointd.x;
-		v.ydest = pointd.y - pointd.z;
-	}
-	else
-	{*/
-		// To do rotation of the object in center, We center object in center of rotate_axle
-		point = move_to(w, point, 0);
-		pointd = move_to(w, pointd, 0);// Move figure(axle) to 0, 0 coordonate:
+	// To do rotation of the object in center, We center object in center of rotate_axle
+	point = move_to(w, point, 0);
+	pointd = move_to(w, pointd, 0);// Move figure(axle) to 0, 0 coordonate:
 
-		// ROTATION - On applique la rotation si on appui sur la flèche de haut ou bas
-		w->img.r_point = matrice_rotation(point, w->p.rot, w->p.r_rot);
-		w->img.r_pointd = matrice_rotation(pointd, w->p.rot, w->p.r_rot);
+	// ROTATION - On applique la rotation si on appui sur la flèche de haut ou bas
+	w->img.r_point = matrice_rotation(point, w->p.rot, w->p.r_rot);
+	w->img.r_pointd = matrice_rotation(pointd, w->p.rot, w->p.r_rot);
 
-		// Move back figure(axle) to center: (To do rotation of the object in center)
-		w->img.r_point = move_to(w, w->img.r_point, 1);
-		w->img.r_pointd = move_to(w, w->img.r_pointd, 1);
-		v.x = w->img.r_point.x;
-		v.y = w->img.r_point.y - w->img.r_point.z;
-		v.xdest = w->img.r_pointd.x;
-		v.ydest = w->img.r_pointd.y - w->img.r_pointd.z;
-	//}
+	// Move back figure(axle) to center: (To do rotation of the object in center)
+	w->img.r_point = move_to(w, w->img.r_point, 1);
+	w->img.r_pointd = move_to(w, w->img.r_pointd, 1);
+	v.x = w->img.r_point.x;
+	v.y = w->img.r_point.y - w->img.r_point.z;
+	v.xdest = w->img.r_pointd.x;
+	v.ydest = w->img.r_pointd.y - w->img.r_pointd.z;
 	get_pointinbetween(v, w);
 	return (0);
 }

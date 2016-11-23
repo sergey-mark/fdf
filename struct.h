@@ -14,10 +14,8 @@ typedef struct		s_colorpalette
 	char			*hexa_bot; //Color bottom in hexa
 	char			*hexa_mid;
 	char			*hexa_top;
-	char			*hexa_axle;
-	//t_rgbcolor		bot; // Color in rgb
-	//t_rgbcolor		mid;
-	//t_rgbcolor		top;
+	char			*hexa_default;
+	int				hexa_bool;
 	int				lowl; //Level of affection for color
 	int				midl;
 	int				topl;
