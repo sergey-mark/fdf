@@ -11,8 +11,25 @@ static void		update_gizmo(t_wind *w, t_point b, t_point bd)
 	pd.x = bd.x + w->r.t.x;
 	pd.y = bd.y + w->r.t.y;
 	pd.z = bd.z + w->r.t.z;
+	
+	ft_putstr("position gizmo:");
+	ft_putstr("x:");
+	ft_putnbr(p.x);
+	ft_putstr("y:");
+	ft_putnbr(p.y);
+	ft_putstr("z:");
+	ft_putnbr(p.z);
+	ft_putstr("\n");
 
-	draw_line(w, p, pd);
+	ft_putstr("pd.x:");
+	ft_putnbr(pd.x);
+	ft_putstr("pd.y:");
+	ft_putnbr(pd.y);
+	ft_putstr("pd.z:");
+	ft_putnbr(pd.z);
+	ft_putstr("\n");
+
+	//draw_line(w, p, pd);
 }
 
 static void		move_gizmo(t_wind *w)
@@ -30,13 +47,13 @@ int				create_new_img(t_wind *w)
 	w->img.pxl_ptr = mlx_get_data_addr(w->img.ptr_img, &w->img.bits_per_pixel, &w->img.size_line, &w->img.endian_type);
 	//printf("bits_per_pixel: %d\nsize_line: %d\nendian_type: %d\n", w->img.bits_per_pixel, w->img.size_line, w->img.endian_type);
 	w->img.octet_per_pixel = w->img.bits_per_pixel/8;
-
+	ft_putendl("before");
+	if (w->p.view_mode == 3)
+		fill_3d_map(w);
+	ft_putendl("after");
 	if (w->r.show)//show Move gizmo if needed
 		move_gizmo(w);
-	if (w->p.view_mode == 2)
-		fill_3d_map_iso(w);
-	else if (w->p.view_mode == 3)
-		fill_3d_map(w);
+	ft_putendl("aftern");
 	return (0);
 }
 

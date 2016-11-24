@@ -172,24 +172,24 @@ int			key_function(int keycode, t_wind *w)
 	// ZOOM:
 	if (keycode == ZOOM_P)//plus (pav num)
 	{
-		w->p.size_square++;
-		w->p.angle_projpara++;
+		w->p.x_spacing++;
+		w->p.y_spacing++;
 	}
 	if (keycode == ZOOM_M)//moins (pav num)
 	{
-		w->p.size_square--;
-		w->p.angle_projpara--;
+		w->p.x_spacing--;
+		w->p.y_spacing--;
 	}
 	// ACCENTUATION (Hauteur du terrain)
 	if (keycode == PAGE_U)//page up
 	{
-		w->p.accentuation++;
-		//ft_putnbr(w->p.accentuation);
+		w->p.zhighest++;
+		ft_putnbr(w->p.zhighest);
 	}
 	if (keycode == PAGE_D)//page down
 	{
-		w->p.accentuation--;
-		//ft_putnbr(w->p.accentuation);
+		w->p.zhighest--;
+		ft_putnbr(w->p.zhighest);
 	}
 	// GRAPHIC MODES: (touche 1 à zéro)
 	if (keycode == KEY_1)//1 poitille
@@ -329,8 +329,8 @@ int		mouseMotion_function(int x, int y, t_wind *w)
 			w->p.rot.z = w->p.m.mem_rotz - (int)(((float)(x - w->p.m.memm_x)/(float)w->img.width) * (float)360); //J'actualise la rotation de l'objet:
 		if (w->p.m.button2 == 1)
 		{
-			w->p.size_square++;
-			w->p.angle_projpara++;
+			w->p.x_spacing++;
+			w->p.y_spacing++;
 			ft_putnbr(y);
 		}
 		mlx_destroy_image(w->mlx, w->img.ptr_img);

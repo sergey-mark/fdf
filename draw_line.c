@@ -65,7 +65,7 @@ t_point		move_to(t_wind *w, t_point p, int param)
 	return (p);
 }
 
-void		get_pointinbetween(t_line v, t_wind *w)
+int			get_pointinbetween(t_line v, t_wind *w)
 {
 	v.z = w->p.color.z;
 	v.sign_x = get_sign(v.x, v.xdest);
@@ -74,6 +74,31 @@ void		get_pointinbetween(t_line v, t_wind *w)
 	v.diff_x = get_diff(v.x, v.xdest);
 	v.diff_y = get_diff(v.y, v.ydest);
 	v.diff_z = get_diff(v.z, w->p.color.zd);
+	/*
+	ft_putnbr(v.sign_x);
+	ft_putchar('\n');
+	ft_putnbr(v.sign_y);
+	ft_putchar('\n');
+	ft_putnbr(v.sign_z);
+	ft_putchar('\n');
+	ft_putnbr(v.diff_x);
+	ft_putchar('\n');
+	ft_putnbr(v.diff_y);
+	ft_putchar('\n');
+	ft_putnbr(v.diff_z);
+	ft_putchar('\n');
+	ft_putstr("v.x:");
+	ft_putnbr(rint(v.x));
+	ft_putchar('\n');
+	ft_putstr("v.y:");
+	ft_putnbr(rint(v.y));
+	ft_putchar('\n');
+	ft_putstr("xdest:");
+	ft_putnbr(v.xdest);
+	ft_putchar('\n');
+	ft_putstr("ydest:");
+	ft_putnbr(v.ydest);
+	ft_putchar('\n');*/
 	if (v.diff_x > v.diff_y)
 		v.bigdiff = v.diff_x;
 	else if (v.diff_y > v.diff_x)
@@ -93,13 +118,22 @@ void		get_pointinbetween(t_line v, t_wind *w)
 	else // Si mode filaire
 	{
 		while (rint(v.x) != v.xdest || rint(v.y) != v.ydest)
-		{
+		{/*
+			ft_putstr("v.x:");
+			ft_putnbr(v.x);
+			ft_putchar('\n');
+			ft_putstr("v.y:");
+			ft_putnbr(v.y);
+			ft_putchar('\n');
+			ft_putstr("v.z:");
+			ft_putnbr(v.z);
+			ft_putchar('\n');*/
 			if (v.x != v.xdest)
-				v.x = v.x + (v.sign_x * (v.diff_x/v.bigdiff));
+				v.x += (v.sign_x * (v.diff_x/v.bigdiff));
 			if (v.y != v.ydest)
-				v.y = v.y + (v.sign_y * (v.diff_y/v.bigdiff));
+				v.y += (v.sign_y * (v.diff_y/v.bigdiff));
 			if (v.z != v.zdest)//For height per color
-				v.z = v.z + (v.sign_z * (v.diff_z/v.bigdiff));
+				v.z += (v.sign_z * (v.diff_z/v.bigdiff));
 			//check if dot in window to avoid crash
 			if (dot_in_window(w, rint(v.x), rint(v.y)))
 			{
@@ -110,11 +144,17 @@ void		get_pointinbetween(t_line v, t_wind *w)
 			}
 		}
 	}
+	//EOF Hack to have our figure turn of 45° in rotx. 
+	w->p.rot.x -= 45;
+	return (0);
 }
 
 int			draw_line(t_wind *w, t_point point, t_point pointd)
 {
 	t_line	v;
+
+	//BOF Hack to have our figure turn of 45° in rotx. (to start from 0 when the figure is on side, even if we show it with a different start angle)
+	w->p.rot.x += 45;
 
 	// To do rotation of the object in center, We center object in center of rotate_axle
 	point = move_to(w, point, 0);
@@ -131,6 +171,21 @@ int			draw_line(t_wind *w, t_point point, t_point pointd)
 	v.y = w->img.r_point.y - w->img.r_point.z;
 	v.xdest = w->img.r_pointd.x;
 	v.ydest = w->img.r_pointd.y - w->img.r_pointd.z;
+	/*
+	ft_putstr("Position on screen inside draw_line:\n");
+	ft_putstr("v.x:");
+	ft_putnbr(rint(v.x));
+	ft_putchar('\n');
+	ft_putstr("v.y:");
+	ft_putnbr(rint(v.y));
+	ft_putchar('\n');
+	ft_putstr("xdest:");
+	ft_putnbr(v.xdest);
+	ft_putchar('\n');
+	ft_putstr("ydest:");
+	ft_putnbr(v.ydest);
+	ft_putchar('\n');
+	*	*/
 	get_pointinbetween(v, w);
 	return (0);
 }

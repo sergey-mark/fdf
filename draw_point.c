@@ -118,20 +118,20 @@ char			*get_color(t_wind *w, int z)
 {
 	char		*hexacolor;
 
-	if (z <= w->p.color.lowl)
+	if (z <= w->p.zlowest)
 		hexacolor = w->p.color.hexa_bot;
-	else if (z > w->p.color.lowl && z < w->p.color.midl)
+	else if (z > w->p.zlowest && z < w->p.zmid)
 	{
-		w->p.color.min = w->p.color.lowl; //pr calcul du pourcentage max
-		w->p.color.max = w->p.color.midl; //pr calcul du pourcentage max
+		w->p.color.min = w->p.zlowest; //pr calcul du pourcentage max
+		w->p.color.max = w->p.zmid; //pr calcul du pourcentage max
 		hexacolor = get_inbetweencolor(w->p.color.hexa_bot, w->p.color.hexa_mid, w, z);
 	}
-	else if (z == w->p.color.midl)
+	else if (z == w->p.zmid)
 		hexacolor = w->p.color.hexa_mid;
-	else if (z > w->p.color.midl && z < w->p.color.topl)
+	else if (z > w->p.zmid && z < w->p.zhighest)
 	{
-		w->p.color.min = w->p.color.midl; //pr calcul du pourcentage max
-		w->p.color.max = w->p.color.topl; //pr calcul du pourcentage max
+		w->p.color.min = w->p.zmid; //pr calcul du pourcentage max
+		w->p.color.max = w->p.zhighest; //pr calcul du pourcentage max
 		hexacolor = get_inbetweencolor(w->p.color.hexa_mid, w->p.color.hexa_top, w, z);
 	}
 	else

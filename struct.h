@@ -16,9 +16,6 @@ typedef struct		s_colorpalette
 	char			*hexa_top;
 	char			*hexa_default;
 	int				hexa_bool;
-	int				lowl; //Level of affection for color
-	int				midl;
-	int				topl;
 	int				z;//dot height of field
 	int				zd;//dot height of field dst
 	int				min;//Min Level for percent of color
@@ -64,7 +61,6 @@ typedef struct		s_point
 	int				x;
 	int				y;
 	int				z;
-	size_t			color;
 }					t_point;
 
 typedef struct		s_fillsquare
@@ -103,13 +99,18 @@ typedef struct		s_img
 	t_point			pointd;//point destination
 	t_point			r_point; //apres rotation
 	t_point			r_pointd; //apres rotation
+	int				margin;
 }					t_img;
 
 typedef struct		s_params
 {
-	int				accentuation; //hauteur relief
-	int				angle_projpara; //zoom y
-	int				size_square; //zoom x
+	//int				accentuation; //hauteur relief
+	int				zhighest; //highest field
+	int				zlowest; //lowest field
+	int				zmid; //mid field
+	int				x_spacing;
+	int				y_spacing;
+	int				z_spacing;
 	t_point			t; //Translate
 	t_point			rot; //angle de rotation
 	t_dpoint		r_rot; //angle de rotation radian
@@ -117,7 +118,6 @@ typedef struct		s_params
 	int				view_mode; //Mode para/iso
 	int				dot; //point centre carre
 	int				insert;
-	int				boolaxle;
 	int				help;
 	t_colorpalette	color;
 	int				turntable;
