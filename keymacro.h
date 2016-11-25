@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/08 14:44:56 by pbillett          #+#    #+#             */
-/*   Updated: 2016/11/08 17:23:05 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/11/25 12:57:39 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #define EXIT 53
 #define KEY_W 13
 #define KEY_T 17
-#define KEY_P 17
+#define KEY_P 35
 #define L_ARROW 123
 #define R_ARROW 124
 #define U_ARROW 126
@@ -44,6 +44,7 @@
 #define F1 65470
 #define F2 65471
 #define F3 65472
+#define SPACE 49
 
 #else
 
@@ -76,6 +77,7 @@
 #define F1 65470
 #define F2 65471
 #define F3 65472
+#define SPACE 49
 
 #endif
 

@@ -5,10 +5,10 @@ static int			checkpoint_allside(int x, int y, t_wind *w)
 	if(x>0)//Si point à gauche
 	{
 		//ft_putendl("point à gauche");
-		w->img.pointd.z = (w->b.tab_int[y][x-1] + w->p.t.z)*(w->p.zhighest);
+		w->img.pointd.z = (w->b.tab_int[y][x-1] + w->p.t.z)*(w->p.zaccentuation);
 		w->img.pointd.x = w->img.point.x - w->p.x_spacing;
 		w->img.pointd.y = w->img.point.y;
-		w->p.color.zd = w->b.tab_int[y][x-1];//height
+		w->p.color.zd = w->b.tab_int[y][x-1] ;//height
 		/*
 		ft_putendl("Check de tout les points in allside:");
 		ft_putnbr(w->img.point.x);
@@ -28,7 +28,7 @@ static int			checkpoint_allside(int x, int y, t_wind *w)
 	if(y<(w->b.nbr_of_line-1))//Si point en dessous
 	{
 		//ft_putendl("point au dessous");
-		w->img.pointd.z = (w->b.tab_int[y+1][x] + w->p.t.z)*(w->p.zhighest);
+		w->img.pointd.z = (w->b.tab_int[y+1][x] + w->p.t.z)*(w->p.zaccentuation);
 		w->img.pointd.x = w->img.point.x;
 		w->img.pointd.y = w->img.point.y + w->p.y_spacing;
 		w->p.color.zd = w->b.tab_int[y+1][x];//height
@@ -55,10 +55,11 @@ static int			triangulate_para(int x, int y, t_wind *w)
 {
 	if ((x<(w->b.nbr_elem_line-1)) && (y<(w->b.nbr_of_line-1)) && (x<(w->b.nbr_elem_line-1) && (y<(w->b.nbr_of_line-1)))) //Si point à droit et en dessous et en diagonale à droite
 	{
-		w->img.pointd.z = (w->b.tab_int[y+1][x+1])*(w->p.zhighest);
-		w->img.pointd.x = w->img.point.x; // les sizesquare s'annule.
+		w->img.pointd.z = (w->b.tab_int[y+1][x+1] + w->p.t.z)*(w->p.zaccentuation);
+		w->img.pointd.x = w->img.point.x + w->p.x_spacing; // les sizesquare s'annule.
 		w->img.pointd.y = w->img.point.y + w->p.y_spacing;// Pour afficher remplir toutes les lignes en dessous 
-		w->p.color.z = w->b.tab_int[y+1][x+1];//height
+		w->p.color.z = w->b.tab_int[y][x];//height
+		w->p.color.zd = w->b.tab_int[y+1][x+1];//height dest
 		// TRIANGULATE
 		draw_line(w, w->img.point, w->img.pointd);
 	}
@@ -107,15 +108,15 @@ static int			fill_para(int x, int y, t_wind *w)
 	{
 		s.p = w->img.point;
 		// Point à droite:
-		s.pr.z = (w->b.tab_int[y][x+1])*(w->p.zhighest);
+		s.pr.z = (w->b.tab_int[y][x+1])*(w->p.zaccentuation);
 		s.pr.x = w->img.point.x + w->p.x_spacing;
 		s.pr.y = w->img.point.y;
 		// Point en dessous:
-		s.pd.z = (w->b.tab_int[y+1][x])*(w->p.zhighest);
+		s.pd.z = (w->b.tab_int[y+1][x])*(w->p.zaccentuation);
 		s.pd.x = w->img.point.x - w->p.x_spacing;
 		s.pd.y = w->img.point.y + w->p.y_spacing;
 		// Point en diagonale:
-		s.pdi.z = (w->b.tab_int[y+1][x+1])*(w->p.zhighest);
+		s.pdi.z = (w->b.tab_int[y+1][x+1])*(w->p.zaccentuation);
 		s.pdi.x = w->img.point.x;
 		s.pdi.y = w->img.point.y + w->p.y_spacing;// Pour afficher remplir toutes les lignes en dessous
 		fill_square(s, w);
@@ -131,11 +132,11 @@ int			fill_3d_map(t_wind *w)
 	double	start_x;
 	int		largeurfigure;
 
-	//w->img.point.y = (w->b.nbr_of_line*w->p.y_spacing)/2; //On centre la figure au milieu de l'axe de rotation.
-	w->img.point.y = 0; //On centre la figure au milieu de l'axe de rotation.
+	w->img.point.y = (w->b.nbr_of_line * w->p.y_spacing)/2 + w->p.t.y; //On centre la figure au milieu de l'axe de rotation.
+	//w->img.point.y = 0; //On centre la figure au milieu de l'axe de rotation.
 	//w->img.point.y = w->p.t.y; //On centre la figure au milieu de l'axe de rotation.
 	largeurfigure = (w->b.nbr_elem_line)*(w->p.x_spacing);
-	start_x = (w->img.width - largeurfigure)/2; //Centrage de la piece
+	start_x = (w->img.width - largeurfigure)/2 + w->p.t.x; //Centrage de la piece
 	y = 0;
 	while (y < w->b.nbr_of_line)
 	{
@@ -146,9 +147,9 @@ int			fill_3d_map(t_wind *w)
 		{
 			z = w->b.tab_int[y][x];
 			w->p.color.z = z;//height
-			w->img.point.z = (w->b.tab_int[y][x]+ w->p.t.z)*(w->p.zhighest);
-			ft_putnbr(z);
-			ft_putchar('-');
+			w->img.point.z = (w->b.tab_int[y][x]+ w->p.t.z)*(w->p.zaccentuation);
+			//ft_putnbr(z);
+			//ft_putchar('-');
 			if (x == w->b.nbr_elem_line/2 && y == w->b.nbr_of_line/2)
 			{
 				w->img.r_point = matrice_rotation(w->img.point, w->p.rot, w->p.r_rot);
@@ -163,9 +164,7 @@ int			fill_3d_map(t_wind *w)
 				ft_putnbr(w->img.z_centerpoint);
 				ft_putchar('\n');
 			}
-			ft_putchar('o');
 			checkpoint_allside(x, y, w);
-			ft_putchar('j');
 			if (w->p.graphic_mode == 3)
 				triangulate_para(x, y, w);
 			if (w->p.graphic_mode == 4)
@@ -173,7 +172,7 @@ int			fill_3d_map(t_wind *w)
 			w->img.point.x += w->p.x_spacing;
 			x++;
 		}
-		ft_putendl("|");
+		//ft_putendl("|");
 		y++;
 	}
 	return (0);

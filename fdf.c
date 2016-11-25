@@ -8,6 +8,8 @@
 #define ButtonMotionMask	(1L<<13)
 #define KeyPress			2
 #define KeyPressMask		(1L<<0)
+#define KeyRelease			3
+#define KeyReleaseMask		(1L<<1)
 
 void		calc_Zhigh(t_wind *w)
 {
@@ -16,6 +18,7 @@ void		calc_Zhigh(t_wind *w)
 	int max;
 	int min;
 
+	min = 0;
 	max = 1;
 	y = 0;
 	while (y < w->b.nbr_of_line)
@@ -25,16 +28,16 @@ void		calc_Zhigh(t_wind *w)
 		{
 			if (w->b.tab_int[y][x] > max)
 				max = w->b.tab_int[y][x];
-			if (!min || w->b.tab_int[y][x] < min)
+			if (w->b.tab_int[y][x] < min)
 				min = w->b.tab_int[y][x];
 			x++;
 		}
 		y++;
 	}
-	w->p.zhighest = max;// On peut mettre une accentuation à 10 pour compenser les maps avec des petits chiffres ;). Default = 1
+	w->p.zaccentuation = 1;// On peut mettre accentuation à 10 pour compenser les maps avec des petits chiffres ;). Default = 1
+	w->p.zhighest = max;
 	w->p.zlowest = min;
 	w->p.zmid = w->p.zlowest + ((w->p.zhighest-w->p.zlowest)/2);
-
 }
 
 void			def_axle_rotation(t_wind *w)
@@ -42,21 +45,21 @@ void			def_axle_rotation(t_wind *w)
 	// Definition des axes de rotation (GIZMO):
 	w->r.p_x.x = w->img.x_centerpoint;
 	w->r.p_x.y = w->img.y_centerpoint;
-	w->r.p_x.z = w->img.z_centerpoint;
+	w->r.p_x.z = 0;
 	w->r.pd_x.x = w->img.x_centerpoint + 50;//50px height
 	w->r.pd_x.y = w->img.y_centerpoint;
 	w->r.pd_x.z = 0;
 	//Axe rotation y
 	w->r.p_y.x = w->img.x_centerpoint;
 	w->r.p_y.y = w->img.y_centerpoint;
-	w->r.p_y.z = w->img.z_centerpoint;
+	w->r.p_y.z = 0;
 	w->r.pd_y.x = w->img.x_centerpoint;
 	w->r.pd_y.y = w->img.y_centerpoint + 50;
 	w->r.pd_y.z = 0;
 	//Axe rotation z
 	w->r.p_z.x = w->img.x_centerpoint;
 	w->r.p_z.y = w->img.y_centerpoint;
-	w->r.p_z.z = w->img.z_centerpoint;
+	w->r.p_z.z = 0;
 	w->r.pd_z.x = w->img.x_centerpoint;
 	w->r.pd_z.y = w->img.y_centerpoint;
 	w->r.pd_z.z = 0 + 50;
@@ -103,16 +106,17 @@ static int		set_parameters(t_wind *w)
 	w->img.height = 600;
 	w->img.margin = 100;
 
-	w->img.x_centerpoint = 500;
-	w->img.y_centerpoint = 370;
-	w->img.z_centerpoint = 370;
 	// Parameters:
 	w->p.graphic_mode = 2; // Mode filaire par défault (touche nombre pour changer)
 	w->p.view_mode = 3; // Mode para par défault (touche F2/F3 pour changer)
 	w->p.help = 1;
 	w->p.turntable = 0;
+	w->p.space_mousemove = 0;
+	w->p.m.button1 = 0;
+	w->p.m.button2 = 0;
+	w->p.m.button3 = 0;
 	w->p.paint = 0;
-	
+
 	calc_Zhigh(w);
 	w->p.y_spacing = (w->img.height - w->img.margin*2)/(w->b.nbr_of_line); //y spacing (height)
 	w->p.x_spacing = (w->img.width - w->img.margin*2)/(w->b.nbr_elem_line);//X spacing (width)
@@ -138,13 +142,13 @@ int				fdf(char *filename)
 	def_axle_rotation(&w);
 	def_posrotscale_gizmo(&w);
 	mlx_put_image_to_window(w.mlx, w.win, w.img.ptr_img, w.img.x, w.img.y);
-	mlx_string_put(w.mlx, w.win, 5, 20, 0xFFFFFF, "Test");
-	mlx_key_hook(w.win, key_function, &w);
-	mlx_mouse_hook(w.win, mousepress_function, &w);
-	mlx_hook(w.win, ButtonRelease, ButtonReleaseMask, mouseRelease_function, &w);//repetition mouse1 clic
-	mlx_hook(w.win, MotionNotify, ButtonMotionMask, mouseMotion_function, &w);//repetition mouse1 clic
-	mlx_hook(w.win, KeyPress, KeyPressMask, keypress_function, &w);// repetition touche
-	mlx_loop_hook(w.mlx, turntable, &w); //Quand aucun evenement
+	mlx_mouse_hook(w.win, mousepress_function, &w); //mouse button press
+	mlx_hook(w.win, ButtonRelease, ButtonReleaseMask, mouseRelease_function, &w);//mouse button Release
+	mlx_hook(w.win, MotionNotify, ButtonMotionMask, mouseMotion_function, &w);//repetition mouse
+	mlx_hook(w.win, KeyPress, KeyPressMask, keypress_function, &w);// repetition key
+	mlx_hook(w.win, KeyRelease, KeyReleaseMask, keyRelease_function, &w);// release key
+	mlx_loop_hook(w.mlx, turntable, &w); // When no event
+	mlx_loop_hook(w.mlx, pencil, &w); // When no event
 	mlx_expose_hook(w.win, expose_hook, &w);
 	mlx_loop(w.mlx);
 	return (0);

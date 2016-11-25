@@ -12,9 +12,9 @@ void		help(t_wind *w)
 		mlx_string_put(w->mlx, w->win, 10, (w->height)-60, 0xFFFFFF, "2 - Wireframe");
 		mlx_string_put(w->mlx, w->win, 10, (w->height)-40, 0xFFFFFF, "3 - Tesselate");
 		mlx_string_put(w->mlx, w->win, 10, (w->height)-20, 0xFFFFFF, "4 - Fill");
-		mlx_string_put(w->mlx, w->win, (w->width)-220, 20, 0xFFFFFF, "Left/Right/Up/Down - Move (numpad)");
-		mlx_string_put(w->mlx, w->win, (w->width)-220, 40, 0xFFFFFF, "Left/Right/Up/Down - Rotate");
-		mlx_string_put(w->mlx, w->win, (w->width)-220, 60, 0xFFFFFF, "Pg Up/Pg Down - Higher/Lower");
-		mlx_string_put(w->mlx, w->win, (w->width)-220, 80, 0xFFFFFF, "+/- Zoom (numpad)");
+		mlx_string_put(w->mlx, w->win, (w->width)-250, 20, 0xFFFFFF, "Left/Right/Up/Down - Move (numpad)");
+		mlx_string_put(w->mlx, w->win, (w->width)-250, 40, 0xFFFFFF, "Left/Right/Up/Down - Rotate");
+		mlx_string_put(w->mlx, w->win, (w->width)-250, 60, 0xFFFFFF, "Pg Up/Pg Down - Higher/Lower");
+		mlx_string_put(w->mlx, w->win, (w->width)-250, 80, 0xFFFFFF, "+/- Zoom (numpad)");
 	}
 }

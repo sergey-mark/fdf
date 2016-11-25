@@ -22,7 +22,29 @@ int			turntable(t_wind *w)
 	return (0);
 }
 
-int			key_function(int keycode, t_wind *w)
+int		pencil(t_wind *w, int x, int y)
+{
+	int	i;
+	int	j;
+	int	brushsize;
+
+	brushsize = 3;
+	i = x - brushsize;
+	while (i != (x+brushsize))
+	{
+		j = y - brushsize;
+		while (j != (y+brushsize))
+		{
+			if (dot_in_window(w, i, j))
+				draw_point(w, i, j, "0xFFFFFF");
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+int		keypress_function(int keycode, t_wind *w)
 {
 	ft_putendl("Keyevent");
 	ft_putnbr(keycode);
@@ -56,6 +78,12 @@ int			key_function(int keycode, t_wind *w)
 			w->p.paint = 0;
 		else
 			w->p.paint = 1;
+	}
+	// ESPACE (to use in addition of mouse left clic to move object)
+	if (keycode == SPACE)
+	{
+		ft_putendl("spacemove on");
+		w->p.space_mousemove = 1;
 	}
 	// ROTATION:
 	if (keycode == L_ARROW) // fleche gauche
@@ -155,8 +183,8 @@ int			key_function(int keycode, t_wind *w)
 			w->r.t.z -= 10;
 		else
 		{
-			w->p.t.z -= 10;
-			w->r.t.z -= 10; //Move the gizmo in the same time
+			w->p.t.z -= 5;
+			w->r.t.z -= 5; //Move the gizmo in the same time
 		}
 	}
 	else if (keycode == NUM_3)//touche 3 (pav num)
@@ -165,8 +193,8 @@ int			key_function(int keycode, t_wind *w)
 			w->r.t.z += 10;
 		else
 		{
-			w->p.t.z += 10;
-			w->r.t.z += 10; //Move the gizmo in the same time
+			w->p.t.z += 5;
+			w->r.t.z += 5; //Move the gizmo in the same time
 		}
 	}
 	// ZOOM:
@@ -183,13 +211,13 @@ int			key_function(int keycode, t_wind *w)
 	// ACCENTUATION (Hauteur du terrain)
 	if (keycode == PAGE_U)//page up
 	{
-		w->p.zhighest++;
-		ft_putnbr(w->p.zhighest);
+		w->p.zaccentuation++;
+		ft_putnbr(w->p.zaccentuation);
 	}
 	if (keycode == PAGE_D)//page down
 	{
-		w->p.zhighest--;
-		ft_putnbr(w->p.zhighest);
+		w->p.zaccentuation--;
+		ft_putnbr(w->p.zaccentuation);
 	}
 	// GRAPHIC MODES: (touche 1 à zéro)
 	if (keycode == KEY_1)//1 poitille
@@ -218,7 +246,10 @@ int			key_function(int keycode, t_wind *w)
 		if (w->p.dot == 1)
 			w->p.dot = 0;
 		else
+		{
+			w->p.graphic_mode = 3;
 			w->p.dot = 1;
+		}
 	}
 	// VUE
 	if (keycode == F1)//F1 HELP
@@ -240,65 +271,43 @@ int			key_function(int keycode, t_wind *w)
 	return (0);
 }
 
-int		pencil(t_wind *w, int x, int y)
+int		keyRelease_function(int keycode, t_wind *w)
 {
-	int	i;
-	int	j;
-	int	brushsize;
-
-	brushsize = 3;
-	i = x - brushsize;
-	while (i != (x+brushsize))
+	if (keycode == SPACE)
 	{
-		j = y - brushsize;
-		while (j != (y+brushsize))
-		{
-			if (dot_in_window(w, i, j))
-				draw_point(w, i, j, "0xFFFFFF");
-			j++;
-		}
-		i++;
-	}
-	return (0);
-}
-
-int		keypress_function(int keycode, t_wind *w)
-{
-	//ft_putendl("keypress!!!");
-	if (keycode != 0)
-	{
-		ft_putnbr(keycode);
-		ft_putchar('\n');
-		ft_putnbr(w->p.help);
-		ft_putchar('\n');
+		ft_putendl("spacemove off");
+		w->p.space_mousemove = 0;
 	}
 	return (0);
 }
 
 int		mousepress_function(int button, int x, int y, t_wind *w)
 {
-	ft_putnbr(y);
-	ft_putchar('\n');
+	//J'enregistre le point x,y de part du clic, et la rotation de départ:
+	w->p.m.memm_x = x;
+	w->p.m.memm_y = y;
 	if (button == 1)
 	{
-		//on set le button en clic (1) (au lieu du onRelease en 0).
 		w->p.m.button1 = 1;
-		//J'enregistre le point x,y de part du clic, et la rotation de départ:
-		w->p.m.memm_x = x;
-		w->p.m.memm_y = y;
-		w->p.m.mem_rotz = w->p.rot.z;
+		w->p.m.mem_rotz = w->p.rot.z; // Horizontal mouse object turn
+		w->p.m.mem_rotx = w->p.rot.x; // vertical mouse object turn
+		w->p.m.mem_posx = w->p.t.x; // Horizontal mouse object pos (when space key press)
+		w->p.m.mem_posy = w->p.t.y; // Verticale mouse object pos
+		w->p.m.mem_gizx = w->r.t.x; // Horizontal mouse object pos (when space key press)
+		w->p.m.mem_gizy = w->r.t.y; // Verticale mouse object pos
 	}
 	else if (button == 2)
+	{
 		w->p.m.button2 = 1;
+		w->p.m.mem_spacing_x = w->p.x_spacing; // Horizontale save x_spacing
+		w->p.m.mem_zaccentuation = w->p.zaccentuation; // Vertical save zaccentuation
+	}
 	else if (button == 3)
+	{
+		ft_putendl("button molette:");
+		ft_putnbr(button);
 		w->p.m.button3 = 1;
-	//mlx_destroy_image(w->mlx, w->img.ptr_img);
-	//create_new_img(w);
-	//if (button == 1)
-		//mlx_loop_hook(w->mlx, pencil(), &w);
-
-	//draw_point(w, x, y, "0xFFFFFF");
-	//draw_point(w, x, y, 0);
+	}
 	mlx_put_image_to_window(w->mlx, w->win, w->img.ptr_img, w->img.x, w->img.y);
 	help(w);
 	return (0);
@@ -321,18 +330,38 @@ int		mouseRelease_function(int button, int x, int y, t_wind *w)
 
 int		mouseMotion_function(int x, int y, t_wind *w)
 {
+	int	spacing_sens;
+	int	transl_sens;
+
+	spacing_sens = 25;
+	transl_sens = 1000;
 	if (w->p.m.button1 == 1 && w->p.paint == 1)
 		pencil(w, x, y);
-	else
+	else if (w->p.paint == 0)
 	{
 		if (w->p.m.button1 == 1)
-			w->p.rot.z = w->p.m.mem_rotz - (int)(((float)(x - w->p.m.memm_x)/(float)w->img.width) * (float)360); //J'actualise la rotation de l'objet:
-		if (w->p.m.button2 == 1)
 		{
-			w->p.x_spacing++;
-			w->p.y_spacing++;
-			ft_putnbr(y);
+			if (w->p.space_mousemove == 1)
+			{
+				ft_putendl("space_mousemove");
+				w->p.t.x = w->p.m.mem_posx + (int)(((float)(x - w->p.m.memm_x)/(float)w->img.width) *(float)transl_sens); //J'actualise la rotation de l'objet:
+				w->p.t.y = w->p.m.mem_posy + (int)(((float)(y - w->p.m.memm_y)/(float)w->img.height) *(float)transl_sens); //J'actualise la rotation de l'objet:
+				w->r.t.x = w->p.m.mem_gizx + (int)(((float)(x - w->p.m.memm_x)/(float)w->img.width) *(float)transl_sens); // Deplacement du gizmo
+				w->r.t.y = w->p.m.mem_gizy + (int)(((float)(y - w->p.m.memm_y)/(float)w->img.height) *(float)transl_sens); //J'actualise la rotation de l'objet:
+			}
+			else
+			{
+				w->p.rot.z = w->p.m.mem_rotz - (int)(((float)(x - w->p.m.memm_x)/(float)w->img.width) * (float)360); //J'actualise la rotation de l'objet:
+				w->p.rot.x = w->p.m.mem_rotx - (int)(((float)(y - w->p.m.memm_y)/(float)w->img.height) * (float)360); //J'actualise la rotation de l'objet vers le haut (pour permettre une rotation complete autour de l'objet avec la souris)
+			}
 		}
+		else if (w->p.m.button2 == 1)
+		{
+			w->p.x_spacing = w->p.m.mem_spacing_x + (int)(((float)(x - w->p.m.memm_x)/(float)w->img.width) *(float)spacing_sens); //J'actualise la rotation de l'objet:
+			w->p.zaccentuation = w->p.m.mem_zaccentuation - (int)(((float)(y - w->p.m.memm_y)/(float)w->img.height) *(float)spacing_sens); //J'actualise la rotation de l'objet:
+		}
+		else if (w->p.m.button3 == 1)
+			ft_putendl("button3");
 		mlx_destroy_image(w->mlx, w->img.ptr_img);
 		create_new_img(w);
 	}
@@ -340,5 +369,3 @@ int		mouseMotion_function(int x, int y, t_wind *w)
 	help(w);
 	return (0);
 }
-
-

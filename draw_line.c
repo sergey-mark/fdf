@@ -67,7 +67,31 @@ t_point		move_to(t_wind *w, t_point p, int param)
 
 int			get_pointinbetween(t_line v, t_wind *w)
 {
+	int		midx;
+	int		midy;
+
+	midx = v.xdest + ((rint(v.x) - v.xdest)/2); // To calculate mid point of the faces (w->p.dot)
+	midy = v.ydest + ((rint(v.y) - v.ydest)/2); // To calculate mid point of the faces (w->p.dot)
+	ft_putstr("v.x");
+	ft_putnbr(rint(v.x));
+	ft_putstr("\n");
+	ft_putstr("v.xdest");
+	ft_putnbr(rint(v.xdest));
+	ft_putstr("\n");
+	ft_putstr("v.y");
+	ft_putnbr(rint(v.y));
+	ft_putstr("\n");
+	ft_putstr("v.ydest");
+	ft_putnbr(rint(v.ydest));
+	ft_putstr("\n");
+	ft_putstr("midxo");
+	ft_putnbr(midx);
+	ft_putstr("\n");
+	ft_putstr("midy");
+	ft_putnbr(midy);
+	ft_putstr("\n");
 	v.z = w->p.color.z;
+	v.zdest = w->p.color.zd;
 	v.sign_x = get_sign(v.x, v.xdest);
 	v.sign_y = get_sign(v.y, v.ydest);
 	v.sign_z = get_sign(v.z, w->p.color.zd);
@@ -137,7 +161,15 @@ int			get_pointinbetween(t_line v, t_wind *w)
 			//check if dot in window to avoid crash
 			if (dot_in_window(w, rint(v.x), rint(v.y)))
 			{
-				if (w->p.color.hexa_bool)
+				if (w->p.dot == 1)
+				{
+					if ((rint(v.x) == midx) && (rint(v.y) == midy))
+					{
+						ft_putendl("mid point");
+						draw_point(w, rint(v.x), rint(v.y), get_color(w, rint(v.z)));
+					}
+				}
+				else if (w->p.color.hexa_bool)
 					draw_point(w, rint(v.x), rint(v.y), w->p.color.hexa_default);
 				else
 					draw_point(w, rint(v.x), rint(v.y), get_color(w, rint(v.z)));

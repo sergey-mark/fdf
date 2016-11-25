@@ -29,7 +29,14 @@ typedef struct		s_mouse
 	int				button3;
 	int				memm_x; //Save mouse pos at start of the clic
 	int				memm_y;
+	int				mem_rotx;
 	int				mem_rotz;
+	int				mem_spacing_x;
+	int				mem_zaccentuation;
+	int				mem_posx; // Move horizontale (left mouse clic + space)
+	int				mem_posy;
+	int				mem_gizx;
+	int				mem_gizy;
 }					t_mouse;
 
 typedef struct		s_line
@@ -104,7 +111,7 @@ typedef struct		s_img
 
 typedef struct		s_params
 {
-	//int				accentuation; //hauteur relief
+	int				zaccentuation; //accentuation relief
 	int				zhighest; //highest field
 	int				zlowest; //lowest field
 	int				zmid; //mid field
@@ -118,6 +125,7 @@ typedef struct		s_params
 	int				view_mode; //Mode para/iso
 	int				dot; //point centre carre
 	int				insert;
+	int				space_mousemove;
 	int				help;
 	t_colorpalette	color;
 	int				turntable;

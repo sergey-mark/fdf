@@ -25,8 +25,9 @@ void		draw_point(t_wind *w, int x, int y, char *hexacolor);
 int			draw_line(t_wind *w, t_point point, t_point pointd);
 int			dot_in_window(t_wind *w, int x, int y);
 char		*get_color(t_wind *w, int z);
-int			key_function(int keycode, t_wind *w);
+/*int			key_function(int keycode, t_wind *w);*/
 int			keypress_function(int keycode, t_wind *w);
+int			keyRelease_function(int keycode, t_wind *w);
 int			mousepress_function(int button, int x, int y, t_wind *w);
 int			mouseRelease_function(int button, int x, int y, t_wind *w);
 int			mouseMotion_function(int x, int y, t_wind *w);
