@@ -2,9 +2,14 @@
 
 // Find all Events and Masks for mlx_hook()
 // (for keyboard and mouse) in /usr/include/X11/X.h
-#include "/usr/include/X11/X.h"
+#define ButtonRelease		5
+#define ButtonReleaseMask	(1L<<3)
+#define MotionNotify		6
+#define ButtonMotionMask	(1L<<13)
+#define KeyPress			2
+#define KeyPressMask		(1L<<0)
 
-static void		calc_Zhigh(t_wind *w)
+void		calc_Zhigh(t_wind *w)
 {
 	int x;
 	int y;
