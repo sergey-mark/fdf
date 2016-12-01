@@ -116,10 +116,16 @@ static int		set_parameters(t_wind *w)
 	w->p.m.button2 = 0;
 	w->p.m.button3 = 0;
 	w->p.paint = 0;
+	w->p.m.mem_gizx = 0;
 
 	calc_Zhigh(w);
 	w->p.y_spacing = (w->img.height - w->img.margin*2)/(w->b.nbr_of_line); //y spacing (height)
 	w->p.x_spacing = (w->img.width - w->img.margin*2)/(w->b.nbr_elem_line);//X spacing (width)
+
+	// Positionnement du gizmo au centre de l'objet
+	w->img.x_centerpoint = w->img.width/2;//By default (its actualize after when drawing obj)
+	w->img.y_centerpoint = w->img.height/2;//By default (its actualize after when drawing obj)
+
 	def_color(w);
 	w->p.insert = 0;//To modify position of rotation axle
 
@@ -138,9 +144,9 @@ int				fdf(char *filename)
 	w = create_new_window("42 minilibx", w.width, w.height);
 	w.b.tab_int = browsefile(filename, &w.b.nbr_of_line, &w.b.nbr_elem_line);
 	set_parameters(&w);
-	create_new_img(&w);
 	def_axle_rotation(&w);
 	def_posrotscale_gizmo(&w);
+	create_new_img(&w);
 	mlx_put_image_to_window(w.mlx, w.win, w.img.ptr_img, w.img.x, w.img.y);
 	mlx_mouse_hook(w.win, mousepress_function, &w); //mouse button press
 	mlx_hook(w.win, ButtonRelease, ButtonReleaseMask, mouseRelease_function, &w);//mouse button Release
@@ -148,7 +154,6 @@ int				fdf(char *filename)
 	mlx_hook(w.win, KeyPress, KeyPressMask, keypress_function, &w);// repetition key
 	mlx_hook(w.win, KeyRelease, KeyReleaseMask, keyRelease_function, &w);// release key
 	mlx_loop_hook(w.mlx, turntable, &w); // When no event
-	mlx_loop_hook(w.mlx, pencil, &w); // When no event
 	mlx_expose_hook(w.win, expose_hook, &w);
 	mlx_loop(w.mlx);
 	return (0);

@@ -22,13 +22,30 @@ int			turntable(t_wind *w)
 	return (0);
 }
 
-int		pencil(t_wind *w, int x, int y)
+void					pencil_fluid(t_wind *w, int x, int y)
 {
-	int	i;
-	int	j;
-	int	brushsize;
+	static t_point		prevp;
+	t_point				currp;
 
-	brushsize = 3;
+	currp.x = x;
+	currp.y = y;
+	if (prevp.x && prevp.y && (prevp.x != x || prevp.y != y))
+	{
+		draw_line(w, prevp, currp);
+	}
+	else
+		pencil(w, x, y);
+	prevp.x = x; //save position of previous dot
+	prevp.y = y;
+}
+
+void			pencil(t_wind *w, int x, int y)
+{
+	int			i;
+	int			j;
+	int			brushsize;
+
+	brushsize = 1;
 	i = x - brushsize;
 	while (i != (x+brushsize))
 	{
@@ -41,7 +58,6 @@ int		pencil(t_wind *w, int x, int y)
 		}
 		i++;
 	}
-	return (0);
 }
 
 int		keypress_function(int keycode, t_wind *w)
@@ -283,7 +299,7 @@ int		keyRelease_function(int keycode, t_wind *w)
 
 int		mousepress_function(int button, int x, int y, t_wind *w)
 {
-	//J'enregistre le point x,y de part du clic, et la rotation de départ:
+	//J'enregistre le point x,y de depart du clic, et la rotation de départ:
 	w->p.m.memm_x = x;
 	w->p.m.memm_y = y;
 	if (button == 1)
@@ -336,8 +352,8 @@ int		mouseMotion_function(int x, int y, t_wind *w)
 	spacing_sens = 25;
 	transl_sens = 1000;
 	if (w->p.m.button1 == 1 && w->p.paint == 1)
-		pencil(w, x, y);
-	else if (w->p.paint == 0)
+		pencil_fluid(w, x, y);
+	if (w->p.paint == 0)
 	{
 		if (w->p.m.button1 == 1)
 		{

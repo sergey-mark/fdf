@@ -11,7 +11,7 @@ static void		update_gizmo(t_wind *w, t_point b, t_point bd)
 	pd.x = bd.x + w->r.t.x;
 	pd.y = bd.y + w->r.t.y;
 	pd.z = bd.z + w->r.t.z;
-
+	/*
 	ft_putstr("position gizmo:");
 	ft_putstr("x:");
 	ft_putnbr(p.x);
@@ -28,7 +28,7 @@ static void		update_gizmo(t_wind *w, t_point b, t_point bd)
 	ft_putstr("pd.z:");
 	ft_putnbr(pd.z);
 	ft_putstr("\n");
-
+	*/
 	draw_line(w, p, pd);
 }
 
@@ -43,6 +43,11 @@ static void		move_gizmo(t_wind *w)
 
 int				create_new_img(t_wind *w)
 {
+	t_point		rotate_giz;
+
+	rotate_giz.x = 300;
+	rotate_giz.y = 400;
+	rotate_giz.z = 0;
 	w->img.ptr_img = mlx_new_image(w->mlx, w->img.width, w->img.height);
 	w->img.pxl_ptr = mlx_get_data_addr(w->img.ptr_img, &w->img.bits_per_pixel, &w->img.size_line, &w->img.endian_type);
 	//printf("bits_per_pixel: %d\nsize_line: %d\nendian_type: %d\n", w->img.bits_per_pixel, w->img.size_line, w->img.endian_type);
@@ -51,6 +56,7 @@ int				create_new_img(t_wind *w)
 		fill_3d_map(w);
 	if (w->r.show)//show Move gizmo if needed
 		move_gizmo(w);
+	draw_circle(w, rotate_giz, 60);
 	help(w);
 	return (0);
 }

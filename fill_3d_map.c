@@ -156,13 +156,14 @@ int			fill_3d_map(t_wind *w)
 				w->img.x_centerpoint = w->img.r_point.x;
 				w->img.y_centerpoint = (w->img.r_point.y - w->img.r_point.z);
 				w->img.z_centerpoint = w->img.point.y - w->img.point.z;
+				/*
 				ft_putstr("center point:");
 				ft_putnbr(w->img.x_centerpoint);
 				ft_putstr(":");
 				ft_putnbr(w->img.y_centerpoint);
 				ft_putstr(":");
 				ft_putnbr(w->img.z_centerpoint);
-				ft_putchar('\n');
+				ft_putchar('\n');*/
 			}
 			checkpoint_allside(x, y, w);
 			if (w->p.graphic_mode == 3)

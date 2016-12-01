@@ -9,11 +9,11 @@ SRC=	main.c \
 		browsefile.c \
 		get_next_line/get_next_line.c \
 		matrice_rotation.c \
-		rotation_point.c \
 		fill_3d_map.c \
 		draw_point.c \
 		draw_line.c \
-		key_function.c
+		key_function.c \
+		draw_circle.c
 OBJ=${SRC:.c=.o}
 
 ifeq ($(UNAME), Darwin) # MAC

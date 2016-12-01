@@ -1,6 +1,6 @@
 #include "fdf.h"
 
-static double		degree_to_radian(int degrees)
+double		degree_to_radian(int degrees)
 {
 	double	radians;
 	double	pi;

@@ -77,7 +77,7 @@
 #define F1 65470
 #define F2 65471
 #define F3 65472
-#define SPACE 49
+#define SPACE 32
 
 #endif
 

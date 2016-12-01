@@ -31,10 +31,11 @@ int			keyRelease_function(int keycode, t_wind *w);
 int			mousepress_function(int button, int x, int y, t_wind *w);
 int			mouseRelease_function(int button, int x, int y, t_wind *w);
 int			mouseMotion_function(int x, int y, t_wind *w);
-int			pencil(t_wind *w, int x, int y);
+void		pencil(t_wind *w, int x, int y);
 int			turntable(t_wind *w);
 int			expose_hook(t_wind *w);
-t_point		rotation_point(t_point A, t_point angle, t_dpoint r_angle);
 t_point		matrice_rotation(t_point p, t_point angle, t_dpoint r_angle);
+double		degree_to_radian(int degree);
+void		draw_circle(t_wind *w, t_point centerp, int rayon);
 
 #endif

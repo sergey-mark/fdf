@@ -48,6 +48,7 @@ t_point		move_to(t_wind *w, t_point p, int param)
 {
 	int		pyx;
 	int		pxy;
+
 	pyx = w->r.p_y.x + w->r.t.x;
 	pxy = w->r.p_x.y + w->r.t.y;
 	if (param == 0)
@@ -72,7 +73,7 @@ int			get_pointinbetween(t_line v, t_wind *w)
 
 	midx = v.xdest + ((rint(v.x) - v.xdest)/2); // To calculate mid point of the faces (w->p.dot)
 	midy = v.ydest + ((rint(v.y) - v.ydest)/2); // To calculate mid point of the faces (w->p.dot)
-	ft_putstr("v.x");
+	/*ft_putstr("v.x");
 	ft_putnbr(rint(v.x));
 	ft_putstr("\n");
 	ft_putstr("v.xdest");
@@ -89,7 +90,7 @@ int			get_pointinbetween(t_line v, t_wind *w)
 	ft_putstr("\n");
 	ft_putstr("midy");
 	ft_putnbr(midy);
-	ft_putstr("\n");
+	ft_putstr("\n");*/
 	v.z = w->p.color.z;
 	v.zdest = w->p.color.zd;
 	v.sign_x = get_sign(v.x, v.xdest);
@@ -161,7 +162,12 @@ int			get_pointinbetween(t_line v, t_wind *w)
 			//check if dot in window to avoid crash
 			if (dot_in_window(w, rint(v.x), rint(v.y)))
 			{
-				if (w->p.dot == 1)
+				if (w->p.m.button1 == 1 && w->p.paint == 1)
+				{
+					ft_putendl("paint fluid");
+					pencil(w, rint(v.x), rint(v.y));
+				}
+				else if (w->p.dot == 1)
 				{
 					if ((rint(v.x) == midx) && (rint(v.y) == midy))
 					{
@@ -203,21 +209,6 @@ int			draw_line(t_wind *w, t_point point, t_point pointd)
 	v.y = w->img.r_point.y - w->img.r_point.z;
 	v.xdest = w->img.r_pointd.x;
 	v.ydest = w->img.r_pointd.y - w->img.r_pointd.z;
-	/*
-	ft_putstr("Position on screen inside draw_line:\n");
-	ft_putstr("v.x:");
-	ft_putnbr(rint(v.x));
-	ft_putchar('\n');
-	ft_putstr("v.y:");
-	ft_putnbr(rint(v.y));
-	ft_putchar('\n');
-	ft_putstr("xdest:");
-	ft_putnbr(v.xdest);
-	ft_putchar('\n');
-	ft_putstr("ydest:");
-	ft_putnbr(v.ydest);
-	ft_putchar('\n');
-	*	*/
 	get_pointinbetween(v, w);
 	return (0);
 }
