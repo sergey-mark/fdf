@@ -43,32 +43,37 @@ void		calc_Zhigh(t_wind *w)
 void			def_axle_rotation(t_wind *w)
 {
 	// Definition des axes de rotation (GIZMO):
-	w->r.p_x.x = w->img.x_centerpoint;
-	w->r.p_x.y = w->img.y_centerpoint;
-	w->r.p_x.z = 0;
-	w->r.pd_x.x = w->img.x_centerpoint + 50;//50px height
-	w->r.pd_x.y = w->img.y_centerpoint;
-	w->r.pd_x.z = 0;
+	w->obj.gizt.p_x.x = w->img.x_centerpoint;
+	w->obj.gizt.p_x.y = w->img.y_centerpoint;
+	w->obj.gizt.p_x.z = 0;
+	w->obj.gizt.pd_x.x = w->img.x_centerpoint + 50;//50px height
+	w->obj.gizt.pd_x.y = w->img.y_centerpoint;
+	w->obj.gizt.pd_x.z = 0;
 	//Axe rotation y
-	w->r.p_y.x = w->img.x_centerpoint;
-	w->r.p_y.y = w->img.y_centerpoint;
-	w->r.p_y.z = 0;
-	w->r.pd_y.x = w->img.x_centerpoint;
-	w->r.pd_y.y = w->img.y_centerpoint + 50;
-	w->r.pd_y.z = 0;
+	w->obj.gizt.p_y.x = w->img.x_centerpoint;
+	w->obj.gizt.p_y.y = w->img.y_centerpoint;
+	w->obj.gizt.p_y.z = 0;
+	w->obj.gizt.pd_y.x = w->img.x_centerpoint;
+	w->obj.gizt.pd_y.y = w->img.y_centerpoint + 50;
+	w->obj.gizt.pd_y.z = 0;
 	//Axe rotation z
-	w->r.p_z.x = w->img.x_centerpoint;
-	w->r.p_z.y = w->img.y_centerpoint;
-	w->r.p_z.z = 0;
-	w->r.pd_z.x = w->img.x_centerpoint;
-	w->r.pd_z.y = w->img.y_centerpoint;
-	w->r.pd_z.z = 0 + 50;
+	w->obj.gizt.p_z.x = w->img.x_centerpoint;
+	w->obj.gizt.p_z.y = w->img.y_centerpoint;
+	w->obj.gizt.p_z.z = 0;
+	w->obj.gizt.pd_z.x = w->img.x_centerpoint;
+	w->obj.gizt.pd_z.y = w->img.y_centerpoint;
+	w->obj.gizt.pd_z.z = 0 + 50;
 	//Creation d'une position pour le deplacement du GIZMO
 	//On positionne le gizmo en bas de l'écran
-	w->r.t.x = 0;
-	w->r.t.y = 0;
-	//w->r.t.y = (w->img.height/2) - w->img.margin;
-	w->r.t.z = 0;
+	w->obj.gizt.t.x = 0;
+	w->obj.gizt.t.y = 0;
+	//w->obj.gizt.t.y = (w->img.height/2) - w->img.margin;
+	w->obj.gizt.t.z = 0;
+
+	w->obj.center_rgiz.x = w->img.x_centerpoint;
+	w->obj.center_rgiz.y = w->img.y_centerpoint;
+	//w->obj.center_rgiz.z = 0;
+	w->obj.center_rgiz.z = w->img.z_centerpoint;
 }
 
 void			def_color(t_wind *w)
@@ -90,7 +95,7 @@ void			def_color(t_wind *w)
 	ft_putchar('\n');
 }
 
-void			def_posrotscale_gizmo(t_wind *w)
+void			def_tranrotscale_gizmo(t_wind *w)
 {
 	w->p.t.x = 0; // Position x par défault
 	w->p.t.y = 0; // Position y par défault
@@ -112,11 +117,15 @@ static int		set_parameters(t_wind *w)
 	w->p.help = 1;
 	w->p.turntable = 0;
 	w->p.space_mousemove = 0;
-	w->p.m.button1 = 0;
+	w->p.m.button1 = 0; //Mouse buttons
 	w->p.m.button2 = 0;
 	w->p.m.button3 = 0;
 	w->p.paint = 0;
 	w->p.m.mem_gizx = 0;
+	w->obj.showgiz.t = 1; // show gizmos or not
+	w->obj.showgiz.r = 0;
+	w->obj.showgiz.s = 0;
+	w->obj.f.bol = 0; // Var to know when we use fill_para func in get_pointinbetween 
 
 	calc_Zhigh(w);
 	w->p.y_spacing = (w->img.height - w->img.margin*2)/(w->b.nbr_of_line); //y spacing (height)
@@ -145,7 +154,7 @@ int				fdf(char *filename)
 	w.b.tab_int = browsefile(filename, &w.b.nbr_of_line, &w.b.nbr_elem_line);
 	set_parameters(&w);
 	def_axle_rotation(&w);
-	def_posrotscale_gizmo(&w);
+	def_tranrotscale_gizmo(&w);
 	create_new_img(&w);
 	mlx_put_image_to_window(w.mlx, w.win, w.img.ptr_img, w.img.x, w.img.y);
 	mlx_mouse_hook(w.win, mousepress_function, &w); //mouse button press

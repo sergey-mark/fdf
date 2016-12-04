@@ -37,5 +37,7 @@ int			expose_hook(t_wind *w);
 t_point		matrice_rotation(t_point p, t_point angle, t_dpoint r_angle);
 double		degree_to_radian(int degree);
 void		draw_circle(t_wind *w, t_point centerp, int rayon);
+t_point		rotate_point(t_wind *w, t_point dot);
+int			get_pointinbetween(t_line v, t_wind *w);
 
 #endif

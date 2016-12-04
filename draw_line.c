@@ -49,8 +49,8 @@ t_point		move_to(t_wind *w, t_point p, int param)
 	int		pyx;
 	int		pxy;
 
-	pyx = w->r.p_y.x + w->r.t.x;
-	pxy = w->r.p_x.y + w->r.t.y;
+	pyx = w->obj.gizt.p_y.x + w->obj.gizt.t.x;
+	pxy = w->obj.gizt.p_x.y + w->obj.gizt.t.y;
 	if (param == 0)
 	{
 		p.x = p.x - pyx;
@@ -66,10 +66,10 @@ t_point		move_to(t_wind *w, t_point p, int param)
 	return (p);
 }
 
-int			get_pointinbetween(t_line v, t_wind *w)
+int				get_pointinbetween(t_line v, t_wind *w)
 {
-	int		midx;
-	int		midy;
+	int			midx;
+	int			midy;
 
 	midx = v.xdest + ((rint(v.x) - v.xdest)/2); // To calculate mid point of the faces (w->p.dot)
 	midy = v.ydest + ((rint(v.y) - v.ydest)/2); // To calculate mid point of the faces (w->p.dot)
@@ -91,14 +91,12 @@ int			get_pointinbetween(t_line v, t_wind *w)
 	ft_putstr("midy");
 	ft_putnbr(midy);
 	ft_putstr("\n");*/
-	v.z = w->p.color.z;
-	v.zdest = w->p.color.zd;
 	v.sign_x = get_sign(v.x, v.xdest);
 	v.sign_y = get_sign(v.y, v.ydest);
-	v.sign_z = get_sign(v.z, w->p.color.zd);
+	v.sign_z = get_sign(v.z, v.zdest);
 	v.diff_x = get_diff(v.x, v.xdest);
 	v.diff_y = get_diff(v.y, v.ydest);
-	v.diff_z = get_diff(v.z, w->p.color.zd);
+	v.diff_z = get_diff(v.z, v.zdest);
 	/*
 	ft_putnbr(v.sign_x);
 	ft_putchar('\n');
@@ -175,6 +173,28 @@ int			get_pointinbetween(t_line v, t_wind *w)
 						draw_point(w, rint(v.x), rint(v.y), get_color(w, rint(v.z)));
 					}
 				}
+				else if (w->p.graphic_mode == 4 && w->obj.f.bol == 1)
+				{
+					//ft_putendl("J'enregistre les points dans une liste de points");
+					//J'enregistre les points dans une liste de points
+					ft_putendl("bfore x");
+					ft_putnbr(rint(v.x));
+					ft_putendl("");
+					ft_putnbr(rint(v.y));
+					ft_putendl("");
+					ft_putnbr(rint(v.z));
+					ft_putendl("");
+					ft_putendl("inside");
+					ft_putnbr(w->obj.f.i);
+					ft_putendl("");
+					ft_putendl("fgdgdf");
+					w->obj.f.path[w->obj.f.i].x = rint(v.x);
+					ft_putendl("bfore y");
+					w->obj.f.path[w->obj.f.i].y = rint(v.y);
+					ft_putendl("bfore z");
+					w->obj.f.path[w->obj.f.i++].z = rint(v.z);
+					//ft_putendl("J'enregistre les points dans une liste de points");
+				}
 				else if (w->p.color.hexa_bool)
 					draw_point(w, rint(v.x), rint(v.y), w->p.color.hexa_default);
 				else
@@ -182,9 +202,16 @@ int			get_pointinbetween(t_line v, t_wind *w)
 			}
 		}
 	}
-	//EOF Hack to have our figure turn of 45° in rotx. 
-	w->p.rot.x -= 45;
 	return (0);
+}
+
+t_point		rotate_point(t_wind *w, t_point dot)
+{
+	// We do the rotation of the circle in matrice
+	dot = move_to(w, dot, 0); //Move to top left of screen
+	dot = matrice_rotation(dot, w->p.rot, w->p.r_rot);
+	dot = move_to(w, dot, 1); //Move back
+	return (dot);
 }
 
 int			draw_line(t_wind *w, t_point point, t_point pointd)
@@ -193,22 +220,19 @@ int			draw_line(t_wind *w, t_point point, t_point pointd)
 
 	//BOF Hack to have our figure turn of 45° in rotx. (to start from 0 when the figure is on side, even if we show it with a different start angle)
 	w->p.rot.x += 45;
+	// Do the rotation of the point
+	point = rotate_point(w, point);
+	pointd = rotate_point(w, pointd);
+	//EOF Hack to have our figure turn of 45° in rotx. 
+	w->p.rot.x -= 45;
 
-	// To do rotation of the object in center, We center object in center of rotate_axle
-	point = move_to(w, point, 0);
-	pointd = move_to(w, pointd, 0);// Move figure(axle) to 0, 0 coordonate:
-
-	// ROTATION - On applique la rotation si on appui sur la flèche de haut ou bas
-	w->img.r_point = matrice_rotation(point, w->p.rot, w->p.r_rot);
-	w->img.r_pointd = matrice_rotation(pointd, w->p.rot, w->p.r_rot);
-
-	// Move back figure(axle) to center: (To do rotation of the object in center)
-	w->img.r_point = move_to(w, w->img.r_point, 1);
-	w->img.r_pointd = move_to(w, w->img.r_pointd, 1);
-	v.x = w->img.r_point.x;
-	v.y = w->img.r_point.y - w->img.r_point.z;
-	v.xdest = w->img.r_pointd.x;
-	v.ydest = w->img.r_pointd.y - w->img.r_pointd.z;
+	// convert rotation of point to 2d matrice
+	v.x = point.x;
+	v.y = point.y - point.z;
+	v.z = w->p.color.z;
+	v.xdest = pointd.x;
+	v.ydest = pointd.y - pointd.z;
+	v.zdest = w->p.color.zd;
 	get_pointinbetween(v, w);
 	return (0);
 }

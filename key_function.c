@@ -71,11 +71,40 @@ int		keypress_function(int keycode, t_wind *w)
 	//SHOW CONTROLLER:
 	if (keycode == KEY_W) // key W - Move gizmo
 	{
-		if (w->r.show)
-			w->r.show = 0;
+		if (w->obj.showgiz.t)
+			w->obj.showgiz.t = 0;
 		else
-			w->r.show = 1;
+		{
+			w->obj.showgiz.t = 1;
+			w->obj.showgiz.r = 0;
+			w->obj.showgiz.s = 0;
+		}
 	}
+	else if (keycode == KEY_E) // key E - Rotate gizmo
+	{
+		if (w->obj.showgiz.r)
+			w->obj.showgiz.r = 0;
+		else
+		{
+			ft_putstr("show rotate giz\n");
+			w->obj.showgiz.r = 1;
+			w->obj.showgiz.t = 0;
+			w->obj.showgiz.s = 0;
+		}
+	}
+	else if (keycode == KEY_R) // key R - Scale gizmo
+	{
+		if (w->obj.showgiz.s)
+			w->obj.showgiz.s = 0;
+		else
+		{
+			ft_putstr("show rotate giz\n");
+			w->obj.showgiz.s = 1;
+			w->obj.showgiz.t = 0;
+			w->obj.showgiz.r = 0;
+		}
+	}
+
 	//TURN TABLE (Rotation of 3d model):
 	if (keycode == KEY_T) // key T
 	{
@@ -104,6 +133,8 @@ int		keypress_function(int keycode, t_wind *w)
 	// ROTATION:
 	if (keycode == L_ARROW) // fleche gauche
 	{
+		if (w->p.rot.z >= 360 || w->p.rot.z <= -360)
+			w->p.rot.z %= 360;
 		w->p.rot.z -= 5;
 		ft_putstr("rotz:");
 		ft_putnbr(w->p.rot.z);
@@ -111,6 +142,8 @@ int		keypress_function(int keycode, t_wind *w)
 	}
 	else if (keycode == R_ARROW) // fleche droite
 	{
+		if (w->p.rot.z >= 360 || w->p.rot.z <= -360)
+			w->p.rot.z %= 360;
 		w->p.rot.z += 5;
 		ft_putstr("rotz:");
 		ft_putnbr(w->p.rot.z);
@@ -118,6 +151,8 @@ int		keypress_function(int keycode, t_wind *w)
 	}
 	else if (keycode == U_ARROW) // fleche haut
 	{
+		if (w->p.rot.x >= 360 || w->p.rot.x <= -360)
+			w->p.rot.x %= 360;
 		w->p.rot.x += 5;
 		ft_putstr("rotx:");
 		ft_putnbr(w->p.rot.x);
@@ -125,6 +160,8 @@ int		keypress_function(int keycode, t_wind *w)
 	}
 	else if (keycode == D_ARROW) // fleche bas
 	{
+		if (w->p.rot.x >= 360 || w->p.rot.x <= -360)
+			w->p.rot.x %= 360;
 		w->p.rot.x -= 5;
 		ft_putstr("rotx:");
 		ft_putnbr(w->p.rot.x);
@@ -132,6 +169,8 @@ int		keypress_function(int keycode, t_wind *w)
 	}
 	else if (keycode == BACKSLASH) //basckslash (rotate y)
 	{
+		if (w->p.rot.y >= 360 || w->p.rot.y <= -360)
+			w->p.rot.y %= 360;
 		w->p.rot.y -= 5;
 		ft_putstr("roty:");
 		ft_putnbr(w->p.rot.y);
@@ -139,6 +178,8 @@ int		keypress_function(int keycode, t_wind *w)
 	}
 	else if (keycode == EXCLAMMARK) //exclamation point (rotate y)
 	{
+		if (w->p.rot.y >= 360 || w->p.rot.y <= -360)
+			w->p.rot.y %= 360;
 		w->p.rot.y += 5;
 		ft_putstr("roty:");
 		ft_putnbr(w->p.rot.y);
@@ -156,61 +197,61 @@ int		keypress_function(int keycode, t_wind *w)
 	if (keycode == NUM_U)//haut (pav num)
 	{
 		if (w->p.insert)
-			w->r.t.y -= 10;
+			w->obj.gizt.t.y -= 10;
 		else
 		{
 			w->p.t.y -= 10;
-			w->r.t.y -= 10; //Move the gizmo in the same time
+			w->obj.gizt.t.y -= 10; //Move the gizmo in the same time
 		}
 	}
 	else if (keycode == NUM_D)//bas (pav num)
 	{
 		if (w->p.insert)
-			w->r.t.y += 10;
+			w->obj.gizt.t.y += 10;
 		else
 		{
 			w->p.t.y += 10;
-			w->r.t.y += 10; //Move the gizmo in the same time
+			w->obj.gizt.t.y += 10; //Move the gizmo in the same time
 		}
 	}
 	else if (keycode == NUM_R)//droite (pav num)
 	{
 		if (w->p.insert)
-			w->r.t.x += 10;
+			w->obj.gizt.t.x += 10;
 		else
 		{
 			w->p.t.x += 10;
-			w->r.t.x += 10; //Move the gizmo in the same time
+			w->obj.gizt.t.x += 10; //Move the gizmo in the same time
 		}
 	}
 	else if (keycode == NUM_L)//gauche (pav num)
 	{
 		if (w->p.insert)
-			w->r.t.x -= 10;
+			w->obj.gizt.t.x -= 10;
 		else
 		{
 			w->p.t.x -= 10;
-			w->r.t.x -= 10; //Move the gizmo in the same time
+			w->obj.gizt.t.x -= 10; //Move the gizmo in the same time
 		}
 	}
 	else if (keycode == NUM_1)//touche 1 (pav num)
 	{
 		if (w->p.insert)
-			w->r.t.z -= 10;
+			w->obj.gizt.t.z -= 10;
 		else
 		{
 			w->p.t.z -= 5;
-			w->r.t.z -= 5; //Move the gizmo in the same time
+			w->obj.gizt.t.z -= 5; //Move the gizmo in the same time
 		}
 	}
 	else if (keycode == NUM_3)//touche 3 (pav num)
 	{
 		if (w->p.insert)
-			w->r.t.z += 10;
+			w->obj.gizt.t.z += 10;
 		else
 		{
 			w->p.t.z += 5;
-			w->r.t.z += 5; //Move the gizmo in the same time
+			w->obj.gizt.t.z += 5; //Move the gizmo in the same time
 		}
 	}
 	// ZOOM:
@@ -309,8 +350,8 @@ int		mousepress_function(int button, int x, int y, t_wind *w)
 		w->p.m.mem_rotx = w->p.rot.x; // vertical mouse object turn
 		w->p.m.mem_posx = w->p.t.x; // Horizontal mouse object pos (when space key press)
 		w->p.m.mem_posy = w->p.t.y; // Verticale mouse object pos
-		w->p.m.mem_gizx = w->r.t.x; // Horizontal mouse object pos (when space key press)
-		w->p.m.mem_gizy = w->r.t.y; // Verticale mouse object pos
+		w->p.m.mem_gizx = w->obj.gizt.t.x; // Horizontal mouse object pos (when space key press)
+		w->p.m.mem_gizy = w->obj.gizt.t.y; // Verticale mouse object pos
 	}
 	else if (button == 2)
 	{
@@ -362,8 +403,8 @@ int		mouseMotion_function(int x, int y, t_wind *w)
 				ft_putendl("space_mousemove");
 				w->p.t.x = w->p.m.mem_posx + (int)(((float)(x - w->p.m.memm_x)/(float)w->img.width) *(float)transl_sens); //J'actualise la rotation de l'objet:
 				w->p.t.y = w->p.m.mem_posy + (int)(((float)(y - w->p.m.memm_y)/(float)w->img.height) *(float)transl_sens); //J'actualise la rotation de l'objet:
-				w->r.t.x = w->p.m.mem_gizx + (int)(((float)(x - w->p.m.memm_x)/(float)w->img.width) *(float)transl_sens); // Deplacement du gizmo
-				w->r.t.y = w->p.m.mem_gizy + (int)(((float)(y - w->p.m.memm_y)/(float)w->img.height) *(float)transl_sens); //J'actualise la rotation de l'objet:
+				w->obj.gizt.t.x = w->p.m.mem_gizx + (int)(((float)(x - w->p.m.memm_x)/(float)w->img.width) *(float)transl_sens); // Deplacement du gizmo
+				w->obj.gizt.t.y = w->p.m.mem_gizy + (int)(((float)(y - w->p.m.memm_y)/(float)w->img.height) *(float)transl_sens); //J'actualise la rotation de l'objet:
 			}
 			else
 			{

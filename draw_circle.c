@@ -14,7 +14,11 @@ void			draw_circle(t_wind *w, t_point centerp, int rayon)
 		pos.x = ((double)rayon * cos(i_rad)) + centerp.x;
 		pos.y = ((double)rayon * sin(i_rad)) + centerp.y;
 		pos.z = centerp.z;
-		pencil(w, pos.x, pos.y);
+
+		pos = rotate_point(w, pos);
+		draw_point(w, pos.x, pos.y, w->p.color.hexa_default);
+		//draw_point(w, pos.x, pos.y, "0xFFFFFF");
+		//pencil(w, pos.x, pos.y); //Pour avoir un cercle plus epais
 		i++;
 	}
 }

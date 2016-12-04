@@ -1,62 +1,50 @@
 #include "fdf.h"
 
-static void		update_gizmo(t_wind *w, t_point b, t_point bd)
+static void		update_mgizmo(t_wind *w, t_point b, t_point bd)
 {
 	t_point		p;
 	t_point		pd;
 
-	p.x = b.x + w->r.t.x;
-	p.y = b.y + w->r.t.y;
-	p.z = b.z + w->r.t.z;
-	pd.x = bd.x + w->r.t.x;
-	pd.y = bd.y + w->r.t.y;
-	pd.z = bd.z + w->r.t.z;
-	/*
-	ft_putstr("position gizmo:");
-	ft_putstr("x:");
-	ft_putnbr(p.x);
-	ft_putstr("y:");
-	ft_putnbr(p.y);
-	ft_putstr("z:");
-	ft_putnbr(p.z);
-	ft_putstr("\n");
-
-	ft_putstr("pd.x:");
-	ft_putnbr(pd.x);
-	ft_putstr("pd.y:");
-	ft_putnbr(pd.y);
-	ft_putstr("pd.z:");
-	ft_putnbr(pd.z);
-	ft_putstr("\n");
-	*/
+	p.x = b.x + w->obj.gizt.t.x;
+	p.y = b.y + w->obj.gizt.t.y;
+	p.z = b.z + w->obj.gizt.t.z;
+	pd.x = bd.x + w->obj.gizt.t.x;
+	pd.y = bd.y + w->obj.gizt.t.y;
+	pd.z = bd.z + w->obj.gizt.t.z;
 	draw_line(w, p, pd);
+}
+
+static void		rot_gizmo(t_wind *w)
+{
+	t_point		p;
+
+	p.x = w->obj.center_rgiz.x + w->obj.gizt.t.x;
+	p.y = w->obj.center_rgiz.y + w->obj.gizt.t.y;
+	p.z = w->obj.center_rgiz.z + w->obj.gizt.t.z;
+	draw_circle(w, p, 60);
 }
 
 static void		move_gizmo(t_wind *w)
 {
 	w->p.color.hexa_bool = 1; // We set custom color set for draw line
-	update_gizmo(w, w->r.p_x, w->r.pd_x);
-	update_gizmo(w, w->r.p_y, w->r.pd_y);
-	update_gizmo(w, w->r.p_z, w->r.pd_z);
+	update_mgizmo(w, w->obj.gizt.p_x, w->obj.gizt.pd_x);
+	update_mgizmo(w, w->obj.gizt.p_y, w->obj.gizt.pd_y);
+	update_mgizmo(w, w->obj.gizt.p_z, w->obj.gizt.pd_z);
 	w->p.color.hexa_bool = 0; // We unset custom color set for draw line
 }
 
 int				create_new_img(t_wind *w)
 {
-	t_point		rotate_giz;
-
-	rotate_giz.x = 300;
-	rotate_giz.y = 400;
-	rotate_giz.z = 0;
 	w->img.ptr_img = mlx_new_image(w->mlx, w->img.width, w->img.height);
 	w->img.pxl_ptr = mlx_get_data_addr(w->img.ptr_img, &w->img.bits_per_pixel, &w->img.size_line, &w->img.endian_type);
 	//printf("bits_per_pixel: %d\nsize_line: %d\nendian_type: %d\n", w->img.bits_per_pixel, w->img.size_line, w->img.endian_type);
 	w->img.octet_per_pixel = w->img.bits_per_pixel/8;
 	if (w->p.view_mode == 3)
 		fill_3d_map(w);
-	if (w->r.show)//show Move gizmo if needed
+	if (w->obj.showgiz.t)//show Move gizmo if needed
 		move_gizmo(w);
-	draw_circle(w, rotate_giz, 60);
+	else if (w->obj.showgiz.r)//show Rotate gizmo if needed
+		rot_gizmo(w);
 	help(w);
 	return (0);
 }

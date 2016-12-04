@@ -72,6 +72,11 @@ typedef struct		s_point
 
 typedef struct		s_fillsquare
 {
+	int				bol;
+	t_point			*path; //path of point auround square to fill
+	t_point			**nodepath; //liste of node on the same row
+	int				i; // Index id to count point inside path
+	t_line			v; // To be able to get_pointinbetween from line
 	t_point			p;
 	t_point			pr;
 	t_point			pd;
@@ -135,7 +140,6 @@ typedef struct		s_params
 
 typedef struct		s_movegizmo
 {
-	int				show;
 	t_point			t;
 	t_point			p_x; //Points to draw the axles:
 	t_point			pd_x;
@@ -144,6 +148,21 @@ typedef struct		s_movegizmo
 	t_point			p_z;
 	t_point			pd_z;
 }					t_movegizmo;
+
+typedef struct		s_rot_tra_scale
+{
+	int				r;
+	int				t;
+	int				s;
+}					t_rot_tra_scale;
+
+typedef struct		s_obj
+{
+	t_movegizmo		gizt;
+	t_point			center_rgiz;
+	t_rot_tra_scale	showgiz;
+	t_fillsquare	f;
+}					t_obj;
 
 typedef struct		s_wind
 {
@@ -156,7 +175,7 @@ typedef struct		s_wind
 	t_img			img;
 	t_browsefile	b;
 	t_params		p;
-	t_movegizmo		r;
+	t_obj			obj;
 }					t_wind;
 
 #endif

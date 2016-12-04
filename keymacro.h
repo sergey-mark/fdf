@@ -17,6 +17,8 @@
 
 #define EXIT 53
 #define KEY_W 13
+#define KEY_E 101
+#define KEY_R 114
 #define KEY_T 17
 #define KEY_P 35
 #define L_ARROW 123
@@ -50,6 +52,8 @@
 
 #define EXIT 65307
 #define KEY_W 119
+#define KEY_E 101
+#define KEY_R 114
 #define KEY_T 116
 #define KEY_P 112
 #define L_ARROW 65361
