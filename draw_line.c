@@ -66,10 +66,73 @@ t_point		move_to(t_wind *w, t_point p, int param)
 	return (p);
 }
 
-int				get_pointinbetween(t_line v, t_wind *w)
+t_point			*ft_pointnew(int x, int y, int z)
+{
+	t_point		*new;
+
+	new = malloc(sizeof(t_point));
+	new->x = x;
+	new->y = y;
+	new->z = z;
+	return (new);
+}
+
+t_listp_path		*ft_pathinit(t_line v)
+{
+	t_listp_path	*path;
+
+	path = malloc(sizeof(t_listp_path));
+	path->p = ft_pointnew(rint(v.x), rint(v.y), rint(v.z));
+	path->next = NULL;
+	ft_putstr("x: ");
+	ft_putnbr(path->p->x);
+	ft_putstr(" y: ");
+	ft_putnbr(path->p->y);
+	ft_putstr(" z: ");
+	ft_putnbr(path->p->z);
+	ft_putchar('\n');
+	return (path);
+}
+
+t_listp_path		*ft_pathadd(t_listp_path *list, t_listp_path *elem)
+{
+	t_listp_path	*tmp;
+
+	tmp = list;
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	tmp->next = elem;
+	return (list);
+}
+
+t_listp_path		*ft_pathremove(t_listp_path *list, t_listp_path *elem)
+{
+	t_listp_path	*tmp;
+	t_listp_path	*gap;
+
+	tmp = list;
+	while (tmp->next != elem)
+		tmp = tmp->next;
+	gap = tmp->next->next;
+	free(tmp->next);
+	tmp->next = gap;
+	return (list);
+}
+
+
+int				get_pointinbetween(t_point point, t_point pointd, t_wind *w)
 {
 	int			midx;
 	int			midy;
+	t_line		v;
+
+	// convert rotation of point to 2d matrice
+	v.x = point.x;
+	v.y = point.y - point.z;
+	v.z = w->p.color.z;
+	v.xdest = pointd.x;
+	v.ydest = pointd.y - pointd.z;
+	v.zdest = w->p.color.zd;
 
 	midx = v.xdest + ((rint(v.x) - v.xdest)/2); // To calculate mid point of the faces (w->p.dot)
 	midy = v.ydest + ((rint(v.y) - v.ydest)/2); // To calculate mid point of the faces (w->p.dot)
@@ -175,25 +238,12 @@ int				get_pointinbetween(t_line v, t_wind *w)
 				}
 				else if (w->p.graphic_mode == 4 && w->obj.f.bol == 1)
 				{
-					//ft_putendl("J'enregistre les points dans une liste de points");
 					//J'enregistre les points dans une liste de points
-					ft_putendl("bfore x");
-					ft_putnbr(rint(v.x));
-					ft_putendl("");
-					ft_putnbr(rint(v.y));
-					ft_putendl("");
-					ft_putnbr(rint(v.z));
-					ft_putendl("");
-					ft_putendl("inside");
-					ft_putnbr(w->obj.f.i);
-					ft_putendl("");
-					ft_putendl("fgdgdf");
-					w->obj.f.path[w->obj.f.i].x = rint(v.x);
-					ft_putendl("bfore y");
-					w->obj.f.path[w->obj.f.i].y = rint(v.y);
-					ft_putendl("bfore z");
-					w->obj.f.path[w->obj.f.i++].z = rint(v.z);
-					//ft_putendl("J'enregistre les points dans une liste de points");
+					if (w->obj.f.i == 0)
+						w->obj.f.beginpath = ft_pathinit(v);
+					else
+						w->obj.f.beginpath = ft_pathadd(w->obj.f.beginpath, ft_pathinit(v));
+					w->obj.f.i++;
 				}
 				else if (w->p.color.hexa_bool)
 					draw_point(w, rint(v.x), rint(v.y), w->p.color.hexa_default);
@@ -216,8 +266,6 @@ t_point		rotate_point(t_wind *w, t_point dot)
 
 int			draw_line(t_wind *w, t_point point, t_point pointd)
 {
-	t_line	v;
-
 	//BOF Hack to have our figure turn of 45° in rotx. (to start from 0 when the figure is on side, even if we show it with a different start angle)
 	w->p.rot.x += 45;
 	// Do the rotation of the point
@@ -225,14 +273,6 @@ int			draw_line(t_wind *w, t_point point, t_point pointd)
 	pointd = rotate_point(w, pointd);
 	//EOF Hack to have our figure turn of 45° in rotx. 
 	w->p.rot.x -= 45;
-
-	// convert rotation of point to 2d matrice
-	v.x = point.x;
-	v.y = point.y - point.z;
-	v.z = w->p.color.z;
-	v.xdest = pointd.x;
-	v.ydest = pointd.y - pointd.z;
-	v.zdest = w->p.color.zd;
-	get_pointinbetween(v, w);
+	get_pointinbetween(point, pointd, w);
 	return (0);
 }

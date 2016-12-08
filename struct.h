@@ -70,13 +70,25 @@ typedef struct		s_point
 	int				z;
 }					t_point;
 
+typedef struct				s_listp_path
+{
+	t_point					*p;
+	struct s_listp_path		*next;
+}							t_listp_path;
+
+typedef struct				s_listofnodes
+{
+	t_listp_path			*lstp;
+	struct s_listofnodes	*next;
+}							t_listofnodes;
+
 typedef struct		s_fillsquare
 {
 	int				bol;
-	t_point			*path; //path of point auround square to fill
-	t_point			**nodepath; //liste of node on the same row
+	t_listp_path	*path; //path of point auround square to fill
+	t_listp_path	*beginpath;
+	t_listofnodes	*lstnodes;
 	int				i; // Index id to count point inside path
-	t_line			v; // To be able to get_pointinbetween from line
 	t_point			p;
 	t_point			pr;
 	t_point			pd;

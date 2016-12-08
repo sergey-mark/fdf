@@ -104,21 +104,238 @@ static int				fill_square(t_wind *w, t_fillsquare s)
 	return (0);
 }*/
 
+static t_listofnodes		*ft_listofnodes_init(t_listp_path *path)
+{
+	t_listofnodes			*lstnodes;
+
+	lstnodes = malloc(sizeof(t_listofnodes));
+	if (!lstnodes)
+		return (NULL);
+	lstnodes->lstp = path;
+	lstnodes->next = NULL;
+	return (lstnodes);
+}
+
+static t_listofnodes		*ft_listofnodes_add(t_listofnodes *list, t_listofnodes *elem)
+{
+	t_listofnodes			*tmp;
+
+	tmp = list;
+	while (tmp)
+		tmp = tmp->next;
+	tmp = elem;
+	return (tmp);
+}
+
+static void			print_listofnodes(t_listofnodes *lstnodes)
+{
+	t_listofnodes *start;
+	int				i;
+
+	i = 0;
+	start = lstnodes;
+	ft_putstr("print list of nodes: \n");
+	while (lstnodes)
+	{
+		ft_putstr("nodes: ");
+		ft_putnbr(i);
+		ft_putchar('\n');
+		ft_putstr(" x:");
+		ft_putnbr(lstnodes->lstp->p->x);
+		ft_putstr(" y:");
+		ft_putnbr(lstnodes->lstp->p->y);
+		ft_putstr(" z:");
+		ft_putnbr(lstnodes->lstp->p->z);
+		ft_putchar('\n');
+		/*
+		while (lstnodes->lstp->next != NULL)
+		{
+			ft_putstr("||| inside node ");
+			ft_putnbr(i);
+			ft_putstr("}");
+			ft_putstr(" x:");
+			ft_putnbr(lstnodes->lstp->p->x);
+			ft_putchar(' ');
+			ft_putstr(" y:");
+			ft_putnbr(lstnodes->lstp->p->y);
+			ft_putchar(' ');
+			ft_putstr(" z:");
+			ft_putnbr(lstnodes->lstp->p->z);
+			ft_putchar(' ');
+			ft_putchar('\n');
+			lstnodes->lstp = lstnodes->lstp->next;
+		}*/
+		lstnodes = lstnodes->next;
+		i++;
+	}
+	lstnodes = start;
+}
+
+static t_listofnodes		*create_listofnodesperrow_fill(t_listp_path *beginlst, int row_min, int row_max)
+{
+	t_listp_path			*tmp;
+	t_listofnodes			*lstnodes;
+	t_listofnodes			*lstnodesbeg;
+	int						i;
+	int						j;
+	t_line					v;
+	t_listp_path			*elem;
+
+	i = 0;
+	while (row_min < (row_max+1))
+	{
+		ft_putendl("---------------------------------debut node");
+		tmp = beginlst;
+		j = 0;
+		while (tmp)
+		{
+			if (tmp->p->y == row_min && j == 0)
+			{
+				ft_putstr("add node:");
+				ft_putnbr(row_min);
+				if (i == 0)
+				{
+					ft_putendl("(first node)");
+					lstnodesbeg = ft_listofnodes_init(tmp);
+					lstnodes = lstnodesbeg;
+				}
+				else
+				{
+					ft_putendl("(not first node)");
+					lstnodes = ft_listofnodes_add(lstnodes, ft_listofnodes_init(tmp));
+				}
+				ft_putstr("x:");
+				ft_putnbr(lstnodes->lstp->p->x);
+				ft_putstr(" y:");
+				ft_putnbr(lstnodes->lstp->p->y);
+				ft_putstr(" z:");
+				ft_putnbr(lstnodes->lstp->p->z);
+				ft_putstr("\n");
+				i++;
+				j++;
+			}
+			else if (tmp->p->y == row_min && j != 0 && j < 50)
+			{
+				ft_putstr("		add subnode ");
+				ft_putnbr(row_min);
+				ft_putstr(" : ");
+				ft_putnbr(j);
+				ft_putstr(" - ");
+				v.x = tmp->p->x;
+				v.y = tmp->p->y;
+				v.z = tmp->p->z;
+				elem = ft_pathinit(v);
+				lstnodes->lstp = ft_pathadd(lstnodes->lstp, elem);
+				tmp = ft_pathremove(tmp, elem);
+				j++;
+			}
+			tmp = tmp->next;
+		}
+		ft_putendl("---------------------------------fin de node");
+		lstnodes = lstnodes->next;
+		row_min++;
+		j++;
+	}
+	return (lstnodesbeg);
+}
+static int			croissant(int a, int b)
+{
+	return (a <= b);
+}
+
+t_listp_path			*ft_sort_listp(t_listp_path *lst, int (*cmp)(int, int))
+{
+	t_listp_path		*tmp;
+	int					n;
+	int					bol;
+
+	bol = 1;
+	n = 0;
+	while (bol != 0)
+	{
+		bol = 0;
+		tmp = lst;
+		while (tmp->next != NULL)
+		{
+			if ((*cmp)((int)tmp->p->x, (int)tmp->next->p->x) == 0)
+			{
+				n = (int)tmp->p->x;
+				tmp->p->x = tmp->next->p->x;
+				tmp->next->p->x = n;
+				bol++;
+			}
+			tmp = tmp->next;
+		}
+	}
+	return (tmp);
+}
+
+static void			sort_listofnodes(t_listofnodes *lstnodes)
+{
+	t_listofnodes *start;
+
+	start = lstnodes;
+	while (lstnodes)
+	{
+		lstnodes->lstp = ft_sort_listp(lstnodes->lstp, croissant);
+		lstnodes = lstnodes->next;
+	}
+	lstnodes = start;
+}
+/*
+static void			print_listp_path(t_listp_path *lst)
+{
+	t_listp_path	*start;
+
+	start = lst;
+	ft_putendl("print list point path:");
+	while (lst)
+	{
+		ft_putstr("x:");
+		ft_putnbr(lst->p->x);
+		ft_putstr(" y:");
+		ft_putnbr(lst->p->y);
+		ft_putstr(" z:");
+		ft_putnbr(lst->p->z);
+		ft_putchar('\n');
+		lst = lst->next;
+	}
+	lst = start;
+}*/
+
+static void			set_min_max_y(t_listp_path *lstpath, int *row_min, int *row_max)
+{
+	t_listp_path	*tmp;
+
+	// Set of Min and max for the rows
+	tmp = lstpath;
+	*row_min = tmp->p->y;
+	*row_max = tmp->p->y;
+	while (tmp)
+	{
+		if (tmp->p->y < *row_min)
+			*row_min = tmp->p->y;
+		if (tmp->p->y > *row_max)
+			*row_max = tmp->p->y;
+		tmp = tmp->next;
+	}
+	ft_putstr("row_min:\n");
+	ft_putnbr(*row_min);
+	ft_putstr("\n");
+	ft_putstr("row_max:\n");
+	ft_putnbr(*row_max);
+	ft_putstr("\n");
+}
+
 static int			fill_para(int x, int y, t_wind *w)
 {
 	t_fillsquare	s;
-	int				i;
 	int				row_min;
 	int				row_max;
-	int				nodes;
-	int				b;
-	t_point			swap;
 
 	//Var to know when I use fill_para function in get_pointinbetween
 	w->obj.f.bol = 1;
 
-	ft_putendl("fill para 1");
-	i = 0;
 	if ((x<(w->b.nbr_elem_line-1)) && (y<(w->b.nbr_of_line-1)) && (x<(w->b.nbr_elem_line-1) && (y<(w->b.nbr_of_line-1)))) //Si point à droite, actuel, et en dessous et en diagonale à droite
 	{
 		// Point à droite:
@@ -135,77 +352,86 @@ static int			fill_para(int x, int y, t_wind *w)
 		s.pdi.z = (w->b.tab_int[y+1][x+1])*(w->p.zaccentuation);
 		s.pdi.x = w->img.point.x + w->p.x_spacing;
 		s.pdi.y = w->img.point.y + w->p.y_spacing;// Pour afficher remplir toutes les lignes en dessous
-		
-		ft_putendl("fill para 2");
 		w->obj.f.i = 0; //initialisation de i
-		w->obj.f.path = malloc(sizeof(t_point *));
-		if (!w->obj.f.path)
-			return (1);
-
-		ft_putendl("fill para 2a");
 		//get point line from right point to top left point
-		s.v.x = s.pr.x; // Set of first line to get inbetween point
-		s.v.y = s.pr.y - s.pr.z;
-		s.v.z = s.pr.z;
-		s.v.xdest = s.p.x;
-		s.v.ydest = s.p.y - s.p.z;
-		s.v.zdest = s.p.z;
-		ft_putendl("fill para 2ab");
-		get_pointinbetween(s.v, w);
-		ft_putendl("fill para 2ac");
-
-		ft_putendl("fill para 3");
-		//get point line from top left point to bottom left point
-		s.v.x = s.p.x;
-		s.v.y = s.p.y - s.p.z;
-		s.v.z = s.p.z;
-		s.v.xdest = s.pd.x;
-		s.v.ydest = s.pd.y - s.pd.z;
-		s.v.zdest = s.pd.z;
-		get_pointinbetween(s.v, w);
-
-		//get point line from bottom left point to bottom right
-		s.v.x = s.pd.x;
-		s.v.y = s.pd.y - s.pd.z;
-		s.v.z = s.pd.z;
-		s.v.xdest = s.pdi.x;
-		s.v.ydest = s.pdi.y - s.pdi.z;
-		s.v.zdest = s.pdi.z;
-		get_pointinbetween(s.v, w);
-
-		//get point line from bottom right to top right
-		s.v.x = s.pdi.x;
-		s.v.y = s.pdi.y - s.pdi.z;
-		s.v.z = s.pdi.z;
-		s.v.xdest = s.pr.x;
-		s.v.ydest = s.pr.y - s.pr.z;
-		s.v.zdest = s.pr.z;
-		get_pointinbetween(s.v, w);
-
-		ft_putendl("fill para 5");
+		get_pointinbetween(s.pr, s.p, w);
+		get_pointinbetween(s.p, s.pd, w);
+		get_pointinbetween(s.pd, s.pdi, w);
+		get_pointinbetween(s.pdi, s.pr, w);
 		// Normalement l'ensemble du path est récuppéré en liste de point.
-		ft_putstr("number of point in path:\n");
-		ft_putnbr(w->obj.f.i);
-		ft_putstr("\n");
-		// Set of Min and max for the rows
-		row_min = w->obj.f.path[0].y;
-		row_max = w->obj.f.path[0].y;
-		while (i < w->obj.f.i)
-		{
-			if (w->obj.f.path[i].y < row_min)
-				row_min = w->obj.f.path[i].y;
-			if (w->obj.f.path[i].y > row_max)
-				row_max = w->obj.f.path[i].y;
-			i++;
-		}
-		ft_putstr("row_min:\n");
-		ft_putnbr(row_min);
-		ft_putstr("\n");
-		ft_putstr("row_max:\n");
-		ft_putnbr(row_max);
-		ft_putstr("\n");
+		//print_listp_path(w->obj.f.beginpath);
 
-		i = 0;
+		set_min_max_y(w->obj.f.beginpath, &row_min, &row_max);
+
+		create_listofnodesperrow_fill(w->obj.f.beginpath, row_min, row_max);
+		ft_putstr("create_listofnodesperrow_fill done !\n");
+		sort_listofnodes(w->obj.f.lstnodes);
+		ft_putstr("sort_listofnodes done !\n");
+		print_listofnodes(w->obj.f.lstnodes);
+		ft_putstr("print done !\n");
+		//fill_square(w, s);
+	}
+	//Var to know when I use fill_para function in get_pointinbetween
+	w->obj.f.bol = 0;
+	return (0);
+}
+
+int			fill_3d_map(t_wind *w)
+{
+	int		y;
+	int		x;
+	int		z;
+	double	start_x;
+	int		largeurfigure;
+
+	w->img.point.y = (w->b.nbr_of_line * w->p.y_spacing)/2 + w->p.t.y; //On centre la figure au milieu de l'axe de rotation.
+	//w->img.point.y = 0; //On centre la figure au milieu de l'axe de rotation.
+	//w->img.point.y = w->p.t.y; //On centre la figure au milieu de l'axe de rotation.
+	largeurfigure = (w->b.nbr_elem_line)*(w->p.x_spacing);
+	start_x = (w->img.width - largeurfigure)/2 + w->p.t.x; //Centrage de la piece
+	y = 0;
+	while (y < w->b.nbr_of_line)
+	{
+		x = 0;
+		w->img.point.y += w->p.y_spacing;
+		w->img.point.x = start_x; // moins la position de l'axe
+		while (x < w->b.nbr_elem_line)
+		{
+			z = w->b.tab_int[y][x];
+			w->p.color.z = z;//height
+			w->img.point.z = (w->b.tab_int[y][x]+ w->p.t.z)*(w->p.zaccentuation);
+			//ft_putnbr(z);
+			//ft_putchar('-');
+			if (x == w->b.nbr_elem_line/2 && y == w->b.nbr_of_line/2)
+			{
+				w->img.r_point = matrice_rotation(w->img.point, w->p.rot, w->p.r_rot);
+				w->img.x_centerpoint = w->img.r_point.x;
+				w->img.y_centerpoint = (w->img.r_point.y - w->img.r_point.z);
+				w->img.z_centerpoint = w->img.point.y - w->img.point.z;
+				/*
+				ft_putstr("center point:");
+				ft_putnbr(w->img.x_centerpoint);
+				ft_putstr(":");
+				ft_putnbr(w->img.y_centerpoint);
+				ft_putstr(":");
+				ft_putnbr(w->img.z_centerpoint);
+				ft_putchar('\n');*/
+			}
+			checkpoint_allside(x, y, w);
+			if (w->p.graphic_mode == 3)
+				triangulate_para(x, y, w);
+			if (w->p.graphic_mode == 4)
+				fill_para(x, y, w);
+			w->img.point.x += w->p.x_spacing;
+			x++;
+		}
+		//ft_putendl("|");
+		y++;
+	}
+	return (0);
+}
+
+/*i = 0;
 		nodes = 0;
 		//Get nodes for each rows
 		w->obj.f.nodepath = malloc(sizeof(t_point **));
@@ -274,64 +500,5 @@ static int			fill_para(int x, int y, t_wind *w)
 			}
 			i++;
 		}
-		//Var to know when I use fill_para function in get_pointinbetween
-		w->obj.f.bol = 0;
-		//fill_square(w, s);
-	}
-	return (0);
-}
+		*/
 
-int			fill_3d_map(t_wind *w)
-{
-	int		y;
-	int		x;
-	int		z;
-	double	start_x;
-	int		largeurfigure;
-
-	w->img.point.y = (w->b.nbr_of_line * w->p.y_spacing)/2 + w->p.t.y; //On centre la figure au milieu de l'axe de rotation.
-	//w->img.point.y = 0; //On centre la figure au milieu de l'axe de rotation.
-	//w->img.point.y = w->p.t.y; //On centre la figure au milieu de l'axe de rotation.
-	largeurfigure = (w->b.nbr_elem_line)*(w->p.x_spacing);
-	start_x = (w->img.width - largeurfigure)/2 + w->p.t.x; //Centrage de la piece
-	y = 0;
-	while (y < w->b.nbr_of_line)
-	{
-		x = 0;
-		w->img.point.y += w->p.y_spacing;
-		w->img.point.x = start_x; // moins la position de l'axe
-		while (x < w->b.nbr_elem_line)
-		{
-			z = w->b.tab_int[y][x];
-			w->p.color.z = z;//height
-			w->img.point.z = (w->b.tab_int[y][x]+ w->p.t.z)*(w->p.zaccentuation);
-			//ft_putnbr(z);
-			//ft_putchar('-');
-			if (x == w->b.nbr_elem_line/2 && y == w->b.nbr_of_line/2)
-			{
-				w->img.r_point = matrice_rotation(w->img.point, w->p.rot, w->p.r_rot);
-				w->img.x_centerpoint = w->img.r_point.x;
-				w->img.y_centerpoint = (w->img.r_point.y - w->img.r_point.z);
-				w->img.z_centerpoint = w->img.point.y - w->img.point.z;
-				/*
-				ft_putstr("center point:");
-				ft_putnbr(w->img.x_centerpoint);
-				ft_putstr(":");
-				ft_putnbr(w->img.y_centerpoint);
-				ft_putstr(":");
-				ft_putnbr(w->img.z_centerpoint);
-				ft_putchar('\n');*/
-			}
-			checkpoint_allside(x, y, w);
-			if (w->p.graphic_mode == 3)
-				triangulate_para(x, y, w);
-			if (w->p.graphic_mode == 4)
-				fill_para(x, y, w);
-			w->img.point.x += w->p.x_spacing;
-			x++;
-		}
-		//ft_putendl("|");
-		y++;
-	}
-	return (0);
-}
