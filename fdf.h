@@ -39,7 +39,7 @@ void			draw_circle(t_wind *w, t_point centerp, int rayon);
 t_point			rotate_point(t_wind *w, t_point dot);
 int				get_pointinbetween(t_point point, t_point pointd, t_wind *w);
 t_listp_path	*ft_pathadd(t_listp_path *list, t_listp_path *elem);
-t_listp_path	*ft_pathremove(t_listp_path *list, t_listp_path *elem);
+t_listp_path	*ft_pathremove(t_listp_path *list);
 t_listp_path	*ft_pathinit(t_line v);
 
 #endif

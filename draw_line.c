@@ -84,13 +84,14 @@ t_listp_path		*ft_pathinit(t_line v)
 	path = malloc(sizeof(t_listp_path));
 	path->p = ft_pointnew(rint(v.x), rint(v.y), rint(v.z));
 	path->next = NULL;
+	/*
 	ft_putstr("x: ");
 	ft_putnbr(path->p->x);
 	ft_putstr(" y: ");
 	ft_putnbr(path->p->y);
 	ft_putstr(" z: ");
 	ft_putnbr(path->p->z);
-	ft_putchar('\n');
+	ft_putchar('\n');*/
 	return (path);
 }
 
@@ -105,18 +106,21 @@ t_listp_path		*ft_pathadd(t_listp_path *list, t_listp_path *elem)
 	return (list);
 }
 
-t_listp_path		*ft_pathremove(t_listp_path *list, t_listp_path *elem)
+t_listp_path		*ft_pathremove(t_listp_path *list)
 {
 	t_listp_path	*tmp;
 	t_listp_path	*gap;
 
 	tmp = list;
-	while (tmp->next != elem)
-		tmp = tmp->next;
-	gap = tmp->next->next;
-	free(tmp->next);
+	//while (tmp->next != elem)
+		//tmp = tmp->next;
+	if (tmp->next == NULL || tmp->next->next == NULL)
+		gap = NULL;
+	else
+		gap = tmp->next->next;
+	free(tmp);
 	tmp->next = gap;
-	return (list);
+	return (tmp);
 }
 
 

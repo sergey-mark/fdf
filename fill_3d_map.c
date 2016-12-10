@@ -104,15 +104,36 @@ static int				fill_square(t_wind *w, t_fillsquare s)
 	return (0);
 }*/
 
-static t_listofnodes		*ft_listofnodes_init(t_listp_path *path)
+static t_listofnodes		*ft_listofnodes_init(t_listp_path *tmp)
 {
 	t_listofnodes			*lstnodes;
+	t_line					v;
+	t_listp_path			*elem;
 
+	//ft_putendl("init");
 	lstnodes = malloc(sizeof(t_listofnodes));
 	if (!lstnodes)
 		return (NULL);
-	lstnodes->lstp = path;
+	
+	v.x = tmp->p->x;
+	v.y = tmp->p->y;
+	v.z = tmp->p->z;
+	elem = ft_pathinit(v);
+	//ft_putendl("after path init");
+	//lstnodes->lstp = malloc(sizeof(t_listp_path));
+	//ft_putendl("after path init malloc");
+	//lstnodes->lstp = ft_pathadd(lstnodes->lstp, elem);*/
+	lstnodes->lstp = elem;
+	//ft_putendl("after path add");
 	lstnodes->next = NULL;
+	/*ft_putendl("end init");
+	ft_putstr(" x:");
+	ft_putnbr(lstnodes->lstp->p->x);
+	ft_putstr(" y:");
+	ft_putnbr(lstnodes->lstp->p->y);
+	ft_putstr(" z:");
+	ft_putnbr(lstnodes->lstp->p->z);
+	ft_putchar('\n');*/
 	return (lstnodes);
 }
 
@@ -121,128 +142,184 @@ static t_listofnodes		*ft_listofnodes_add(t_listofnodes *list, t_listofnodes *el
 	t_listofnodes			*tmp;
 
 	tmp = list;
-	while (tmp)
+	while (tmp->next != NULL)
+	{
+		/*ft_putendl("Add listnodes");
+		ft_putstr(" x:");
+		ft_putnbr(tmp->lstp->p->x);
+		ft_putstr(" y:");
+		ft_putnbr(tmp->lstp->p->y);
+		ft_putstr(" z:");
+		ft_putnbr(tmp->lstp->p->z);*/
 		tmp = tmp->next;
-	tmp = elem;
+	}
+	tmp->next = elem;
 	return (tmp);
 }
 
-static void			print_listofnodes(t_listofnodes *lstnodes)
+static void					print_listofnodes(t_listofnodes *lstnodes)
 {
-	t_listofnodes *start;
-	int				i;
+	int						i;
+	int						j;
+	t_listofnodes			*tmp;
+	t_listp_path			*path;
 
 	i = 0;
-	start = lstnodes;
+	j = 0;
+	tmp = lstnodes;
+		ft_putstr(" x:");
+		ft_putnbr(tmp->lstp->p->x);
+		ft_putstr(" y:");
+		ft_putnbr(tmp->lstp->p->y);
+		ft_putstr(" z:");
+		ft_putnbr(tmp->lstp->p->z);
+		ft_putchar('\n');
+
 	ft_putstr("print list of nodes: \n");
-	while (lstnodes)
+	while (tmp)
 	{
 		ft_putstr("nodes: ");
 		ft_putnbr(i);
 		ft_putchar('\n');
 		ft_putstr(" x:");
-		ft_putnbr(lstnodes->lstp->p->x);
+		ft_putnbr(tmp->lstp->p->x);
 		ft_putstr(" y:");
-		ft_putnbr(lstnodes->lstp->p->y);
+		ft_putnbr(tmp->lstp->p->y);
 		ft_putstr(" z:");
-		ft_putnbr(lstnodes->lstp->p->z);
+		ft_putnbr(tmp->lstp->p->z);
 		ft_putchar('\n');
-		/*
-		while (lstnodes->lstp->next != NULL)
+		
+		path = tmp->lstp;
+		while (path->next != NULL)
 		{
+			path = path->next;
 			ft_putstr("||| inside node ");
-			ft_putnbr(i);
+			ft_putnbr(j);
 			ft_putstr("}");
 			ft_putstr(" x:");
-			ft_putnbr(lstnodes->lstp->p->x);
+			ft_putnbr(path->p->x);
 			ft_putchar(' ');
 			ft_putstr(" y:");
-			ft_putnbr(lstnodes->lstp->p->y);
+			ft_putnbr(path->p->y);
 			ft_putchar(' ');
 			ft_putstr(" z:");
-			ft_putnbr(lstnodes->lstp->p->z);
+			ft_putnbr(path->p->z);
 			ft_putchar(' ');
 			ft_putchar('\n');
-			lstnodes->lstp = lstnodes->lstp->next;
-		}*/
-		lstnodes = lstnodes->next;
+			j++;
+		}
 		i++;
+		tmp = tmp->next;
 	}
-	lstnodes = start;
 }
 
-static t_listofnodes		*create_listofnodesperrow_fill(t_listp_path *beginlst, int row_min, int row_max)
+static t_listofnodes			*create_listofnodesperrow_fill(t_wind *w, t_listp_path *beginlst, int row_min, int row_max)
 {
 	t_listp_path			*tmp;
 	t_listofnodes			*lstnodes;
-	t_listofnodes			*lstnodesbeg;
 	int						i;
 	int						j;
+	int						k;
 	t_line					v;
 	t_listp_path			*elem;
+	t_listofnodes			*node;
 
-	i = 0;
+	lstnodes = NULL;
+	k = 0;
 	while (row_min < (row_max+1))
 	{
-		ft_putendl("---------------------------------debut node");
+		ft_putstr("---------------------------------debut node");
 		tmp = beginlst;
 		j = 0;
 		while (tmp)
 		{
+			i = 0;
+			ft_putstr("b");
 			if (tmp->p->y == row_min && j == 0)
 			{
-				ft_putstr("add node:");
+				//ft_putstr("add node:");
 				ft_putnbr(row_min);
-				if (i == 0)
+				ft_putchar('\n');
+				if (i != 0)
 				{
-					ft_putendl("(first node)");
-					lstnodesbeg = ft_listofnodes_init(tmp);
-					lstnodes = lstnodesbeg;
+					//ft_putendl("//////////////add");
+					node = ft_listofnodes_init(tmp);
+					/*ft_putstr("x:");
+					ft_putnbr(node->lstp->p->x);
+					ft_putstr("y:");
+					ft_putnbr(node->lstp->p->y);
+					ft_putstr("z:");
+					ft_putnbr(node->lstp->p->z);*/
+					lstnodes = ft_listofnodes_add(w->obj.f.lstnodesbeg, node);
 				}
 				else
 				{
-					ft_putendl("(not first node)");
-					lstnodes = ft_listofnodes_add(lstnodes, ft_listofnodes_init(tmp));
+					ft_putendl("first elem");
+					if (k == 0)
+					{
+						ft_putendl("first time ever !");
+						lstnodes = ft_listofnodes_init(tmp);
+						w->obj.f.lstnodesbeg = lstnodes;
+						k = 1;
+					}
+					else
+					{
+						lstnodes->next = ft_listofnodes_init(tmp);
+						lstnodes = lstnodes->next;
+					}
 				}
+				/*
 				ft_putstr("x:");
 				ft_putnbr(lstnodes->lstp->p->x);
 				ft_putstr(" y:");
 				ft_putnbr(lstnodes->lstp->p->y);
 				ft_putstr(" z:");
 				ft_putnbr(lstnodes->lstp->p->z);
-				ft_putstr("\n");
+				ft_putstr("\n");*/
 				i++;
 				j++;
 			}
 			else if (tmp->p->y == row_min && j != 0 && j < 50)
 			{
-				ft_putstr("		add subnode ");
-				ft_putnbr(row_min);
-				ft_putstr(" : ");
-				ft_putnbr(j);
-				ft_putstr(" - ");
+				/*
+				ft_putendl("inside node");
+				ft_putstr("x:");
+				ft_putnbr(tmp->p->x);
+				ft_putstr(" y:");
+				ft_putnbr(tmp->p->y);
+				ft_putstr(" z:");
+				ft_putnbr(tmp->p->z);
+				ft_putstr("\n");*/
+
+				//ft_putnbr(row_min);
+				//ft_putstr(" : ");
+				//ft_putnbr(j);
+				//ft_putstr(" - ");
 				v.x = tmp->p->x;
 				v.y = tmp->p->y;
 				v.z = tmp->p->z;
 				elem = ft_pathinit(v);
+				//lstnodes->lstp = lstnodes->lstp
 				lstnodes->lstp = ft_pathadd(lstnodes->lstp, elem);
-				tmp = ft_pathremove(tmp, elem);
+				//tmp = ft_pathremove(tmp);
 				j++;
 			}
 			tmp = tmp->next;
 		}
 		ft_putendl("---------------------------------fin de node");
-		lstnodes = lstnodes->next;
+
+		print_listofnodes(w->obj.f.lstnodesbeg);
 		row_min++;
 		j++;
 	}
-	return (lstnodesbeg);
+	return (w->obj.f.lstnodesbeg);
 }
+/*
 static int			croissant(int a, int b)
 {
 	return (a <= b);
-}
-
+}*/
+/*
 t_listp_path			*ft_sort_listp(t_listp_path *lst, int (*cmp)(int, int))
 {
 	t_listp_path		*tmp;
@@ -272,17 +349,23 @@ t_listp_path			*ft_sort_listp(t_listp_path *lst, int (*cmp)(int, int))
 
 static void			sort_listofnodes(t_listofnodes *lstnodes)
 {
-	t_listofnodes *start;
+	t_listofnodes	*start;
+	int				i;
 
+	i = 0;
 	start = lstnodes;
 	while (lstnodes)
 	{
+		ft_putstr("sort_listofnodes:");
+		ft_putnbr(i);
+		ft_putchar('\n');
 		lstnodes->lstp = ft_sort_listp(lstnodes->lstp, croissant);
 		lstnodes = lstnodes->next;
+		i++;
 	}
 	lstnodes = start;
-}
-/*
+}*/
+
 static void			print_listp_path(t_listp_path *lst)
 {
 	t_listp_path	*start;
@@ -301,7 +384,7 @@ static void			print_listp_path(t_listp_path *lst)
 		lst = lst->next;
 	}
 	lst = start;
-}*/
+}
 
 static void			set_min_max_y(t_listp_path *lstpath, int *row_min, int *row_max)
 {
@@ -332,12 +415,14 @@ static int			fill_para(int x, int y, t_wind *w)
 	t_fillsquare	s;
 	int				row_min;
 	int				row_max;
+	static int		bol;
 
 	//Var to know when I use fill_para function in get_pointinbetween
 	w->obj.f.bol = 1;
 
-	if ((x<(w->b.nbr_elem_line-1)) && (y<(w->b.nbr_of_line-1)) && (x<(w->b.nbr_elem_line-1) && (y<(w->b.nbr_of_line-1)))) //Si point à droite, actuel, et en dessous et en diagonale à droite
+	if ((x<(w->b.nbr_elem_line-1)) && (y<(w->b.nbr_of_line-1)) && (x<(w->b.nbr_elem_line-1) && (y<(w->b.nbr_of_line-1))) && bol <= 0) //Si point à droite, actuel, et en dessous et en diagonale à droite
 	{
+		bol = 0;
 		// Point à droite:
 		s.pr.z = (w->b.tab_int[y][x+1])*(w->p.zaccentuation);
 		s.pr.x = w->img.point.x + w->p.x_spacing;
@@ -359,16 +444,17 @@ static int			fill_para(int x, int y, t_wind *w)
 		get_pointinbetween(s.pd, s.pdi, w);
 		get_pointinbetween(s.pdi, s.pr, w);
 		// Normalement l'ensemble du path est récuppéré en liste de point.
-		//print_listp_path(w->obj.f.beginpath);
+		print_listp_path(w->obj.f.beginpath);
 
 		set_min_max_y(w->obj.f.beginpath, &row_min, &row_max);
 
-		create_listofnodesperrow_fill(w->obj.f.beginpath, row_min, row_max);
+		w->obj.f.lstnodesbeg = create_listofnodesperrow_fill(w, w->obj.f.beginpath, row_min, row_max);
 		ft_putstr("create_listofnodesperrow_fill done !\n");
-		sort_listofnodes(w->obj.f.lstnodes);
-		ft_putstr("sort_listofnodes done !\n");
-		print_listofnodes(w->obj.f.lstnodes);
+		print_listofnodes(w->obj.f.lstnodesbeg);
 		ft_putstr("print done !\n");
+		bol++;
+		//sort_listofnodes(w->obj.f.lstnodes);
+		//ft_putstr("sort_listofnodes done !\n");
 		//fill_square(w, s);
 	}
 	//Var to know when I use fill_para function in get_pointinbetween

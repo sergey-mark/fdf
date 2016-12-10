@@ -88,6 +88,7 @@ typedef struct		s_fillsquare
 	t_listp_path	*path; //path of point auround square to fill
 	t_listp_path	*beginpath;
 	t_listofnodes	*lstnodes;
+	t_listofnodes	*lstnodesbeg;
 	int				i; // Index id to count point inside path
 	t_point			p;
 	t_point			pr;
