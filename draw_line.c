@@ -224,35 +224,39 @@ int				get_pointinbetween(t_point point, t_point pointd, t_wind *w)
 				v.y += (v.sign_y * (v.diff_y/v.bigdiff));
 			if (v.z != v.zdest)//For height per color
 				v.z += (v.sign_z * (v.diff_z/v.bigdiff));
-			//check if dot in window to avoid crash
-			if (dot_in_window(w, rint(v.x), rint(v.y)))
+			// Record all point even if not in window
+			if (w->p.graphic_mode == 4 && w->obj.f.bol == 1)
 			{
-				if (w->p.m.button1 == 1 && w->p.paint == 1)
-				{
-					ft_putendl("paint fluid");
-					pencil(w, rint(v.x), rint(v.y));
-				}
-				else if (w->p.dot == 1)
-				{
-					if ((rint(v.x) == midx) && (rint(v.y) == midy))
-					{
-						ft_putendl("mid point");
-						draw_point(w, rint(v.x), rint(v.y), get_color(w, rint(v.z)));
-					}
-				}
-				else if (w->p.graphic_mode == 4 && w->obj.f.bol == 1)
-				{
-					//J'enregistre les points dans une liste de points
-					if (w->obj.f.i == 0)
-						w->obj.f.beginpath = ft_pathinit(v);
-					else
-						w->obj.f.beginpath = ft_pathadd(w->obj.f.beginpath, ft_pathinit(v));
-					w->obj.f.i++;
-				}
-				else if (w->p.color.hexa_bool)
-					draw_point(w, rint(v.x), rint(v.y), w->p.color.hexa_default);
+				//J'enregistre les points dans une liste de points
+				if (w->obj.f.i == 0)
+					w->obj.f.beginpath = ft_pathinit(v);
 				else
-					draw_point(w, rint(v.x), rint(v.y), get_color(w, rint(v.z)));
+					w->obj.f.beginpath = ft_pathadd(w->obj.f.beginpath, ft_pathinit(v));
+				w->obj.f.i++;
+			}
+			else
+			{
+				//check if dot in window to avoid crash
+				if (dot_in_window(w, rint(v.x), rint(v.y)))
+				{
+					if (w->p.m.button1 == 1 && w->p.paint == 1)
+					{
+						ft_putendl("paint fluid");
+						pencil(w, rint(v.x), rint(v.y));
+					}
+					else if (w->p.dot == 1)
+					{
+						if ((rint(v.x) == midx) && (rint(v.y) == midy))
+						{
+							ft_putendl("mid point");
+							draw_point(w, rint(v.x), rint(v.y), get_color(w, rint(v.z)));
+						}
+					}
+					else if (w->p.color.hexa_bool)
+						draw_point(w, rint(v.x), rint(v.y), w->p.color.hexa_default);
+					else
+						draw_point(w, rint(v.x), rint(v.y), get_color(w, rint(v.z)));
+				}
 			}
 		}
 	}
