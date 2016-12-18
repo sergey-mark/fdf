@@ -126,6 +126,7 @@ static int		set_parameters(t_wind *w)
 	w->obj.showgiz.r = 0;
 	w->obj.showgiz.s = 0;
 	w->obj.f.bol = 0; // Var to know when we use fill_para func in get_pointinbetween 
+	w->obj.f.bolfill = 0; //To draw_pixel in get_pointinbetween without recreate 2d matrice
 
 	calc_Zhigh(w);
 	w->p.y_spacing = (w->img.height - w->img.margin*2)/(w->b.nbr_of_line); //y spacing (height)

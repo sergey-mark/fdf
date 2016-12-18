@@ -94,7 +94,7 @@ char			*rgbtohexa(t_rgbcolor rgbcolor)
 
 char			*get_inbetweencolor(char *start_hexa, char *end_hexa, t_wind *w, int z)
 {
-	int			percent;
+	float		percent;
 	int			min;
 	int			max;
 	t_rgbcolor	col;
@@ -106,10 +106,11 @@ char			*get_inbetweencolor(char *start_hexa, char *end_hexa, t_wind *w, int z)
 	end = hexatorgb(end_hexa);
 	min = w->p.color.min;
 	max = w->p.color.max;
-	percent = 100 - ((max-min) - (z - min))*100/(max-min);// Calcul du pourcentage
-	col.r = ((end.r - start.r)*percent/100) + start.r;// Calcul de la couleur
-	col.g = ((end.g - start.g)*percent/100) + start.g;
-	col.b = ((end.b - start.b)*percent/100) + start.b;
+	percent = (float)(z - min)/(max-min);// Calcul du pourcentage
+	//printf("z-min: %f, max-min: %f, result: %f, percent: %f", (float)(z-min), (float)max-min, (float)(z-min)/(max-min), (float)percent);
+	col.r = ((end.r - start.r)*percent) + start.r;// Calcul de la couleur
+	col.g = ((end.g - start.g)*percent) + start.g;
+	col.b = ((end.b - start.b)*percent) + start.b;
 	hexa_color = rgbtohexa(col);
 	return (hexa_color);
 }

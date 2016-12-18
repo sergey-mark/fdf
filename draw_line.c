@@ -132,11 +132,21 @@ int				get_pointinbetween(t_point point, t_point pointd, t_wind *w)
 
 	// convert rotation of point to 2d matrice
 	v.x = point.x;
-	v.y = point.y - point.z;
-	v.z = w->p.color.z;
 	v.xdest = pointd.x;
-	v.ydest = pointd.y - pointd.z;
-	v.zdest = w->p.color.zd;
+	if (w->obj.f.bolfill == 0)
+	{
+		v.y = point.y - point.z;
+		v.z = w->p.color.z;
+		v.ydest = pointd.y - pointd.z;
+		v.zdest = w->p.color.zd;
+	}
+	else
+	{
+		v.y = point.y;
+		v.z = point.z;
+		v.ydest = pointd.y;
+		v.zdest = pointd.z;
+	}
 
 	midx = v.xdest + ((rint(v.x) - v.xdest)/2); // To calculate mid point of the faces (w->p.dot)
 	midy = v.ydest + ((rint(v.y) - v.ydest)/2); // To calculate mid point of the faces (w->p.dot)

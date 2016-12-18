@@ -85,6 +85,7 @@ typedef struct				s_listofnodes
 typedef struct		s_fillsquare
 {
 	int				bol;
+	int				bolfill;
 	t_listp_path	*path; //path of point auround square to fill
 	t_listp_path	*beginpath;
 	t_listofnodes	*lstnodes;

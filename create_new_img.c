@@ -21,7 +21,7 @@ static void		rot_gizmo(t_wind *w)
 	p.x = w->obj.center_rgiz.x + w->obj.gizt.t.x;
 	p.y = w->obj.center_rgiz.y + w->obj.gizt.t.y;
 	p.z = w->obj.center_rgiz.z + w->obj.gizt.t.z;
-	draw_circle(w, p, 60);
+	draw_circle(w, p, 60, "no");
 }
 
 static void		move_gizmo(t_wind *w)

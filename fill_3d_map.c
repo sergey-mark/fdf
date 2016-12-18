@@ -197,21 +197,23 @@ static void					fill_listofnodes(t_wind *w, t_listofnodes *lstnodes)
 			ft_putchar('\n');*/
 			// Draw_line recall get_pointinbetween() func, so we temporary set off the bol parameters to fill the surface:
 			
-			while (path->p->x < path2->p->x)
+			w->obj.f.bol = 0;
+			w->obj.f.bolfill = 1;
+			if (dot_in_window(w, path->p->x, path->p->y))
 			{
-				if (dot_in_window(w, path->p->x, path->p->y))
-				{
 					//We set pointcolor of beginning and and the end point:
 					//w->p.color.z = path->p->z;
 					//w->p.color.zd = path2->p->z;
 					//get_pointinbetween(*path->p, *path2->p, w);
-					draw_point(w, path->p->x, path->p->y, get_color(w, path->p->z));
-				}
-				path->p->x++;
+					//draw_point(w, path->p->x, path->p->y, get_color(w, path->p->z));
+					get_pointinbetween(*path->p, *path2->p, w);
 			}
-			/*w->obj.f.bol = 0;
-			get_pointinbetween(*path->p, *path2->p, w);
-			w->obj.f.bol = 1;*/
+			//while (path->p->x < path2->p->x)
+			//{
+				//path->p->x++;
+			//}
+			w->obj.f.bolfill = 0;
+			w->obj.f.bol = 1;
 			//ft_putendl("before next");
 			if (path->next->next != NULL)
 				path = path->next->next;
@@ -515,23 +517,3 @@ int			fill_3d_map(t_wind *w)
 	}
 	return (0);
 }
-
-/*
-		i = 0;
-		//Fill the pixels between node pairs.
-		while (i < nodes-1)
-		{
-			b = 0;
-			while (w->obj.f.nodepath[i][b].x)
-			{
-				while (w->obj.f.nodepath[i][b].x < w->obj.f.nodepath[i][b+1].x)
-				{
-					draw_point(w, w->obj.f.nodepath[i][b].x, w->obj.f.nodepath[i][b].y, get_color(w, w->obj.f.nodepath[i][b].z));
-					w->obj.f.nodepath[i][b].x++;
-				}
-				b += 2;
-			}
-			i++;
-		}
-		*/
-
