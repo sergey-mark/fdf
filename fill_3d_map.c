@@ -420,26 +420,18 @@ static int			fill_para(int x, int y, t_wind *w)
 		 //Get list of all point(and do not print them)
 		w->p.color.z = w->b.tab_int[y][x+1];  //We set color z high for draw_line
 		w->p.color.zd = w->b.tab_int[y][x];
-		//w->p.color.z = s.pr.z;  //We pass through get_pointinbetween the z high of the point. (and get the color at the end, when restitution with fill instead).
-		//w->p.color.zd = s.p.z;
 		draw_line(w, s.pr, s.p);
 
 		w->p.color.z = w->b.tab_int[y][x];
 		w->p.color.zd = w->b.tab_int[y+1][x];
-		//w->p.color.z = s.p.z;
-		//w->p.color.zd = s.pd.z;
 		draw_line(w, s.p, s.pd);
 
 		w->p.color.z = w->b.tab_int[y+1][x];
 		w->p.color.zd = w->b.tab_int[y+1][x+1];
-		//w->p.color.z = s.pd.z;
-		//w->p.color.zd = s.pdi.z;
 		draw_line(w, s.pd, s.pdi);
 
 		w->p.color.z = w->b.tab_int[y+1][x+1];
 		w->p.color.zd = w->b.tab_int[y][x+1];
-		//w->p.color.z = s.pdi.z;
-		//w->p.color.zd = s.pr.z;
 		draw_line(w, s.pdi, s.pr);
 		// Normalement l'ensemble du path est récuppéré en liste de point.
 		//print_listp_path(w->obj.f.beginpath);

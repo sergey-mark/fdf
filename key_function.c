@@ -393,7 +393,7 @@ int		mouseMotion_function(int x, int y, t_wind *w)
 	spacing_sens = 25;
 	transl_sens = 1000;
 	if (w->p.m.button1 == 1 && w->p.paint == 1)
-		pencil_fluid(w, x, y);
+		pencil(w, x, y);
 	if (w->p.paint == 0)
 	{
 		if (w->p.m.button1 == 1)
