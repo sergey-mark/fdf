@@ -199,27 +199,18 @@ static void					fill_listofnodes(t_wind *w, t_listofnodes *lstnodes)
 			
 			w->obj.f.bol = 0;
 			w->obj.f.bolfill = 1;
-			if (dot_in_window(w, path->p->x, path->p->y))
-			{
+			//if (dot_in_window(w, path->p->x, path->p->y))
+			//{
 					//We set pointcolor of beginning and and the end point:
 					//w->p.color.z = path->p->z;
 					//w->p.color.zd = path2->p->z;
 					//get_pointinbetween(*path->p, *path2->p, w);
 					//draw_point(w, path->p->x, path->p->y, get_color(w, path->p->z));
 					get_pointinbetween(*path->p, *path2->p, w);
-			}
-			//while (path->p->x < path2->p->x)
-			//{
-				//path->p->x++;
 			//}
 			w->obj.f.bolfill = 0;
 			w->obj.f.bol = 1;
-			//ft_putendl("before next");
-			if (path->next->next != NULL)
-				path = path->next->next;
-			else
-				path = path->next;
-			//ft_putendl("af next");
+			path = path->next;
 			j++;
 		}
 		i++;
@@ -393,14 +384,12 @@ static int			fill_para(int x, int y, t_wind *w)
 	t_fillsquare	s;
 	int				row_min;
 	int				row_max;
-	static int		bol;
 
 	//Var to know when I use fill_para function in get_pointinbetween
 	w->obj.f.bol = 1;
 
 	if ((x<(w->b.nbr_elem_line-1)) && (y<(w->b.nbr_of_line-1)) && (x<(w->b.nbr_elem_line-1) && (y<(w->b.nbr_of_line-1)))) //Si point à droite, actuel, et en dessous et en diagonale à droite
 	{
-		bol = 0;
 		// Point à droite:
 		s.pr.x = w->img.point.x + w->p.x_spacing;
 		s.pr.y = w->img.point.y;
@@ -448,7 +437,6 @@ static int			fill_para(int x, int y, t_wind *w)
 		//ft_putstr("Finale Print !\n");
 		//print_listofnodes(w->obj.f.lstnodesbeg);
 		fill_listofnodes(w, w->obj.f.lstnodesbeg);
-		bol++;
 	}
 	//Var to know when I use fill_para function in get_pointinbetween
 	w->obj.f.bol = 0;
@@ -500,7 +488,10 @@ int			fill_3d_map(t_wind *w)
 			if (w->p.graphic_mode == 3)
 				triangulate_para(x, y, w);
 			if (w->p.graphic_mode == 4)
+			{
 				fill_para(x, y, w);
+				checkpoint_allside(x, y, w); // To do the outline override
+			}
 			w->img.point.x += w->p.x_spacing;
 			x++;
 		}
