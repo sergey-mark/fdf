@@ -13,6 +13,7 @@ SRC=	main.c \
 		draw_point.c \
 		draw_line.c \
 		key_function.c \
+		mouse_function.c \
 		draw_circle.c
 OBJ=${SRC:.c=.o}
 
