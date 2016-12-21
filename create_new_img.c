@@ -26,18 +26,18 @@ static void		rot_gizmo(t_wind *w)
 
 static void		move_gizmo(t_wind *w)
 {
-	w->p.color.hexa_bool = 1; // We set custom color set for draw line
+	w->p.color.hexa_bool = 1; 
 	update_mgizmo(w, w->obj.gizt.p_x, w->obj.gizt.pd_x);
 	update_mgizmo(w, w->obj.gizt.p_y, w->obj.gizt.pd_y);
 	update_mgizmo(w, w->obj.gizt.p_z, w->obj.gizt.pd_z);
-	w->p.color.hexa_bool = 0; // We unset custom color set for draw line
+	w->p.color.hexa_bool = 0; 
 }
 
 int				create_new_img(t_wind *w)
 {
 	w->img.ptr_img = mlx_new_image(w->mlx, w->img.width, w->img.height);
 	w->img.pxl_ptr = mlx_get_data_addr(w->img.ptr_img, &w->img.bits_per_pixel, &w->img.size_line, &w->img.endian_type);
-	//printf("bits_per_pixel: %d\nsize_line: %d\nendian_type: %d\n", w->img.bits_per_pixel, w->img.size_line, w->img.endian_type);
+	
 	w->img.octet_per_pixel = w->img.bits_per_pixel/8;
 	if (w->p.view_mode == 2)
 	{
@@ -47,9 +47,9 @@ int				create_new_img(t_wind *w)
 	}
 	if (w->p.view_mode == 3)
 		fill_3d_map(w);
-	if (w->obj.showgiz.t)//show Move gizmo if needed
+	if (w->obj.showgiz.t)
 		move_gizmo(w);
-	else if (w->obj.showgiz.r)//show Rotate gizmo if needed
+	else if (w->obj.showgiz.r)
 		rot_gizmo(w);
 	help(w);
 	return (0);

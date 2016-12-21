@@ -1,6 +1,6 @@
 #include "fdf.h"
 
-// http://www.findsourcecode.com/c-programming/convert-hexadecimal-into-integer-in-c-programming/
+
 int				hextoint(char *s)
 {
 	int			i;
@@ -106,9 +106,9 @@ char			*get_inbetweencolor(char *start_hexa, char *end_hexa, t_wind *w, int z)
 	end = hexatorgb(end_hexa);
 	min = w->p.color.min;
 	max = w->p.color.max;
-	percent = (float)(z - min)/(max-min);// Calcul du pourcentage
-	//printf("z-min: %f, max-min: %f, result: %f, percent: %f", (float)(z-min), (float)max-min, (float)(z-min)/(max-min), (float)percent);
-	col.r = ((end.r - start.r)*percent) + start.r;// Calcul de la couleur
+	percent = (float)(z - min)/(max-min);
+	
+	col.r = ((end.r - start.r)*percent) + start.r;
 	col.g = ((end.g - start.g)*percent) + start.g;
 	col.b = ((end.b - start.b)*percent) + start.b;
 	hexa_color = rgbtohexa(col);
@@ -123,16 +123,16 @@ char			*get_color(t_wind *w, int z)
 		hexacolor = w->p.color.hexa_bot;
 	else if (z > w->p.zlowest && z < w->p.zmid)
 	{
-		w->p.color.min = w->p.zlowest; //pr calcul du pourcentage max
-		w->p.color.max = w->p.zmid; //pr calcul du pourcentage max
+		w->p.color.min = w->p.zlowest; 
+		w->p.color.max = w->p.zmid; 
 		hexacolor = get_inbetweencolor(w->p.color.hexa_bot, w->p.color.hexa_mid, w, z);
 	}
 	else if (z == w->p.zmid)
 		hexacolor = w->p.color.hexa_mid;
 	else if (z > w->p.zmid && z < w->p.zhighest)
 	{
-		w->p.color.min = w->p.zmid; //pr calcul du pourcentage max
-		w->p.color.max = w->p.zhighest; //pr calcul du pourcentage max
+		w->p.color.min = w->p.zmid; 
+		w->p.color.max = w->p.zhighest; 
 		hexacolor = get_inbetweencolor(w->p.color.hexa_mid, w->p.color.hexa_top, w, z);
 	}
 	else
@@ -144,10 +144,10 @@ void			draw_point(t_wind *w, int x, int y, char *hexacolor)
 {
 	t_rgbcolor	rgbcolor;
 
-	rgbcolor = hexatorgb(hexacolor); //Get color from standard affectation
-	//SPLIT D'UN FORMAT CLASSIQUE DE HEXCOLOR ("0xFFFFFF") -> Attention en l'ordre est en little endian cependant! (donc inversé!) (car on est sur un x86))
+	rgbcolor = hexatorgb(hexacolor); 
+	
 	*(w->img.pxl_ptr + (y * w->img.size_line) + (x * w->img.octet_per_pixel)) = rgbcolor.r;
 	*(w->img.pxl_ptr + (y * w->img.size_line) + (x * w->img.octet_per_pixel) + 1) = rgbcolor.g;
 	*(w->img.pxl_ptr + (y * w->img.size_line) + (x * w->img.octet_per_pixel) + 2) = rgbcolor.b;
-	//*(w->img.pxl_ptr + (y * w->img.size_line) + (x)) = 125; //Alpha 50%. Alpha 100%=0. Alpha 0%=255.
+	
 }

@@ -24,7 +24,7 @@ LIB3= -lmlx -framework OpenGL -framework AppKit
 FLAG= -Wall -Werror -Wextra
 KEY= 1
 endif
-ifeq ($(UNAME), Linux) # LINUX :
+ifeq ($(UNAME), Linux) # LINUX
 MINILIBX= make -C minilibx
 LIB= -lm -L libft -lft
 LIB2= -L minilibx -lmlx
@@ -39,7 +39,6 @@ $(NAME):	$(SRC)
 	make -C libft
 	$(MINILIBX)
 	gcc $(FLAG) -o $(NAME) $(SRC) $(LIB) $(LIB2) $(LIB3) -D MACROKEY=$(KEY)
-
 
 clean:
 	rm -rf $(OBJ)

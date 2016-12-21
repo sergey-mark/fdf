@@ -14,7 +14,6 @@
 # define KEYMACRO_H
 
 #if MACROKEY == 1
-
 #define EXIT 53
 #define KEY_W 13
 #define KEY_E 14
@@ -47,9 +46,7 @@
 #define F2 120
 #define F3 99
 #define SPACE 49
-
 #else
-
 #define EXIT 65307
 #define KEY_W 119
 #define KEY_E 101
@@ -82,7 +79,5 @@
 #define F2 65471
 #define F3 65472
 #define SPACE 32
-
 #endif
-
 #endif

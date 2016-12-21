@@ -21,9 +21,9 @@ int			**browsefile(char *filename, int *y, int *x)
 	(*y) = 0;
 	while (get_next_line(fd, &line))
 	{
-		//ft_putendl(line);
+		
 		tab_int[(*y)] = malloc(ft_strlen(line) * sizeof(int));
-		tab = ft_strsplit(line, ' ');//nbr d'elements par lignes
+		tab = ft_strsplit(line, ' ');
 		(*x) = 0;
 		while (tab[(*x)])
 		{

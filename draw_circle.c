@@ -16,8 +16,6 @@ void			draw_circle(t_wind *w, t_point centerp, int rayon, char *hexa_color)
 		pos.x = ((double)rayon * cos(i_rad)) + centerp.x;
 		pos.y = ((double)rayon * sin(i_rad)) + centerp.y;
 		pos.z = centerp.z;
-
-		//pos = rotate_point(w, pos);
 		draw_point(w, pos.x, pos.y, hexa_color);
 		i++;
 	}
@@ -29,7 +27,5 @@ void			draw_circle_fill(t_wind *w, t_point centerp, int rayon, char *hexa_color)
 
 	r = 0;
 	while (r < rayon)
-	{
 		draw_circle(w, centerp, r++, hexa_color);
-	}
 }

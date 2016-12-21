@@ -1,6 +1,3 @@
-
-
-
 #ifndef FDF_H
 
 # define FDF_H
@@ -11,9 +8,6 @@
 #include "keymacro.h"
 #include <math.h>
 #include <stdlib.h>
-
-#include <stdio.h> // A supprimer
-
 int				fdf(char *filename);
 t_wind			create_new_window(char *title, int width, int height);
 int				**browsefile(char *filename, int *y, int *x);
