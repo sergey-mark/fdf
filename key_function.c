@@ -135,7 +135,10 @@ int		keypress_function(int keycode, t_wind *w)
 	{
 		if (w->p.rot.z >= 360 || w->p.rot.z <= -360)
 			w->p.rot.z %= 360;
-		w->p.rot.z -= 5;
+		if (w->p.view_mode == 2)
+			w->p.rot.z += 45;
+		else
+			w->p.rot.z -= 5;
 		ft_putstr("rotz:");
 		ft_putnbr(w->p.rot.z);
 		ft_putchar('\n');
@@ -144,7 +147,10 @@ int		keypress_function(int keycode, t_wind *w)
 	{
 		if (w->p.rot.z >= 360 || w->p.rot.z <= -360)
 			w->p.rot.z %= 360;
-		w->p.rot.z += 5;
+		if (w->p.view_mode == 2)
+			w->p.rot.z -= 45;
+		else
+			w->p.rot.z += 5;
 		ft_putstr("rotz:");
 		ft_putnbr(w->p.rot.z);
 		ft_putchar('\n');

@@ -39,6 +39,12 @@ int				create_new_img(t_wind *w)
 	w->img.pxl_ptr = mlx_get_data_addr(w->img.ptr_img, &w->img.bits_per_pixel, &w->img.size_line, &w->img.endian_type);
 	//printf("bits_per_pixel: %d\nsize_line: %d\nendian_type: %d\n", w->img.bits_per_pixel, w->img.size_line, w->img.endian_type);
 	w->img.octet_per_pixel = w->img.bits_per_pixel/8;
+	if (w->p.view_mode == 2)
+	{
+		if (w->p.rot.z%45 != 0)
+			w->p.rot.z = 45;
+		fill_3d_map(w);
+	}
 	if (w->p.view_mode == 3)
 		fill_3d_map(w);
 	if (w->obj.showgiz.t)//show Move gizmo if needed

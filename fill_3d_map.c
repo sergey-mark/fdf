@@ -490,7 +490,7 @@ int			fill_3d_map(t_wind *w)
 			if (w->p.graphic_mode == 4)
 			{
 				fill_para(x, y, w);
-				checkpoint_allside(x, y, w); // To do the outline override
+				//checkpoint_allside(x, y, w); // To do the outline override
 			}
 			w->img.point.x += w->p.x_spacing;
 			x++;
