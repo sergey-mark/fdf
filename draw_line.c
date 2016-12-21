@@ -262,6 +262,8 @@ int				get_pointinbetween(t_point point, t_point pointd, t_wind *w)
 							draw_point(w, rint(v.x), rint(v.y), get_color(w, rint(v.z)));
 						}
 					}
+					else if (w->obj.f.bolfill == 0 && w->p.graphic_mode == 4)
+						draw_point(w, rint(v.x), rint(v.y), w->p.color.hexa_top);
 					else if (w->p.color.hexa_bool)
 						draw_point(w, rint(v.x), rint(v.y), w->p.color.hexa_default);
 					else
