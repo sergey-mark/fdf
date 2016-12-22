@@ -9,6 +9,7 @@
 #include <math.h>
 #include <stdlib.h>
 int				fdf(char *filename);
+void			def_all_preui(t_wind *w);
 t_wind			create_new_window(char *title, int width, int height);
 int				**browsefile(char *filename, int *y, int *x);
 int				create_new_img(t_wind *w);
@@ -36,5 +37,13 @@ int				get_pointinbetween(t_point point, t_point pointd, t_wind *w);
 t_listp_path	*ft_pathadd(t_listp_path *list, t_listp_path *elem);
 t_listp_path	*ft_pathremove(t_listp_path *list);
 t_listp_path	*ft_pathinit(t_line v);
+char			*rgbtohexa(t_rgbcolor rgbcolor);
+t_rgbcolor		hexatorgb(char *hexcolor);
+t_listofnodes	*create_listofnodesperrow_fill(t_wind *w, t_listp_path *beginlst, int row_min, int row_max);
+void			sort_listofnodes(t_listofnodes *lstnodes);
+void			fill_listofnodes(t_wind *w, t_listofnodes *lstnodes);
+t_line			set_parameters_tline(t_line v);
+t_line			convert_3ddot_to2dline(t_point point, t_point pointd, t_wind *w);
+void			set_minmaxy_lstpath(t_listp_path *lstpath, t_wind *w);
 
 #endif

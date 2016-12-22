@@ -67,7 +67,7 @@ static void		keypress_function03(int keycode, t_wind *w)
 	if (keycode == KEY_4)
 		w->p.graphic_mode = 4;
 	else if (keycode == KEY_I)
-		(w->p.dot == 1) ? (w->p.dot = 0) : (w->p.graphic_mode = 3, w->p.dot = 1);
+		(w->p.dot == 1) ? (w->p.dot = 0) : (w->p.dot = 1);
 	if (keycode == F1)
 		(w->p.help == 1) ? (w->p.help = 0) : (w->p.help = 1);
 	else if (keycode == F2)

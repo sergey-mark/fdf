@@ -3,6 +3,7 @@ UNAME := $(shell uname)
 NAME=fdf
 SRC=	main.c \
 		fdf.c \
+		def_all_preui.c \
 		help.c \
 		create_new_window.c \
 		create_new_img.c \
@@ -15,6 +16,11 @@ SRC=	main.c \
 		key_function.c \
 		mouse_function.c \
 		expose_hook.c \
+		rgbtohexa.c \
+		ft_pathinit.c \
+		ft_listofnodes_init.c \
+		sort_listofnodes.c \
+		set_parameters_tline.c \
 		draw_circle.c
 OBJ=${SRC:.c=.o}
 

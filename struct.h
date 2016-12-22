@@ -53,6 +53,8 @@ typedef struct		s_line
 	float			diff_x;
 	float			diff_y;
 	float			diff_z;
+	int				midx;
+	int				midy;
 }					t_line;
 
 typedef struct		s_dpoint
@@ -94,6 +96,8 @@ typedef struct		s_fillsquare
 	t_point			pr;
 	t_point			pd;
 	t_point			pdi;
+	int				row_min;
+	int				row_max;
 }					t_fillsquare;
 
 typedef struct		s_browsefile
