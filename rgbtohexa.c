@@ -7,12 +7,8 @@ int				hextoint(char *s)
 	int			tot;
 
 	i = 0;
-	if (s[i] == '0')
-	{
-		i++;
-		if (s[i] == 'X' || s[i] == 'x')
-			i++;
-	}
+	if ((s[i] == '0') && (s[i+1] == 'X' || s[i+1] == 'x'))
+		i += 2;
 	numb = 0;
 	tot = 0;
 	while (s[i])

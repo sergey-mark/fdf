@@ -63,6 +63,3 @@ void				set_minmaxy_lstpath(t_listp_path *lstpath, t_wind *w)
 		tmp = tmp->next;
 	}
 }
-
-
-

@@ -11,6 +11,7 @@ SRC=	main.c \
 		get_next_line/get_next_line.c \
 		matrice_rotation.c \
 		fill_3d_map.c \
+		fill_para.c \
 		draw_point.c \
 		draw_line.c \
 		key_function.c \

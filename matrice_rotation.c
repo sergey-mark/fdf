@@ -10,43 +10,32 @@ double		degree_to_radian(int degrees)
 	return (radians);
 }
 
-t_point		matrice_rotation(t_point p, t_point angle, t_dpoint r_angle)
+t_point		matrice_rotation(t_point p, t_point angle, t_dpoint r_angle, t_wind *w)
 {
-	t_point p_r;
-	double	A;
-	double	B;
-	double	C;
-	double	D;
-	double	E;
-	double	F;
-	double	AD;
-	double	BD;
-
 	r_angle.x = degree_to_radian(angle.x);
 	r_angle.y = degree_to_radian(angle.y);
 	r_angle.z = degree_to_radian(angle.z);
-	A = cos(r_angle.x);
-	B = sin(r_angle.x);
-	C = cos(r_angle.y);
-	D = sin(r_angle.y);
-	E = cos(r_angle.z);
-	F = sin(r_angle.z);
-	AD = A * D;
-	BD = B * D;
-	float mat[16];
-	mat[0] = C * E;
-	mat[1] = -C * F;
-	mat[2] = D;
-	mat[4] = BD * E + A * F;
-	mat[5] = -BD * F + A * E;
-	mat[6] = -B * C;
-	mat[8] = -AD * E + B * F;
-	mat[9] = AD * F + B * E;
-	mat[10] = A * C;
-	mat[3] = mat[7] = mat[11] = mat[12] = mat[13] = mat[14] = 0;
-	mat[15] = 1;
-	p_r.x = p.x *(mat[0]) + p.y*(mat[1]) + p.z*(mat[2]);
-	p_r.y = p.x *(mat[4]) + p.y*(mat[5]) + p.z*(mat[6]);
-	p_r.z = p.x *(mat[8]) + p.y*(mat[9]) + p.z*(mat[10]);
-	return (p_r);
+	w->mr.A = cos(r_angle.x);
+	w->mr.B = sin(r_angle.x);
+	w->mr.C = cos(r_angle.y);
+	w->mr.D = sin(r_angle.y);
+	w->mr.E = cos(r_angle.z);
+	w->mr.F = sin(r_angle.z);
+	w->mr.AD = w->mr.A * w->mr.D;
+	w->mr.BD = w->mr.B * w->mr.D;
+	w->mr.mat[0] = w->mr.C * w->mr.E;
+	w->mr.mat[1] = -(w->mr.C) * w->mr.F;
+	w->mr.mat[2] = w->mr.D;
+	w->mr.mat[4] = w->mr.BD * w->mr.E + w->mr.A * w->mr.F;
+	w->mr.mat[5] = -(w->mr.BD) * w->mr.F + w->mr.A * w->mr.E;
+	w->mr.mat[6] = -(w->mr.B) * w->mr.C;
+	w->mr.mat[8] = -(w->mr.AD) * w->mr.E + w->mr.B * w->mr.F;
+	w->mr.mat[9] = w->mr.AD * w->mr.F + w->mr.B * w->mr.E;
+	w->mr.mat[10] = w->mr.A * w->mr.C;
+	w->mr.mat[3] = w->mr.mat[7] = w->mr.mat[11] = w->mr.mat[12] = w->mr.mat[13] = w->mr.mat[14] = 0;
+	w->mr.mat[15] = 1;
+	w->mr.p_r.x = p.x *(w->mr.mat[0]) + p.y*(w->mr.mat[1]) + p.z*(w->mr.mat[2]);
+	w->mr.p_r.y = p.x *(w->mr.mat[4]) + p.y*(w->mr.mat[5]) + p.z*(w->mr.mat[6]);
+	w->mr.p_r.z = p.x *(w->mr.mat[8]) + p.y*(w->mr.mat[9]) + p.z*(w->mr.mat[10]);
+	return (w->mr.p_r);
 }

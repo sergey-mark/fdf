@@ -100,6 +100,20 @@ typedef struct		s_fillsquare
 	int				row_max;
 }					t_fillsquare;
 
+typedef struct		s_matrice_rot
+{
+	double			A;
+	double			B;
+	double			C;
+	double			D;
+	double			E;
+	double			F;
+	double			AD;
+	double			BD;
+	float			mat[16];
+	t_point			p_r;
+}					t_matrice_rot;
+
 typedef struct		s_browsefile
 {
 	int				**tab_int;
@@ -193,6 +207,7 @@ typedef struct		s_wind
 	t_browsefile	b;
 	t_params		p;
 	t_obj			obj;
+	t_matrice_rot	mr;
 }					t_wind;
 
 #endif

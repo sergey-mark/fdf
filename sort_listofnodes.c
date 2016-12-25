@@ -12,9 +12,7 @@ t_listp_path			*ft_sort_listp(t_listp_path *lst, int (*cmp)(int, int))
 	int					mem_z;
 	int					bol;
 
-	bol = 1;
-	mem_x = 0;
-	mem_z = 0;
+	bol = 1, mem_x = 0, mem_z = 0;
 	while (bol != 0)
 	{
 		bol = 0;

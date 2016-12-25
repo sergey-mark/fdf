@@ -73,8 +73,8 @@ int			draw_line(t_wind *w, t_point point, t_point pointd)
 	w->p.rot.x += 45;
 	point = move_to(w, point, 0);
 	pointd = move_to(w, pointd, 0);
-	point = matrice_rotation(point, w->p.rot, w->p.r_rot);
-	pointd = matrice_rotation(pointd, w->p.rot, w->p.r_rot);
+	point = matrice_rotation(point, w->p.rot, w->p.r_rot, w);
+	pointd = matrice_rotation(pointd, w->p.rot, w->p.r_rot, w);
 	point = move_to(w, point, 1);
 	pointd = move_to(w, pointd, 1);
 	w->p.rot.x -= 45;

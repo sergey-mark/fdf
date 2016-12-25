@@ -59,63 +59,53 @@ void						fill_listofnodes(t_wind *w, t_listofnodes *lstnodes)
 	}
 }
 
-t_listofnodes				*create_listofnodesperrow_fill(t_wind *w, t_listp_path *beginlst, int row_min, int row_max)
+static void						ft_create_node_or_elem(t_listofnodes **lstnodes, t_listp_path **tmp, int *j, t_wind **w)
+{
+	t_line					v;
+	int						i;
+
+	i = 0;
+	if ((*tmp)->p->y == (*w)->obj.f.row_min && (*j) == 0)
+	{
+		if (i != 0)
+			*lstnodes = ft_listofnodes_add((*w)->obj.f.lstnodesbeg, ft_listofnodes_init(*tmp));
+		else
+		{
+			(*lstnodes)->next = ft_listofnodes_init(*tmp);
+			*lstnodes = (*lstnodes)->next;
+		}
+		i++;
+		(*j)++;
+	}
+	else if ((*tmp)->p->y == (*w)->obj.f.row_min && (*j)++ != 0)
+	{
+		v.x = (*tmp)->p->x;
+		v.y = (*tmp)->p->y;
+		v.z = (*tmp)->p->z;
+		(*lstnodes)->lstp = ft_pathadd((*lstnodes)->lstp, ft_pathinit(v));
+	}
+}
+
+t_listofnodes				*create_listofnodesperrow_fill(t_wind *w, t_listp_path *beginlst)
 {
 	t_listp_path			*tmp;
 	t_listofnodes			*lstnodes;
-	int						i;
 	int						j;
-	int						k;
-	t_line					v;
-	t_listp_path			*elem;
-	t_listofnodes			*node;
 
 	lstnodes = NULL;
-	k = 0;
-	while (row_min < (row_max+1))
+	tmp = beginlst;
+	lstnodes = ft_listofnodes_init(tmp);
+	w->obj.f.lstnodesbeg = lstnodes;
+	while (w->obj.f.row_min < (w->obj.f.row_max+1))
 	{
 		tmp = beginlst;
 		j = 0;
 		while (tmp)
 		{
-			i = 0;
-			if (tmp->p->y == row_min && j == 0)
-			{
-				if (i != 0)
-				{
-					node = ft_listofnodes_init(tmp);
-					lstnodes = ft_listofnodes_add(w->obj.f.lstnodesbeg, node);
-				}
-				else
-				{
-					if (k == 0)
-					{
-						lstnodes = ft_listofnodes_init(tmp);
-						w->obj.f.lstnodesbeg = lstnodes;
-						k = 1;
-					}
-					else
-					{
-						lstnodes->next = ft_listofnodes_init(tmp);
-						lstnodes = lstnodes->next;
-					}
-				}
-				i++;
-				j++;
-			}
-			else if (tmp->p->y == row_min && j != 0)
-			{
-				v.x = tmp->p->x;
-				v.y = tmp->p->y;
-				v.z = tmp->p->z;
-				elem = ft_pathinit(v);
-				lstnodes->lstp = ft_pathadd(lstnodes->lstp, elem);
-				j++;
-			}
+			ft_create_node_or_elem(&lstnodes, &tmp, &j, &w);
 			tmp = tmp->next;
 		}
-		row_min++;
-		j++;
+		w->obj.f.row_min++;
 	}
 	return (w->obj.f.lstnodesbeg);
 }
