@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rgbtohexa.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/12/27 15:04:05 by pbillett          #+#    #+#             */
+/*   Updated: 2016/12/27 15:08:34 by pbillett         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-int				hextoint(char *s)
+static int		hextoint(char *s)
 {
 	int			i;
 	int			numb;
 	int			tot;
 
 	i = 0;
-	if ((s[i] == '0') && (s[i+1] == 'X' || s[i+1] == 'x'))
+	if ((s[i] == '0') && (s[i + 1] == 'X' || s[i + 1] == 'x'))
 		i += 2;
 	numb = 0;
 	tot = 0;
@@ -20,10 +32,7 @@ int				hextoint(char *s)
 		else if (s[i] >= 'A' && s[i] <= 'F')
 			numb = s[i] - 'A' + 10;
 		else
-		{
-			ft_putstr("error");
-			return (0);
-		}
+			ft_putstr("error color hexa\n");
 		tot = 16 * tot + numb;
 		i++;
 	}
@@ -33,16 +42,16 @@ int				hextoint(char *s)
 t_rgbcolor		hexatorgb(char *hexcolor)
 {
 	t_rgbcolor	rgbcolor;
-	char		*R;
-	char		*G;
-	char		*B;
+	char		*r;
+	char		*g;
+	char		*b;
 
-	B = ft_strjoin("0x", ft_strsub(hexcolor, 2, 2));
-	G = ft_strjoin("0x", ft_strsub(hexcolor, 4, 2));
-	R = ft_strjoin("0x", ft_strsub(hexcolor, 6, 2));
-	rgbcolor.r = hextoint(R);
-	rgbcolor.g = hextoint(G);
-	rgbcolor.b = hextoint(B);
+	b = ft_strjoin("0x", ft_strsub(hexcolor, 2, 2));
+	g = ft_strjoin("0x", ft_strsub(hexcolor, 4, 2));
+	r = ft_strjoin("0x", ft_strsub(hexcolor, 6, 2));
+	rgbcolor.r = hextoint(r);
+	rgbcolor.g = hextoint(g);
+	rgbcolor.b = hextoint(b);
 	return (rgbcolor);
 }
 
@@ -56,17 +65,17 @@ char			*inttohex(int n)
 	i = 0;
 	hex[i++] = '0';
 	hex[i++] = 'x';
-	dizaine = n/16;
+	dizaine = n / 16;
 	if (dizaine < 10)
 		hex[i++] = dizaine + '0';
 	else
-		hex[i++] = dizaine%10 + 'A';
-	n = n - (dizaine*16);
+		hex[i++] = dizaine % 10 + 'A';
+	n = n - (dizaine * 16);
 	if (n < 10)
 		hex[i++] = n + '0';
 	else
-		hex[i++] = n%10 + 'A';
-	return(hex);
+		hex[i++] = n % 10 + 'A';
+	return (hex);
 }
 
 char			*rgbtohexa(t_rgbcolor rgbcolor)

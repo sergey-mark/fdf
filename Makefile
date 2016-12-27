@@ -15,6 +15,7 @@ SRC=	main.c \
 		draw_point.c \
 		draw_line.c \
 		key_function.c \
+		keypress_function02.c \
 		mouse_function.c \
 		expose_hook.c \
 		rgbtohexa.c \

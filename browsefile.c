@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   browsefile.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/12/27 13:37:09 by pbillett          #+#    #+#             */
+/*   Updated: 2016/12/27 16:58:54 by pbillett         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 int			**browsefile(char *filename, int *y, int *x)
@@ -17,11 +29,10 @@ int			**browsefile(char *filename, int *y, int *x)
 	(*y) = 0;
 	while (get_next_line(fd1, &line))
 		(*y)++;
-	tab_int = malloc(((*y)+1) * sizeof(int *));
+	tab_int = malloc(((*y) + 1) * sizeof(int *));
 	(*y) = 0;
 	while (get_next_line(fd, &line))
 	{
-		
 		tab_int[(*y)] = malloc(ft_strlen(line) * sizeof(int));
 		tab = ft_strsplit(line, ' ');
 		(*x) = 0;
@@ -32,5 +43,7 @@ int			**browsefile(char *filename, int *y, int *x)
 		}
 		(*y)++;
 	}
+	close(fd);
+	close(fd1);
 	return (tab_int);
 }

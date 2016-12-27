@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pathinit.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/12/27 14:41:29 by pbillett          #+#    #+#             */
+/*   Updated: 2016/12/27 14:42:11 by pbillett         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-t_point			*ft_pointnew(int x, int y, int z)
+t_point				*ft_pointnew(int x, int y, int z)
 {
-	t_point		*new;
+	t_point			*new;
 
 	new = malloc(sizeof(t_point));
 	new->x = x;
@@ -56,10 +68,10 @@ void				set_minmaxy_lstpath(t_listp_path *lstpath, t_wind *w)
 	w->obj.f.row_max = tmp->p->y;
 	while (tmp)
 	{
-	if (tmp->p->y < w->obj.f.row_min)
-		w->obj.f.row_min = tmp->p->y;
-	if (tmp->p->y > w->obj.f.row_max)
-		w->obj.f.row_max = tmp->p->y;
+		if (tmp->p->y < w->obj.f.row_min)
+			w->obj.f.row_min = tmp->p->y;
+		if (tmp->p->y > w->obj.f.row_max)
+			w->obj.f.row_max = tmp->p->y;
 		tmp = tmp->next;
 	}
 }

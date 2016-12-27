@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   set_parameters_tline.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/12/27 15:10:43 by pbillett          #+#    #+#             */
+/*   Updated: 2016/12/27 15:10:55 by pbillett         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-static int			get_sign(int first, int second)
+static int	get_sign(int first, int second)
 {
 	int		sign;
 
@@ -13,7 +25,7 @@ static int			get_sign(int first, int second)
 	return (sign);
 }
 
-static int			get_diff(int first, int second)
+static int	get_diff(int first, int second)
 {
 	int		i;
 
@@ -37,9 +49,9 @@ static int			get_diff(int first, int second)
 	return (i);
 }
 
-t_line			convert_3ddot_to2dline(t_point point, t_point pointd, t_wind *w)
+t_line		convert_3ddot_to2dline(t_point point, t_point pointd, t_wind *w)
 {
-	t_line		v;
+	t_line	v;
 
 	v.x = point.x;
 	v.xdest = pointd.x;
@@ -60,10 +72,10 @@ t_line			convert_3ddot_to2dline(t_point point, t_point pointd, t_wind *w)
 	return (v);
 }
 
-t_line			set_parameters_tline(t_line v)
+t_line		set_parameters_tline(t_line v)
 {
-	v.midx = v.xdest + ((rint(v.x) - v.xdest)/2); 
-	v.midy = v.ydest + ((rint(v.y) - v.ydest)/2); 
+	v.midx = v.xdest + ((rint(v.x) - v.xdest) / 2);
+	v.midy = v.ydest + ((rint(v.y) - v.ydest) / 2);
 	v.sign_x = get_sign(v.x, v.xdest);
 	v.sign_y = get_sign(v.y, v.ydest);
 	v.sign_z = get_sign(v.z, v.zdest);

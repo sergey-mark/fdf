@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   create_new_img.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/12/27 13:38:35 by pbillett          #+#    #+#             */
+/*   Updated: 2016/12/27 13:40:00 by pbillett         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 static void		update_mgizmo(t_wind *w, t_point b, t_point bd)
@@ -26,22 +38,22 @@ static void		rot_gizmo(t_wind *w)
 
 static void		move_gizmo(t_wind *w)
 {
-	w->p.color.hexa_bool = 1; 
+	w->p.color.hexa_bool = 1;
 	update_mgizmo(w, w->obj.gizt.p_x, w->obj.gizt.pd_x);
 	update_mgizmo(w, w->obj.gizt.p_y, w->obj.gizt.pd_y);
 	update_mgizmo(w, w->obj.gizt.p_z, w->obj.gizt.pd_z);
-	w->p.color.hexa_bool = 0; 
+	w->p.color.hexa_bool = 0;
 }
 
 int				create_new_img(t_wind *w)
 {
 	w->img.ptr_img = mlx_new_image(w->mlx, w->img.width, w->img.height);
-	w->img.pxl_ptr = mlx_get_data_addr(w->img.ptr_img, &w->img.bits_per_pixel, &w->img.size_line, &w->img.endian_type);
-	
-	w->img.octet_per_pixel = w->img.bits_per_pixel/8;
+	w->img.pxl_ptr = mlx_get_data_addr(w->img.ptr_img, &w->img.bits_per_pixel,
+	&w->img.size_line, &w->img.endian_type);
+	w->img.octet_per_pixel = w->img.bits_per_pixel / 8;
 	if (w->p.view_mode == 2)
 	{
-		if (w->p.rot.z%45 != 0)
+		if (w->p.rot.z % 45 != 0)
 			w->p.rot.z = 45;
 		fill_3d_map(w);
 	}
@@ -54,4 +66,3 @@ int				create_new_img(t_wind *w)
 	help(w);
 	return (0);
 }
-

@@ -100,6 +100,12 @@ typedef struct		s_fillsquare
 	int				row_max;
 }					t_fillsquare;
 
+typedef struct		s_sortlistp
+{
+	int				mem_x;
+	int				mem_z;
+}					t_sortlistp;
+
 typedef struct		s_matrice_rot
 {
 	double			A;

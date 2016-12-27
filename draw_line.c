@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_line.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/12/27 13:42:59 by pbillett          #+#    #+#             */
+/*   Updated: 2016/12/27 13:52:23 by pbillett         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 int			dot_in_window(t_wind *w, int x, int y)
@@ -29,7 +41,7 @@ t_point		move_to(t_wind *w, t_point p, int param)
 	return (p);
 }
 
-static void			cond_getpoint_draw(t_wind *w, t_line v)
+static void	cond_getpoint_draw(t_wind *w, t_line v)
 {
 	if ((w->p.dot == 1) && ((rint(v.x) == v.midx) && (rint(v.y) == v.midy)))
 		draw_point(w, rint(v.x), rint(v.y), get_color(w, rint(v.z)));
@@ -41,26 +53,28 @@ static void			cond_getpoint_draw(t_wind *w, t_line v)
 		draw_point(w, rint(v.x), rint(v.y), get_color(w, rint(v.z)));
 }
 
-int				get_pointinbetween(t_point point, t_point pointd, t_wind *w)
+int			get_pointinbetween(t_point point, t_point pointd, t_wind *w)
 {
-	t_line		v;
+	t_line	v;
 
 	v = convert_3ddot_to2dline(point, pointd, w);
 	v = set_parameters_tline(v);
 	if ((w->p.graphic_mode == 1) && (dot_in_window(w, rint(v.x), rint(v.y))))
-		draw_point(w, (int)rint(v.x), (int)rint(v.y), get_color(w, w->img.point.z));
-	else 
+		draw_point(w, (int)rint(v.x), (int)rint(v.y),
+		get_color(w, w->img.point.z));
+	else
 	{
 		while (rint(v.x) != v.xdest || rint(v.y) != v.ydest)
 		{
 			if (v.x != v.xdest)
-				v.x += (v.sign_x * (v.diff_x/v.bigdiff));
+				v.x += (v.sign_x * (v.diff_x / v.bigdiff));
 			if (v.y != v.ydest)
-				v.y += (v.sign_y * (v.diff_y/v.bigdiff));
+				v.y += (v.sign_y * (v.diff_y / v.bigdiff));
 			if (v.z != v.zdest)
-				v.z += (v.sign_z * (v.diff_z/v.bigdiff));
+				v.z += (v.sign_z * (v.diff_z / v.bigdiff));
 			if (w->p.graphic_mode == 4 && w->obj.f.bol == 1)
-				(w->obj.f.i++ == 0) ? (w->obj.f.beginpath = ft_pathinit(v)) : (w->obj.f.beginpath = ft_pathadd(w->obj.f.beginpath, ft_pathinit(v)));
+				(w->obj.f.i++ == 0) ? (w->obj.f.beginpath = ft_pathinit(v)) :
+		(w->obj.f.beginpath = ft_pathadd(w->obj.f.beginpath, ft_pathinit(v)));
 			else if (dot_in_window(w, rint(v.x), rint(v.y)))
 				cond_getpoint_draw(w, v);
 		}
