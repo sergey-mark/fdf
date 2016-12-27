@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/08 14:44:56 by pbillett          #+#    #+#             */
-/*   Updated: 2016/12/20 09:46:38 by pbillett         ###   ########.fr       */
+/*   Updated: 2016/12/27 13:04:26 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@
 #define KEY_3 20
 #define KEY_4 21
 #define KEY_I 34
-#define F1 122
-#define F2 120
-#define F3 99
+#define F1 23
+#define F2 22
+#define F3 26
 #define SPACE 49
 #else
 #define EXIT 65307

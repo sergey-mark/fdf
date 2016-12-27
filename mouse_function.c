@@ -50,8 +50,8 @@ int		mousepress_function(int button, int x, int y, t_wind *w)
 
 int		mouseRelease_function(int button, int x, int y, t_wind *w)
 {
-	ft_putnbr(x);
-	ft_putnbr(y);
+	w->p.m.mem_posx = x;
+	w->p.m.mem_posy = y;
 	if (button == 1)
 		w->p.m.button1 = 0;
 	else if (button == 2)
