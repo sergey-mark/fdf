@@ -43,6 +43,8 @@ t_point		move_to(t_wind *w, t_point p, int param)
 
 static void	cond_getpoint_draw(t_wind *w, t_line v)
 {
+	char	*col;
+
 	if ((w->p.dot == 1) && ((rint(v.x) == v.midx) && (rint(v.y) == v.midy)))
 		draw_point(w, rint(v.x), rint(v.y), get_color(w, rint(v.z)));
 	else if (w->obj.f.bolfill == 0 && w->p.graphic_mode == 4)
@@ -50,7 +52,11 @@ static void	cond_getpoint_draw(t_wind *w, t_line v)
 	else if (w->p.color.hexa_bool)
 		draw_point(w, rint(v.x), rint(v.y), w->p.color.hexa_default);
 	else
-		draw_point(w, rint(v.x), rint(v.y), get_color(w, rint(v.z)));
+	{
+		col = get_color(w, rint(v.z));
+		draw_point(w, rint(v.x), rint(v.y), col);
+		ft_strdel(&col);
+	}
 }
 
 int			get_pointinbetween(t_point point, t_point pointd, t_wind *w)

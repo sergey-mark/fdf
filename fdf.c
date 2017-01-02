@@ -43,6 +43,7 @@ static int		set_parameters(t_wind *w)
 	w->p.m.button2 = 0;
 	w->p.m.button3 = 0;
 	w->p.paint = 0;
+	w->p.dot = 0;
 	set_gizmo(w);
 	w->obj.f.bol = 0;
 	w->obj.f.bolfill = 0;

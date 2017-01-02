@@ -45,13 +45,27 @@ t_rgbcolor		hexatorgb(char *hexcolor)
 	char		*r;
 	char		*g;
 	char		*b;
+	char		*begin;
+	char		*hexpart;
 
-	b = ft_strjoin("0x", ft_strsub(hexcolor, 2, 2));
-	g = ft_strjoin("0x", ft_strsub(hexcolor, 4, 2));
-	r = ft_strjoin("0x", ft_strsub(hexcolor, 6, 2));
+	begin = ft_strnew(2);
+	begin = ft_strcpy(begin, "0x");
+	hexpart = ft_strsub(hexcolor, 2, 2);
+	b = ft_strjoin(begin, hexpart);
+	ft_strdel(&hexpart);
+	hexpart = ft_strsub(hexcolor, 4, 2);
+	g = ft_strjoin(begin, hexpart);
+	ft_strdel(&hexpart);
+	hexpart = ft_strsub(hexcolor, 6, 2);
+	r = ft_strjoin(begin, hexpart);
+	ft_strdel(&hexpart);
+	ft_strdel(&begin);
 	rgbcolor.r = hextoint(r);
 	rgbcolor.g = hextoint(g);
 	rgbcolor.b = hextoint(b);
+	ft_strdel(&r);
+	ft_strdel(&g);
+	ft_strdel(&b);
 	return (rgbcolor);
 }
 
@@ -82,16 +96,25 @@ char			*rgbtohexa(t_rgbcolor rgbcolor)
 {
 	char		*hexa_color;
 	int			i;
+	char		*r;
+	char		*g;
+	char		*b;
 
 	i = 0;
-	hexa_color = ft_strnew(8);
+	hexa_color = ft_strnew(9);
+	r = inttohex(rgbcolor.r);
+	g = inttohex(rgbcolor.g);
+	b = inttohex(rgbcolor.b);
 	hexa_color[i++] = '0';
 	hexa_color[i++] = 'x';
-	hexa_color[i++] = inttohex(rgbcolor.r)[2];
-	hexa_color[i++] = inttohex(rgbcolor.r)[3];
-	hexa_color[i++] = inttohex(rgbcolor.g)[2];
-	hexa_color[i++] = inttohex(rgbcolor.g)[3];
-	hexa_color[i++] = inttohex(rgbcolor.b)[2];
-	hexa_color[i++] = inttohex(rgbcolor.b)[3];
+	hexa_color[i++] = r[2];
+	hexa_color[i++] = r[3];
+	hexa_color[i++] = g[2];
+	hexa_color[i++] = g[3];
+	hexa_color[i++] = b[2];
+	hexa_color[i++] = b[3];
+	ft_strdel(&r);
+	ft_strdel(&g);
+	ft_strdel(&b);
 	return (hexa_color);
 }

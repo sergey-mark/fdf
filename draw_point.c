@@ -32,17 +32,13 @@ char			*get_color(t_wind *w, int z)
 {
 	char		*hexacolor;
 
-	if (z <= w->p.zlowest)
-		hexacolor = w->p.color.hexa_bot;
-	else if (z > w->p.zlowest && z < w->p.zmid)
+	if (z > w->p.zlowest && z < w->p.zmid)
 	{
 		w->p.color.min = w->p.zlowest;
 		w->p.color.max = w->p.zmid;
 		hexacolor = get_inbetweencolor(w->p.color.hexa_bot,
 		w->p.color.hexa_mid, w, z);
 	}
-	else if (z == w->p.zmid)
-		hexacolor = w->p.color.hexa_mid;
 	else if (z > w->p.zmid && z < w->p.zhighest)
 	{
 		w->p.color.min = w->p.zmid;
@@ -51,7 +47,15 @@ char			*get_color(t_wind *w, int z)
 		w->p.color.hexa_top, w, z);
 	}
 	else
-		hexacolor = w->p.color.hexa_top;
+	{
+		hexacolor = malloc(9);
+		if (z <= w->p.zlowest)
+			hexacolor = ft_strcpy(hexacolor, w->p.color.hexa_bot);
+		else if (z == w->p.zmid)
+			hexacolor = ft_strcpy(hexacolor, w->p.color.hexa_mid);
+		else
+			hexacolor = ft_strcpy(hexacolor, w->p.color.hexa_top);
+	}
 	return (hexacolor);
 }
 
