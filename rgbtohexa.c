@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 15:04:05 by pbillett          #+#    #+#             */
-/*   Updated: 2016/12/27 15:08:34 by pbillett         ###   ########.fr       */
+/*   Updated: 2017/01/03 17:42:58 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,27 +39,31 @@ static int		hextoint(char *s)
 	return (tot);
 }
 
+static char		*ft_mini_sub_hexajoin(char *hexcolor, int begin_numb)
+{
+	char		*hexpart;
+	char		*begin;
+	char		*result;
+
+	begin = ft_strnew(2);
+	begin = ft_strcpy(begin, "0x");
+	hexpart = ft_strsub(hexcolor, begin_numb, 2);
+	result = ft_strjoin(begin, hexpart);
+	ft_strdel(&hexpart);
+	ft_strdel(&begin);
+	return (result);
+}
+
 t_rgbcolor		hexatorgb(char *hexcolor)
 {
 	t_rgbcolor	rgbcolor;
 	char		*r;
 	char		*g;
 	char		*b;
-	char		*begin;
-	char		*hexpart;
 
-	begin = ft_strnew(2);
-	begin = ft_strcpy(begin, "0x");
-	hexpart = ft_strsub(hexcolor, 2, 2);
-	b = ft_strjoin(begin, hexpart);
-	ft_strdel(&hexpart);
-	hexpart = ft_strsub(hexcolor, 4, 2);
-	g = ft_strjoin(begin, hexpart);
-	ft_strdel(&hexpart);
-	hexpart = ft_strsub(hexcolor, 6, 2);
-	r = ft_strjoin(begin, hexpart);
-	ft_strdel(&hexpart);
-	ft_strdel(&begin);
+	b = ft_mini_sub_hexajoin(hexcolor, 2);
+	g = ft_mini_sub_hexajoin(hexcolor, 4);
+	r = ft_mini_sub_hexajoin(hexcolor, 6);
 	rgbcolor.r = hextoint(r);
 	rgbcolor.g = hextoint(g);
 	rgbcolor.b = hextoint(b);

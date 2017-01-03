@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 13:52:55 by pbillett          #+#    #+#             */
-/*   Updated: 2016/12/27 14:06:23 by pbillett         ###   ########.fr       */
+/*   Updated: 2017/01/03 17:11:48 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,20 @@ char			*get_inbetweencolor(char *s_hex, char *e_hex, t_wind *w, int z)
 	return (rgbtohexa(col));
 }
 
+static char		*get_color_fixed_value(t_wind *w, int z)
+{
+	char		*hexacolor;
+
+	hexacolor = malloc(9);
+	if (z <= w->p.zlowest)
+		hexacolor = ft_strcpy(hexacolor, w->p.color.hexa_bot);
+	else if (z == w->p.zmid)
+		hexacolor = ft_strcpy(hexacolor, w->p.color.hexa_mid);
+	else
+		hexacolor = ft_strcpy(hexacolor, w->p.color.hexa_top);
+	return (hexacolor);
+}
+
 char			*get_color(t_wind *w, int z)
 {
 	char		*hexacolor;
@@ -47,15 +61,7 @@ char			*get_color(t_wind *w, int z)
 		w->p.color.hexa_top, w, z);
 	}
 	else
-	{
-		hexacolor = malloc(9);
-		if (z <= w->p.zlowest)
-			hexacolor = ft_strcpy(hexacolor, w->p.color.hexa_bot);
-		else if (z == w->p.zmid)
-			hexacolor = ft_strcpy(hexacolor, w->p.color.hexa_mid);
-		else
-			hexacolor = ft_strcpy(hexacolor, w->p.color.hexa_top);
-	}
+		hexacolor = get_color_fixed_value(w, z);
 	return (hexacolor);
 }
 
