@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 15:21:23 by pbillett          #+#    #+#             */
-/*   Updated: 2016/12/27 15:24:51 by pbillett         ###   ########.fr       */
+/*   Updated: 2017/01/03 18:42:01 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int					fill_para(int x, int y, t_wind *w)
 		create_listofnodesperrow_fill(w, w->obj.f.beginpath);
 		sort_listofnodes(w->obj.f.lstnodesbeg);
 		fill_listofnodes(w, w->obj.f.lstnodesbeg);
+		ft_free_lstofnodes(w->obj.f.lstnodesbeg);
 	}
 	w->obj.f.bol = 0;
 	return (0);

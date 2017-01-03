@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 14:41:29 by pbillett          #+#    #+#             */
-/*   Updated: 2016/12/27 14:42:11 by pbillett         ###   ########.fr       */
+/*   Updated: 2017/01/03 18:27:37 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,17 @@ t_listp_path		*ft_pathadd(t_listp_path *list, t_listp_path *elem)
 	return (list);
 }
 
-t_listp_path		*ft_pathremove(t_listp_path *list)
+t_listp_path		*ft_freepath(t_listp_path *list)
 {
 	t_listp_path	*tmp;
-	t_listp_path	*gap;
 
 	tmp = list;
-	if (tmp->next == NULL || tmp->next->next == NULL)
-		gap = NULL;
-	else
-		gap = tmp->next->next;
-	free(tmp);
-	tmp->next = gap;
+	while (tmp)
+	{
+		free(tmp->p);
+		free(tmp);
+		tmp = tmp->next;
+	}
 	return (tmp);
 }
 

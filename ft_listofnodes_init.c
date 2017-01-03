@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 14:38:27 by pbillett          #+#    #+#             */
-/*   Updated: 2016/12/27 14:40:16 by pbillett         ###   ########.fr       */
+/*   Updated: 2017/01/03 18:48:56 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,26 @@ t_listofnodes *elem)
 		tmp = tmp->next;
 	tmp->next = elem;
 	return (tmp);
+}
+
+void				ft_free_lstofnodes(t_listofnodes *lstnodes)
+{
+	t_listofnodes	*tmp;
+	t_listp_path	*path;
+
+	tmp = lstnodes;
+	while (tmp)
+	{
+		path = tmp->lstp;
+		while (path->next != NULL)
+		{
+			free(path->p);
+			free(path);
+			path = path->next;
+		}
+		free(tmp);
+		tmp = tmp->next;
+	}
 }
 
 void				fill_listofnodes(t_wind *w, t_listofnodes *lstnodes)
@@ -117,5 +137,6 @@ t_listp_path *beginlst)
 		}
 		w->obj.f.row_min++;
 	}
+	ft_freepath(beginlst);
 	return (w->obj.f.lstnodesbeg);
 }
