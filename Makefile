@@ -23,6 +23,7 @@ SRC=	main.c \
 		ft_listofnodes_init.c \
 		sort_listofnodes.c \
 		set_parameters_tline.c \
+		ft_listofnode_free.c \
 		draw_circle.c
 OBJ=${SRC:.c=.o}
 

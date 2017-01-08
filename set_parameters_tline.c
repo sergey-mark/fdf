@@ -49,6 +49,16 @@ static int	get_diff(int first, int second)
 	return (i);
 }
 
+t_line				ft_conv_tpoint_to_tline_coord(t_point p)
+{
+	t_line			t;
+
+	t.x = p.x;
+	t.y = p.y;
+	t.z = p.z;
+	return (t);
+}
+
 t_line		convert_3ddot_to2dline(t_point point, t_point pointd, t_wind *w)
 {
 	t_line	v;

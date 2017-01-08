@@ -48,6 +48,9 @@ t_line			set_parameters_tline(t_line v);
 t_line			convert_3ddot_to2dline(t_point point, t_point pointd, t_wind *w);
 void			set_minmaxy_lstpath(t_listp_path *lstpath, t_wind *w);
 t_listp_path	*ft_freepath(t_listp_path *list);
-void			ft_free_lstofnodes(t_listofnodes *lst);
+void			ft_listofnodes_free(t_listofnodes *lst);
+t_point			*ft_pointnew(int x, int y, int z);
+void			ft_listofnodes_free(t_listofnodes *lstnodes);
+t_line			ft_conv_tpoint_to_tline_coord(t_point p);
 
 #endif

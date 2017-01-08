@@ -47,14 +47,17 @@ t_listp_path		*ft_pathadd(t_listp_path *list, t_listp_path *elem)
 t_listp_path		*ft_freepath(t_listp_path *list)
 {
 	t_listp_path	*tmp;
+	t_listp_path	*prev;
 
 	tmp = list;
 	while (tmp)
 	{
-		free(tmp->p);
-		free(tmp);
+		prev = tmp;
 		tmp = tmp->next;
+		free(prev->p);
+		free(prev);
 	}
+	tmp = NULL;
 	return (tmp);
 }
 

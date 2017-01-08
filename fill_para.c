@@ -51,9 +51,10 @@ int					fill_para(int x, int y, t_wind *w)
 		rec_allppsquareface(w, x, y, s);
 		set_minmaxy_lstpath(w->obj.f.beginpath, w);
 		create_listofnodesperrow_fill(w, w->obj.f.beginpath);
+		ft_freepath(w->obj.f.beginpath);
 		sort_listofnodes(w->obj.f.lstnodesbeg);
 		fill_listofnodes(w, w->obj.f.lstnodesbeg);
-		ft_free_lstofnodes(w->obj.f.lstnodesbeg);
+		ft_listofnodes_free(w->obj.f.lstnodesbeg);
 	}
 	w->obj.f.bol = 0;
 	return (0);
