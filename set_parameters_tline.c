@@ -31,21 +31,9 @@ static int	get_diff(int first, int second)
 
 	i = 0;
 	if (first > second)
-	{
-		while (first > second)
-		{
-			second++;
-			i++;
-		}
-	}
-	if (first < second)
-	{
-		while (first < second)
-		{
-			first++;
-			i++;
-		}
-	}
+		i = first - second;
+	else
+		i = second - first;
 	return (i);
 }
 
