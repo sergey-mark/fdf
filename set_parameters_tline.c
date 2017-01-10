@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 15:10:43 by pbillett          #+#    #+#             */
-/*   Updated: 2016/12/27 15:10:55 by pbillett         ###   ########.fr       */
+/*   Updated: 2017/01/10 15:15:08 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ static int	get_diff(int first, int second)
 	return (i);
 }
 
-t_line				ft_conv_tpoint_to_tline_coord(t_point p)
+t_line		ft_conv_tpoint_to_tline_coord(t_point p)
 {
-	t_line			t;
+	t_line	t;
 
 	t.x = p.x;
 	t.y = p.y;

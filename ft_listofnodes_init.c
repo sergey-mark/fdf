@@ -6,17 +6,17 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 14:38:27 by pbillett          #+#    #+#             */
-/*   Updated: 2017/01/03 18:48:56 by pbillett         ###   ########.fr       */
+/*   Updated: 2017/01/10 15:14:28 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_listofnodes		*ft_listofnodes_init(t_listp_path *tmp)
+t_listofnodes				*ft_listofnodes_init(t_listp_path *tmp)
 {
-	t_listofnodes	*lstnodes;
-	t_line			v;
-	t_listp_path	*elem;
+	t_listofnodes			*lstnodes;
+	t_line					v;
+	t_listp_path			*elem;
 
 	lstnodes = malloc(sizeof(t_listofnodes));
 	if (!lstnodes)
@@ -30,10 +30,10 @@ t_listofnodes		*ft_listofnodes_init(t_listp_path *tmp)
 	return (lstnodes);
 }
 
-t_listofnodes		*ft_listofnodes_add(t_listofnodes *list,
+t_listofnodes				*ft_listofnodes_add(t_listofnodes *list,
 t_listofnodes *elem)
 {
-	t_listofnodes	*tmp;
+	t_listofnodes			*tmp;
 
 	tmp = list;
 	while (tmp->next != NULL)
@@ -43,11 +43,11 @@ t_listofnodes *elem)
 	return (tmp);
 }
 
-void				fill_listofnodes(t_wind *w, t_listofnodes *lstnodes)
+void						fill_listofnodes(t_wind *w, t_listofnodes *lstnodes)
 {
-	t_listofnodes	*tmp;
-	t_listp_path	*path;
-	t_listp_path	*path2;
+	t_listofnodes			*tmp;
+	t_listp_path			*path;
+	t_listp_path			*path2;
 
 	tmp = lstnodes;
 	while (tmp)
@@ -67,7 +67,8 @@ void				fill_listofnodes(t_wind *w, t_listofnodes *lstnodes)
 	}
 }
 
-static void					ft_create_node_or_elem(t_listp_path **tmp, int *j, int *k, t_wind **w)
+static void					ft_create_node_or_elem(t_listp_path **tmp, int *j,
+int *k, t_wind **w)
 {
 	int						i;
 	static t_listofnodes	*lstnodes;
@@ -88,16 +89,17 @@ static void					ft_create_node_or_elem(t_listp_path **tmp, int *j, int *k, t_win
 	}
 	else if ((*tmp)->p->y == (*w)->obj.f.row_min && (*j)++ != 0)
 	{
-		ft_pathadd(lstnodes->lstp, ft_pathinit(ft_conv_tpoint_to_tline_coord(*(*tmp)->p)));
+		ft_pathadd(lstnodes->lstp,
+		ft_pathinit(ft_conv_tpoint_to_tline_coord(*(*tmp)->p)));
 	}
 }
 
-t_listofnodes		*create_listofnodesperrow_fill(t_wind *w,
+t_listofnodes				*create_listofnodesperrow_fill(t_wind *w,
 t_listp_path *beginlst)
 {
-	t_listp_path	*tmp;
-	int				j;
-	int				k;
+	t_listp_path			*tmp;
+	int						j;
+	int						k;
 
 	k = 0;
 	while (w->obj.f.row_min < (w->obj.f.row_max + 1))

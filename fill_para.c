@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 15:21:23 by pbillett          #+#    #+#             */
-/*   Updated: 2017/01/03 18:42:01 by pbillett         ###   ########.fr       */
+/*   Updated: 2017/01/10 15:10:32 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,24 @@ static void			rec_allppsquareface(t_wind *w, int x, int y, t_fillsquare s)
 	draw_line(w, s.pdi, s.pr);
 }
 
+static t_fillsquare	set_square_dot_for_face(int x, int y, t_wind *w)
+{
+	t_fillsquare	s;
+
+	s.pr.x = w->img.point.x + w->p.x_spacing;
+	s.pr.y = w->img.point.y;
+	s.pr.z = (w->b.tab_int[y][x + 1] + w->p.t.z) * (w->p.zaccentuation);
+	s.p = w->img.point;
+	s.pd.x = w->img.point.x;
+	s.pd.y = w->img.point.y + w->p.y_spacing;
+	s.pd.z = (w->b.tab_int[y + 1][x] + w->p.t.z) * (w->p.zaccentuation);
+	s.pdi.x = w->img.point.x + w->p.x_spacing;
+	s.pdi.y = w->img.point.y + w->p.y_spacing;
+	s.pdi.z = (w->b.tab_int[y + 1][x + 1] + w->p.t.z) *
+	(w->p.zaccentuation);
+	return (s);
+}
+
 int					fill_para(int x, int y, t_wind *w)
 {
 	t_fillsquare	s;
@@ -37,17 +55,7 @@ int					fill_para(int x, int y, t_wind *w)
 	if ((x < (w->b.nbr_elem_line - 1)) && (y < (w->b.nbr_of_line - 1))
 	&& (x < (w->b.nbr_elem_line - 1) && (y < (w->b.nbr_of_line - 1))))
 	{
-		s.pr.x = w->img.point.x + w->p.x_spacing;
-		s.pr.y = w->img.point.y;
-		s.pr.z = (w->b.tab_int[y][x + 1] + w->p.t.z) * (w->p.zaccentuation);
-		s.p = w->img.point;
-		s.pd.x = w->img.point.x;
-		s.pd.y = w->img.point.y + w->p.y_spacing;
-		s.pd.z = (w->b.tab_int[y + 1][x] + w->p.t.z) * (w->p.zaccentuation);
-		s.pdi.x = w->img.point.x + w->p.x_spacing;
-		s.pdi.y = w->img.point.y + w->p.y_spacing;
-		s.pdi.z = (w->b.tab_int[y + 1][x + 1] + w->p.t.z) *
-		(w->p.zaccentuation);
+		s = set_square_dot_for_face(x, y, w);
 		rec_allppsquareface(w, x, y, s);
 		set_minmaxy_lstpath(w->obj.f.beginpath, w);
 		create_listofnodesperrow_fill(w, w->obj.f.beginpath);
