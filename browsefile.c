@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 13:37:09 by pbillett          #+#    #+#             */
-/*   Updated: 2017/01/10 16:36:32 by pbillett         ###   ########.fr       */
+/*   Updated: 2017/01/10 18:06:39 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ static int	**save_line(char *line, int **y, int **x, int **tab_int)
 
 static int	check_fd(int fd)
 {
-	if (fd == -1)
+	char	*line;
+
+	if (fd == -1 || !get_next_line(fd, &line))
 	{
-		ft_putstr("warning empy file\n");
+		ft_putstr("empy file, please check source_file\n");
 		return (1);
 	}
 	return (0);
@@ -51,7 +53,7 @@ int			**browsefile(char *filename, int *y, int *x)
 
 	fd = open(filename, O_RDONLY);
 	fd1 = open(filename, O_RDONLY);
-	if (check_fd(fd) == 1)
+	if (check_fd(fd1) == 1)
 		return (NULL);
 	tab_int = NULL;
 	(*y) = 0;
