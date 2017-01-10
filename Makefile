@@ -44,7 +44,7 @@ FLAG= -Wall -Werror -Wextra
 KEY= 2
 endif
 
-all: $(NAME)
+all:	$(NAME)
 
 $(NAME):	$(SRC)
 	make -C libft
