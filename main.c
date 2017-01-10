@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 15:25:35 by pbillett          #+#    #+#             */
-/*   Updated: 2016/12/27 15:25:38 by pbillett         ###   ########.fr       */
+/*   Updated: 2017/01/10 16:13:36 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int					main(int argc, char **argv)
 {
 	if (argc != 2)
-		ft_putstr("usage");
+		ft_putstr("usage: ./fdf source_file\n");
 	else
 		fdf(argv[1]);
 	return (0);

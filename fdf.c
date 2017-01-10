@@ -6,7 +6,7 @@
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 14:17:23 by pbillett          #+#    #+#             */
-/*   Updated: 2016/12/27 15:38:50 by pbillett         ###   ########.fr       */
+/*   Updated: 2017/01/10 16:30:43 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,11 @@ int				fdf(char *filename)
 	w.width = 800;
 	w.height = 600;
 	w = create_new_window("42 minilibx", w.width, w.height);
-	w.b.tab_int = browsefile(filename, &w.b.nbr_of_line, &w.b.nbr_elem_line);
+	if (browsefile(filename, &w.b.nbr_of_line, &w.b.nbr_elem_line) == NULL)
+		return (0);
+	else
+		w.b.tab_int = browsefile(filename, &w.b.nbr_of_line,
+	&w.b.nbr_elem_line);
 	set_parameters(&w);
 	def_all_preui(&w);
 	create_new_img(&w);
