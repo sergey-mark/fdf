@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/27 15:31:20 by pbillett          #+#    #+#             */
-/*   Updated: 2016/12/27 15:31:24 by pbillett         ###   ########.fr       */
+/*   Created: 2017/01/10 15:49:59 by pbillett          #+#    #+#             */
+/*   Updated: 2017/01/10 15:50:02 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ double		degree_to_radian(int degrees)
 
 static void	def_matr(t_wind *w)
 {
-	w->mr.mat[0] = w->mr.C * w->mr.E;
-	w->mr.mat[1] = -(w->mr.C) * w->mr.F;
-	w->mr.mat[2] = w->mr.D;
-	w->mr.mat[4] = w->mr.BD * w->mr.E + w->mr.A * w->mr.F;
-	w->mr.mat[5] = -(w->mr.BD) * w->mr.F + w->mr.A * w->mr.E;
-	w->mr.mat[6] = -(w->mr.B) * w->mr.C;
-	w->mr.mat[8] = -(w->mr.AD) * w->mr.E + w->mr.B * w->mr.F;
-	w->mr.mat[9] = w->mr.AD * w->mr.F + w->mr.B * w->mr.E;
-	w->mr.mat[10] = w->mr.A * w->mr.C;
+	w->mr.mat[0] = w->mr.c * w->mr.e;
+	w->mr.mat[1] = -(w->mr.c) * w->mr.f;
+	w->mr.mat[2] = w->mr.d;
+	w->mr.mat[4] = w->mr.bd * w->mr.e + w->mr.a * w->mr.f;
+	w->mr.mat[5] = -(w->mr.bd) * w->mr.f + w->mr.a * w->mr.e;
+	w->mr.mat[6] = -(w->mr.b) * w->mr.c;
+	w->mr.mat[8] = -(w->mr.ad) * w->mr.e + w->mr.b * w->mr.f;
+	w->mr.mat[9] = w->mr.ad * w->mr.f + w->mr.b * w->mr.e;
+	w->mr.mat[10] = w->mr.a * w->mr.c;
 	w->mr.mat[3] = 0;
 	w->mr.mat[7] = 0;
 	w->mr.mat[11] = 0;
@@ -48,14 +48,14 @@ t_wind *w)
 	r_angle.x = degree_to_radian(angle.x);
 	r_angle.y = degree_to_radian(angle.y);
 	r_angle.z = degree_to_radian(angle.z);
-	w->mr.A = cos(r_angle.x);
-	w->mr.B = sin(r_angle.x);
-	w->mr.C = cos(r_angle.y);
-	w->mr.D = sin(r_angle.y);
-	w->mr.E = cos(r_angle.z);
-	w->mr.F = sin(r_angle.z);
-	w->mr.AD = w->mr.A * w->mr.D;
-	w->mr.BD = w->mr.B * w->mr.D;
+	w->mr.a = cos(r_angle.x);
+	w->mr.b = sin(r_angle.x);
+	w->mr.c = cos(r_angle.y);
+	w->mr.d = sin(r_angle.y);
+	w->mr.e = cos(r_angle.z);
+	w->mr.f = sin(r_angle.z);
+	w->mr.ad = w->mr.a * w->mr.d;
+	w->mr.bd = w->mr.b * w->mr.d;
 	def_matr(w);
 	w->mr.p_r.x = p.x * (w->mr.mat[0]) + p.y * (w->mr.mat[1]) +
 	p.z * (w->mr.mat[2]);

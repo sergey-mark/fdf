@@ -1,13 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/01/10 15:25:32 by pbillett          #+#    #+#             */
+/*   Updated: 2017/01/10 15:27:52 by pbillett         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FDF_H
 
 # define FDF_H
-#include "libft/libft.h"
-#include "minilibx/mlx.h"
-#include "struct.h"
-#include "get_next_line/get_next_line.h"
-#include "keymacro.h"
-#include <math.h>
-#include <stdlib.h>
+# include "libft/libft.h"
+# include "minilibx/mlx.h"
+# include "struct.h"
+# include "get_next_line/get_next_line.h"
+# include "keymacro.h"
+# include <math.h>
+# include <stdlib.h>
+
 int				fdf(char *filename);
 void			def_all_preui(t_wind *w);
 t_wind			create_new_window(char *title, int width, int height);
@@ -30,7 +43,8 @@ int				mouse_motion_function(int x, int y, t_wind *w);
 void			pencil(t_wind *w, int x, int y);
 int				turntable(t_wind *w);
 int				expose_hook(t_wind *w);
-t_point			matrice_rotation(t_point p, t_point angle, t_dpoint r_angle, t_wind *w);
+t_point			matrice_rotation(t_point p, t_point angle, t_dpoint r_angle,
+		t_wind *w);
 double			degree_to_radian(int degree);
 void			draw_circle(t_wind *w, t_point centp, int rayon, char *hexcol);
 void			draw_circlef(t_wind *w, t_point centp, int rayon, char *hexcol);
@@ -41,11 +55,13 @@ t_listp_path	*ft_pathremove(t_listp_path *list);
 t_listp_path	*ft_pathinit(t_line v);
 char			*rgbtohexa(t_rgbcolor rgbcolor);
 t_rgbcolor		hexatorgb(char *hexcolor);
-t_listofnodes	*create_listofnodesperrow_fill(t_wind *w, t_listp_path *beginlst);
+t_listofnodes	*create_listofnodesperrow_fill(t_wind *w,
+		t_listp_path *beginlst);
 void			sort_listofnodes(t_listofnodes *lstnodes);
 void			fill_listofnodes(t_wind *w, t_listofnodes *lstnodes);
 t_line			set_parameters_tline(t_line v);
-t_line			convert_3ddot_to2dline(t_point point, t_point pointd, t_wind *w);
+t_line			convert_3ddot_to2dline(t_point point, t_point pointd,
+		t_wind *w);
 void			set_minmaxy_lstpath(t_listp_path *lstpath, t_wind *w);
 t_listp_path	*ft_freepath(t_listp_path *list);
 void			ft_listofnodes_free(t_listofnodes *lst);
