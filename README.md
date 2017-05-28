@@ -30,6 +30,7 @@ Compile both on Mac and Linux. (with X11)
 - Mouse wheels Click + go left/right: Narrower/Wider field level
 
 <h3>Keyboard:</h3>
+
 - F1: Help toogle 
 - F2|F3: Iso Mode / Para Mode
 - Arrow keys Numpad (R/L/Up/Dwn): Move fdf
