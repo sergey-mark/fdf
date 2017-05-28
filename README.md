@@ -1,40 +1,63 @@
 #fdf
 This project consist to create graphically the schematic representation of a ground in relief.
 
-# Compilation on Mac
-gcc -o $(NAME) $(SRC) -lm -L libft -lft -L minilibx_macos -L/usr/local/lib/ -I/usr/local/include -lmlx -framework OpenGL -framework AppKit</br></br>
+Compile both on Mac and Linux. (with X11)
 
-# Compilation on Linux with X11 and Xext dependencies.
-Minilibx have two dependencies: X11 and Xext:</br></br>
+# How to launch :
 
-sudo apt-get install libx11-dev
+- git clone http://github.com/pbillett/fdf.git && cd fdf
+- make re && ./fdf [file]
+<code>
 
-sudo apt-get install libxext-dev</br></br>
+      example : ./fdf test_maps/42.fdf
+      
+                ./fdf test_maps/20-60.fdf
+                
+                ./fdf test_maps/basictest.fdf
+                
+                ./fdf test_maps/pyramide.fdf
+                
+                ./fdf test_maps/mars.fdf
+</code>
+
+# Shortcut :
+
+<h3>Mouse:</h3>
+
+- Left click: Rotate around obj
+- Spacebar + Left click: Move obj
+- Mouse wheels Click + go Up/Down: Increase/decrease field level
+- Mouse wheels Click + go left/right: Narrower/Wider field level
+
+<h3>Keyboard:</h3>
+- F1: Help toogle 
+- F2|F3: Iso Mode / Para Mode
+- Arrow keys Numpad (R/L/Up/Dwn): Move fdf
+- Arrow keys (R/L/Up/Dwn): Rotate fdf
+- PgUp/PgDown: Increase/decrease field level
+- +/- Numpad: Zoom/UnZoom
+- 1/2/3/4: Dot/Wireframe/Tesselate/Fill faces (warning fill faces could slow down rendering on high density map)
+- W/E/R: Gizmo toggle Move/Rotate/Scale (WIP)
+- P: Paint tool toogle.(draw with left button, P key again to stop).
+- T: Turntable toggle (to automatically rotate object around pivot gizmo point). (Insert to move pivot point)
+- Insert: Move pivot point ('W' then 'insert', then move pivot point with Numpad arrows keys).
+- Escape: Quit
 
 
-You should now found all the file under 
+# Compilation possible issues
 
-/usr/include/X11/</br></br>
+<h3>Linux</h3>
 
+- Compilation of the Minilibx under Linux needs X11 and Xext dependencies, to install them simply enter this command:
+- sudo apt-get install libx11-dev && sudo apt-get install libxext-dev (You should now found all the file under /usr/include/X11/).
+- for an eventual problem of use of strlcpy, just comment the line in the file ./minilibx/mlx_xpm.c and uncomment the line just over it that use strcpy.
 
-For an eventual problem of use of strlcpy:
+<h3>Mac</h3>
 
-- just comment the line int the file ./minilibx/mlx_xpm.c and uncomment the line just over it that use strcpy.</br></br>
-
+- Compiltation on Mac should not have any pb issue. As framework OpenGl and framework appKit should be installed by default,
+- But if not just use this command line instead of classic make re.
+- gcc -o fdf *.c -lm -L libft -lft -L minilibx_macos -L/usr/local/lib/ -I/usr/local/include -lmlx -framework OpenGL -framework AppKit</br>
 
 That's it !
-
-You can run your project on Linux.</br></br>
-
-
-Ps: To compile your project under linux please create two libs in your Makefile as follow:
-
-LIB2= -L minilibx -lmlx
-
-LIB3= -L /usr/include/X11/ -lXext -lX11
-</br></br>
-
-
-Then compile with sources:
-
-gcc $(FLAG) -o $(NAME) $(SRC) $(LIB) $(LIB2) $(LIB3)</br></br>
+You should now be able to run this project on Mac and Linux.
+Enjoy !
