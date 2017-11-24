@@ -1,30 +1,30 @@
 UNAME := $(shell uname)
 
 NAME=fdf
-SRC=	main.c \
-		fdf.c \
-		def_all_preui.c \
-		help.c \
-		create_new_window.c \
-		create_new_img.c \
-		browsefile.c \
-		get_next_line/get_next_line.c \
-		matrice_rotation.c \
-		fill_3d_map.c \
-		fill_para.c \
-		draw_point.c \
-		draw_line.c \
-		key_function.c \
-		keypress_function02.c \
-		mouse_function.c \
-		expose_hook.c \
-		rgbtohexa.c \
-		ft_pathinit.c \
-		ft_listofnodes_init.c \
-		sort_listofnodes.c \
-		set_parameters_tline.c \
-		ft_listofnode_free.c \
-		draw_circle.c
+SRC=	get_next_line/get_next_line.c \
+		src/main.c \
+		src/fdf.c \
+		src/def_all_preui.c \
+		src/help.c \
+		src/create_new_window.c \
+		src/create_new_img.c \
+		src/browsefile.c \
+		src/matrice_rotation.c \
+		src/fill_3d_map.c \
+		src/fill_para.c \
+		src/draw_point.c \
+		src/draw_line.c \
+		src/key_function.c \
+		src/keypress_function02.c \
+		src/mouse_function.c \
+		src/expose_hook.c \
+		src/rgbtohexa.c \
+		src/ft_pathinit.c \
+		src/ft_listofnodes_init.c \
+		src/sort_listofnodes.c \
+		src/set_parameters_tline.c \
+		src/ft_listofnode_free.c \
+		src/draw_circle.c
 OBJ=${SRC:.c=.o}
 
 ifeq ($(UNAME), Darwin) # MAC
@@ -56,6 +56,7 @@ clean:
 
 fclean: clean
 	rm -rf $(NAME)
+	make fclean -C libft
 
 re: fclean all
 

@@ -1,37 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_listofnodes_init.c                              :+:      :+:    :+:   */
+/*   create_new_window.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/27 14:38:27 by pbillett          #+#    #+#             */
-/*   Updated: 2017/01/03 18:48:56 by pbillett         ###   ########.fr       */
+/*   Created: 2016/12/27 13:40:18 by pbillett          #+#    #+#             */
+/*   Updated: 2016/12/27 13:40:46 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../includes/fdf.h"
 
-void				ft_listofnodes_free(t_listofnodes *lstnodes)
+t_wind			create_new_window(char *title, int width, int height)
 {
-	t_listofnodes	*tmp;
-	t_listofnodes	*prev;
-	t_listp_path	*path;
-	t_listp_path	*prevpath;
+	t_wind			w;
 
-	tmp = lstnodes;
-	while (tmp)
-	{
-		prev = tmp;
-		path = tmp->lstp;
-		while (path)
-		{
-			prevpath = path;
-			path = path->next;
-			free(prevpath->p);
-			free(prevpath);
-		}
-		tmp = tmp->next;
-		free(prev);
-	}
+	w.mlx = mlx_init();
+	w.width = width;
+	w.height = height;
+	w.title = title;
+	w.win = mlx_new_window(w.mlx, w.width, w.height, w.title);
+	return (w);
 }

@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_new_window.c                                :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/27 13:40:18 by pbillett          #+#    #+#             */
-/*   Updated: 2016/12/27 13:40:46 by pbillett         ###   ########.fr       */
+/*   Created: 2016/12/27 15:25:35 by pbillett          #+#    #+#             */
+/*   Updated: 2017/01/10 16:13:36 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../includes/fdf.h"
 
-t_wind			create_new_window(char *title, int width, int height)
+int					main(int argc, char **argv)
 {
-	t_wind			w;
-
-	w.mlx = mlx_init();
-	w.width = width;
-	w.height = height;
-	w.title = title;
-	w.win = mlx_new_window(w.mlx, w.width, w.height, w.title);
-	return (w);
+	if (argc != 2)
+		ft_putstr("usage: ./fdf source_file\n");
+	else
+		fdf(argv[1]);
+	return (0);
 }

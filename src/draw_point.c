@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../includes/fdf.h"
 
 char			*get_inbetweencolor(char *s_hex, char *e_hex, t_wind *w, int z)
 {

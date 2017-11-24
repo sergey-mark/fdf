@@ -1,3 +1,11 @@
+![Alt text](img/fdf_scrot_1.png?raw=true "fdf")
+![Alt text](img/fdf_scrot_2.png?raw=true "fdf")
+![Alt text](img/fdf_scrot_3.png?raw=true "fdf")
+![Alt text](img/fdf_scrot_4.png?raw=true "fdf")
+![Alt text](img/fdf_scrot_5.png?raw=true "fdf")
+![Alt text](img/fdf_scrot_6.png?raw=true "fdf")
+![Alt text](img/fdf_scrot_7.png?raw=true "fdf")
+
 #fdf
 This project consist to create graphically the schematic representation of a ground in relief.
 
@@ -9,15 +17,15 @@ Compile both on Mac and Linux. (with X11)
 - make re && ./fdf [file]
 <code>
 
-      example : ./fdf test_maps/42.fdf
+      example : ./fdf maps/42.fdf
       
-                ./fdf test_maps/20-60.fdf
+                ./fdf maps/20-60.fdf
                 
-                ./fdf test_maps/basictest.fdf
+                ./fdf maps/basictest.fdf
                 
-                ./fdf test_maps/pyramide.fdf
+                ./fdf maps/pyramide.fdf
                 
-                ./fdf test_maps/mars.fdf
+                ./fdf maps/mars.fdf
 </code>
 
 # Shortcut :

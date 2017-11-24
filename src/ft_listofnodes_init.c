@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../includes/fdf.h"
 
 t_listofnodes				*ft_listofnodes_init(t_listp_path *tmp)
 {

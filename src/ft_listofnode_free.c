@@ -1,22 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_listofnodes_init.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbillett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/27 15:25:35 by pbillett          #+#    #+#             */
-/*   Updated: 2017/01/10 16:13:36 by pbillett         ###   ########.fr       */
+/*   Created: 2016/12/27 14:38:27 by pbillett          #+#    #+#             */
+/*   Updated: 2017/01/03 18:48:56 by pbillett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../includes/fdf.h"
 
-int					main(int argc, char **argv)
+void				ft_listofnodes_free(t_listofnodes *lstnodes)
 {
-	if (argc != 2)
-		ft_putstr("usage: ./fdf source_file\n");
-	else
-		fdf(argv[1]);
-	return (0);
+	t_listofnodes	*tmp;
+	t_listofnodes	*prev;
+	t_listp_path	*path;
+	t_listp_path	*prevpath;
+
+	tmp = lstnodes;
+	while (tmp)
+	{
+		prev = tmp;
+		path = tmp->lstp;
+		while (path)
+		{
+			prevpath = path;
+			path = path->next;
+			free(prevpath->p);
+			free(prevpath);
+		}
+		tmp = tmp->next;
+		free(prev);
+	}
 }

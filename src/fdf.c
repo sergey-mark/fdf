@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../includes/fdf.h"
 
 #define BUTTONRELEASE		5
 #define BUTTONRELEASEMASK	(1L<<3)

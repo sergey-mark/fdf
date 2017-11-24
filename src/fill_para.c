@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../includes/fdf.h"
 
 static void			rec_allppsquareface(t_wind *w, int x, int y, t_fillsquare s)
 {

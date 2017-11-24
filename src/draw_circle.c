@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../includes/fdf.h"
 
 void			draw_circle(t_wind *w, t_point centp, int rayon, char *hexcol)
 {
